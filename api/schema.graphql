@@ -4,26 +4,204 @@
 
 scalar DateTime
 
+input MovieCreategenresInput {
+  set: [String!]
+}
+
+input MovieCreateOneWithoutRengasInput {
+  connect: MovieWhereUniqueInput
+  create: MovieCreateWithoutRengasInput
+}
+
+input MovieCreateWithoutRengasInput {
+  createdAt: DateTime
+  genres: MovieCreategenresInput
+  movieDBId: Int!
+  title: String!
+  updatedAt: DateTime
+  year: Int!
+}
+
+input MovieWhereUniqueInput {
+  id: Int
+  movieDBId: Int
+}
+
 type Mutation {
   createOneUser(data: UserCreateInput!): User!
+}
+
+input PartyCreateOneWithoutRengasInput {
+  connect: PartyWhereUniqueInput
+  create: PartyCreateWithoutRengasInput
+}
+
+input PartyCreateOneWithoutUsersInput {
+  connect: PartyWhereUniqueInput
+  create: PartyCreateWithoutUsersInput
+}
+
+input PartyCreateWithoutRengasInput {
+  createdAt: DateTime
+  id: String!
+  updatedAt: DateTime
+  users: UserCreateManyWithoutPartyInput
+}
+
+input PartyCreateWithoutUsersInput {
+  createdAt: DateTime
+  id: String!
+  rengas: RengaCreateManyWithoutPartyInput
+  updatedAt: DateTime
+}
+
+input PartyWhereUniqueInput {
+  id: String
 }
 
 type Query {
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, skip: Int): [User!]!
 }
 
+input RengaCreateemojisInput {
+  set: [String!]
+}
+
+input RengaCreateManyWithoutAuthorInput {
+  connect: [RengaWhereUniqueInput!]
+  create: [RengaCreateWithoutAuthorInput!]
+}
+
+input RengaCreateManyWithoutPartyInput {
+  connect: [RengaWhereUniqueInput!]
+  create: [RengaCreateWithoutPartyInput!]
+}
+
+input RengaCreateOneWithoutSubmissionInput {
+  connect: RengaWhereUniqueInput
+  create: RengaCreateWithoutSubmissionInput
+}
+
+input RengaCreateWithoutAuthorInput {
+  createdAt: DateTime
+  emojis: RengaCreateemojisInput
+  movie: MovieCreateOneWithoutRengasInput!
+  party: PartyCreateOneWithoutRengasInput!
+  submission: SubmissionCreateManyWithoutRengaInput
+  updatedAt: DateTime
+}
+
+input RengaCreateWithoutPartyInput {
+  author: UserCreateOneWithoutRengasInput!
+  createdAt: DateTime
+  emojis: RengaCreateemojisInput
+  movie: MovieCreateOneWithoutRengasInput!
+  submission: SubmissionCreateManyWithoutRengaInput
+  updatedAt: DateTime
+}
+
+input RengaCreateWithoutSubmissionInput {
+  author: UserCreateOneWithoutRengasInput!
+  createdAt: DateTime
+  emojis: RengaCreateemojisInput
+  movie: MovieCreateOneWithoutRengasInput!
+  party: PartyCreateOneWithoutRengasInput!
+  updatedAt: DateTime
+}
+
+input RengaWhereUniqueInput {
+  id: Int
+}
+
+input SubmissionCreateManyWithoutAuthorInput {
+  connect: [SubmissionWhereUniqueInput!]
+  create: [SubmissionCreateWithoutAuthorInput!]
+}
+
+input SubmissionCreateManyWithoutRengaInput {
+  connect: [SubmissionWhereUniqueInput!]
+  create: [SubmissionCreateWithoutRengaInput!]
+}
+
+input SubmissionCreateWithoutAuthorInput {
+  createdAt: DateTime
+  movieDBId: Int!
+  movieTitle: String!
+  renga: RengaCreateOneWithoutSubmissionInput!
+  updatedAt: DateTime
+  valid: Boolean
+}
+
+input SubmissionCreateWithoutRengaInput {
+  author: UserCreateOneWithoutSubmissionInput!
+  createdAt: DateTime
+  movieDBId: Int!
+  movieTitle: String!
+  updatedAt: DateTime
+  valid: Boolean
+}
+
+input SubmissionWhereUniqueInput {
+  id: Int
+}
+
 type User {
-  id: String!
+  id: Int!
   username: String!
 }
 
 input UserCreateInput {
   createdAt: DateTime
-  id: String
+  party: PartyCreateOneWithoutUsersInput!
+  rengas: RengaCreateManyWithoutAuthorInput
+  score: Int
+  submission: SubmissionCreateManyWithoutAuthorInput
+  updatedAt: DateTime
+  username: String!
+}
+
+input UserCreateManyWithoutPartyInput {
+  connect: [UserWhereUniqueInput!]
+  create: [UserCreateWithoutPartyInput!]
+}
+
+input UserCreateOneWithoutRengasInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutRengasInput
+}
+
+input UserCreateOneWithoutSubmissionInput {
+  connect: UserWhereUniqueInput
+  create: UserCreateWithoutSubmissionInput
+}
+
+input UserCreateWithoutPartyInput {
+  createdAt: DateTime
+  rengas: RengaCreateManyWithoutAuthorInput
+  score: Int
+  submission: SubmissionCreateManyWithoutAuthorInput
+  updatedAt: DateTime
+  username: String!
+}
+
+input UserCreateWithoutRengasInput {
+  createdAt: DateTime
+  party: PartyCreateOneWithoutUsersInput!
+  score: Int
+  submission: SubmissionCreateManyWithoutAuthorInput
+  updatedAt: DateTime
+  username: String!
+}
+
+input UserCreateWithoutSubmissionInput {
+  createdAt: DateTime
+  party: PartyCreateOneWithoutUsersInput!
+  rengas: RengaCreateManyWithoutAuthorInput
+  score: Int
   updatedAt: DateTime
   username: String!
 }
 
 input UserWhereUniqueInput {
-  id: String
+  id: Int
 }
