@@ -17,6 +17,7 @@
         "apollo-link-http": "^1.5.17",
         "graphql": "^15.0.0",
         "graphql-tag": "^2.10.3",
+        "jwt-decode": "^2.2.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-scripts": "3.4.1",
@@ -54,6 +55,7 @@
         "@graphql-codegen/typescript-operations": "^1.13.2",
         "@graphql-codegen/typescript-react-apollo": "^1.13.2",
         "@graphql-codegen/typescript-resolvers": "^1.13.2",
+        "@types/jwt-decode": "^2.2.1",
         "@typescript-eslint/eslint-plugin": "^2.27.0",
         "@typescript-eslint/parser": "^2.27.0",
         "eslint": "^6.8.0"

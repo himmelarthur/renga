@@ -10,7 +10,7 @@ interface Context {
     user: Promise<AuthenticatedPlayer | undefined>
 }
 
-const createContext: (req: express.Request) => Context = req => {
+const createContext: (req: express.Request) => Context = (req) => {
     // The request is authenticated or not
     let player: Promise<AuthenticatedPlayer | undefined>
     if (req.headers !== undefined && req.headers.authorization) {
@@ -23,7 +23,7 @@ const createContext: (req: express.Request) => Context = req => {
         logger.debug('Authorization headers not found')
         player = Promise.resolve(undefined)
     }
-    player = player.catch(err => {
+    player = player.catch((err) => {
         // If any already caught error return undefined
         logger.error(err)
         return undefined
