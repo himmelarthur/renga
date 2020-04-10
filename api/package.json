@@ -1,0 +1,38 @@
+{
+  "name": "renga-api",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/server",
+    "clean": "rm -rf dist",
+    "build": "npm -s run clean && npm -s run generate && tsc",
+    "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+    "generate:prisma": "prisma2 generate --schema prisma/schema.prisma",
+    "generate:nexus": "ts-node --transpile-only ./.src/schema",
+    "postinstall": "npm -s run generate",
+    "dev": "ts-node-dev --no-notify --respawn --transpileOnly server",
+    "seed": "ts-node prisma/_seed"
+  },
+  "dependencies": {
+    "@nexus/schema": "^0.13.1",
+    "@prisma/client": "^2.0.0-beta.1",
+    "@types/node-cron": "^2.0.2",
+    "apollo-server": "^2.12.0",
+    "axios": "^0.19.0",
+    "dotenv": "^8.2.0",
+    "graphql": "^14.5.8",
+    "graphql-middleware": "^4.0.2",
+    "graphql-shield": "5.7.3",
+    "jsonwebtoken": "8.5.1",
+    "nexus-prisma": "^0.12.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@prisma/cli": "^2.0.0-beta.2",
+    "@types/jsonwebtoken": "8.3.5",
+    "@types/node": "^12.12.7",
+    "@types/node-fetch": "^2.5.4",
+    "ts-node": "^8.5.0",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.8.3"
+  }
+}

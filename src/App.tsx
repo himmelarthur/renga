@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import gql from 'graphql-tag'
+import { useAllUsersQuery } from './generated/graphql'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+gql`
+    query allUsers {
+        users {
+            id
+            username
+        }
+    }
+`
+
+export default () => {
+    const { data, loading } = useAllUsersQuery()
+    return (
+        <div className="w-full h-screen flex justify-center items-center">
+            <div className="rounded shadow p-8 bg-red-700 hover:bg-red-500 text-gray-100 font-semibold text-xl ">
+                Happy Renga!
+            </div>
+            <div className="ml-4">
+                {data?.users.map((user) => {
+                    return <div className="uppercase text-green-800">{user.username}</div>
+                })}
+            </div>
+        </div>
+    )
 }
-
-export default App;
