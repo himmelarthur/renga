@@ -5,5 +5,3 @@ export const Query = queryType({
         t.crud.users()
     },
 })
-
-

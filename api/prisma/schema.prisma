@@ -8,7 +8,7 @@ generator client {
 }
 
 model Party {
-  id        String   @unique
+  id        String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   rengas    Renga[]

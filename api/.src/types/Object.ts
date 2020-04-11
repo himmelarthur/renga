@@ -5,5 +5,12 @@ export const User = objectType({
     definition(t) {
         t.model.id()
         t.model.username()
-    }
+    },
+})
+
+export const Party = objectType({
+    name: 'Party',
+    definition(t) {
+        t.model.id()
+    },
 })
