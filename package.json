@@ -24,7 +24,6 @@
         "graphql": "^15.0.0",
         "graphql-tag": "^2.10.3",
         "jwt-decode": "^2.2.0",
-        "lodash.debounce": "^4.0.8",
         "lodash.throttle": "^4.1.1",
         "react": "^16.13.1",
         "react-autosuggest": "^10.0.0",
