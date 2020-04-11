@@ -121,6 +121,7 @@ export interface NexusGenInputs {
   SubmissionCreateWithoutRengaInput: { // input type
     author: NexusGenInputs['UserCreateOneWithoutSubmissionInput']; // UserCreateOneWithoutSubmissionInput!
     createdAt?: any | null; // DateTime
+
     movieTitle: string; // String!
     updatedAt?: any | null; // DateTime
     valid?: boolean | null; // Boolean

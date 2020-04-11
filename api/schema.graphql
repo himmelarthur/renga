@@ -64,6 +64,34 @@ input PartyWhereUniqueInput {
   id: String
 }
 
+input PartyCreateOneWithoutRengasInput {
+  connect: PartyWhereUniqueInput
+  create: PartyCreateWithoutRengasInput
+}
+
+input PartyCreateOneWithoutUsersInput {
+  connect: PartyWhereUniqueInput
+  create: PartyCreateWithoutUsersInput
+}
+
+input PartyCreateWithoutRengasInput {
+  createdAt: DateTime
+  id: String!
+  updatedAt: DateTime
+  users: UserCreateManyWithoutPartyInput
+}
+
+input PartyCreateWithoutUsersInput {
+  createdAt: DateTime
+  id: String!
+  rengas: RengaCreateManyWithoutPartyInput
+  updatedAt: DateTime
+}
+
+input PartyWhereUniqueInput {
+  id: String
+}
+
 type Query {
   users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int, skip: Int): [User!]!
 }

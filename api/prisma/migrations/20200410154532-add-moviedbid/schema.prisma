@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -8,7 +8,7 @@ generator client {
 }
 
 model Party {
-  id        String   @id
+  id        String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   rengas    Renga[]
