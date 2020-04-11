@@ -1,15 +1,12 @@
-import { verify } from 'jsonwebtoken'
-import { Context } from '../context'
+import { verify  } from 'jsonwebtoken'
 
-// TODO
-
-export interface AuthenticatedPlayer {
-    playerId: string
+export interface AuthenticatedUser {
+    userId: number
     partyId: string
 }
 
-export const verifyIdentity = async (token?: string) => {
-    return { playerId: 'foo', partyId: 'bar' }
+export const verifyIdentity = async (token: string) => {
+    return verify(token.replace('Bearer ', ''), appSecret()) as AuthenticatedUser
 }
 
 export const appSecret = () => {

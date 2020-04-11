@@ -1,4 +1,4 @@
-import { mutationType, stringArg } from '@nexus/schema'
+import { mutationType, intArg, stringArg } from '@nexus/schema'
 import { sign } from 'jsonwebtoken'
 import { appSecret } from '../security/authentication'
 import { Context } from '../context'
