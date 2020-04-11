@@ -6,6 +6,7 @@ import { Context } from '../context'
 export const Mutation = mutationType({
     definition(t) {
         t.crud.createOneUser()
+        t.crud.createOneRenga()
         t.field('createParty', {
             type: 'String',
             args: {

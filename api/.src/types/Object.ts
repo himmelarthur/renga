@@ -14,3 +14,12 @@ export const Party = objectType({
         t.model.id()
     },
 })
+
+
+export const Renga = objectType({
+    name: 'Renga',
+    definition(t) {
+        t.model.id()
+        t.model.emojis()
+    }
+})
