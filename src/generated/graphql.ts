@@ -39,16 +39,18 @@ export type User = {
 export type Mutation = {
    __typename?: 'Mutation';
   createOneUser: User;
-<<<<<<< HEAD
-  createParty: Scalars['String'];
-=======
   createOneRenga: Renga;
->>>>>>> Add crud resolver for renga creation
+  createParty: Scalars['String'];
 };
 
 
 export type MutationCreateOneUserArgs = {
   data: UserCreateInput;
+};
+
+
+export type MutationCreateOneRengaArgs = {
+  data: RengaCreateInput;
 };
 
 
@@ -117,7 +119,6 @@ export type MovieCreategenresInput = {
 
 export type MovieWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>;
-  movieDBId?: Maybe<Scalars['Int']>;
 };
 
 export type UserCreateOneWithoutRengasInput = {
@@ -144,10 +145,7 @@ export type SubmissionCreateWithoutAuthorInput = {
   updatedAt?: Maybe<Scalars['DateTime']>;
   valid?: Maybe<Scalars['Boolean']>;
   movieTitle: Scalars['String'];
-<<<<<<< HEAD
-=======
   movieDBId: Scalars['Int'];
->>>>>>> Add crud resolver for renga creation
   renga: RengaCreateOneWithoutSubmissionInput;
 };
 
@@ -215,10 +213,7 @@ export type SubmissionCreateWithoutRengaInput = {
   updatedAt?: Maybe<Scalars['DateTime']>;
   valid?: Maybe<Scalars['Boolean']>;
   movieTitle: Scalars['String'];
-<<<<<<< HEAD
-=======
   movieDBId: Scalars['Int'];
->>>>>>> Add crud resolver for renga creation
   author: UserCreateOneWithoutSubmissionInput;
 };
 
@@ -248,11 +243,6 @@ export type PartyWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
 
-<<<<<<< HEAD
-export type Party = {
-   __typename?: 'Party';
-  id: Scalars['String'];
-=======
 export type RengaCreateInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -267,7 +257,11 @@ export type Renga = {
    __typename?: 'Renga';
   id: Scalars['Int'];
   emojis: Array<Scalars['String']>;
->>>>>>> Add crud resolver for renga creation
+};
+
+export type Party = {
+   __typename?: 'Party';
+  id: Scalars['String'];
 };
 
 export type CreatePartyMutationVariables = {
@@ -325,17 +319,9 @@ export const CreatePartyDocument = gql`
 export function useCreatePartyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreatePartyMutation, CreatePartyMutationVariables>) {
         return ApolloReactHooks.useMutation<CreatePartyMutation, CreatePartyMutationVariables>(CreatePartyDocument, baseOptions);
       }
-<<<<<<< HEAD
 export type CreatePartyMutationHookResult = ReturnType<typeof useCreatePartyMutation>;
 export type CreatePartyMutationResult = ApolloReactCommon.MutationResult<CreatePartyMutation>;
 export type CreatePartyMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePartyMutation, CreatePartyMutationVariables>;
-=======
-export function useAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllUsersQuery, AllUsersQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<AllUsersQuery, AllUsersQueryVariables>(AllUsersDocument, baseOptions);
-        }
-export type AllUsersQueryHookResult = ReturnType<typeof useAllUsersQuery>;
-export type AllUsersLazyQueryHookResult = ReturnType<typeof useAllUsersLazyQuery>;
-export type AllUsersQueryResult = ApolloReactCommon.QueryResult<AllUsersQuery, AllUsersQueryVariables>;
 export const CreateRengaDocument = gql`
     mutation createRenga($authorId: Int!, $partyId: String!, $emojis: [String!]!, $movieId: Int!, $movieTitle: String!, $movieYear: Int!) {
   createOneRenga(data: {emojis: {set: $emojis}, author: {connect: {id: $authorId}}, party: {connect: {id: $partyId}}, movie: {create: {movieDBId: $movieId, title: $movieTitle, year: $movieYear}}}) {
@@ -373,4 +359,3 @@ export function useCreateRengaMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type CreateRengaMutationHookResult = ReturnType<typeof useCreateRengaMutation>;
 export type CreateRengaMutationResult = ApolloReactCommon.MutationResult<CreateRengaMutation>;
 export type CreateRengaMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateRengaMutation, CreateRengaMutationVariables>;
->>>>>>> Add crud resolver for renga creation
