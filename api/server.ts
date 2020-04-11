@@ -13,6 +13,9 @@ const schemaMiddleware = applyMiddleware(schema, permissions)
 const server = new ApolloServer({
     schema: schemaMiddleware,
     context: ({ req }) => createContext(req),
+    engine: {
+        apiKey: process.env.ENGINE_API_KEY,
+    },
 })
 
 server.listen({ port: process.env.PORT || 4000, graphqlPath: '/api' }, () =>
