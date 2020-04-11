@@ -29,6 +29,39 @@ input MovieWhereUniqueInput {
 
 type Mutation {
   createOneUser(data: UserCreateInput!): User!
+  createParty(username: String!): String!
+}
+
+type Party {
+  id: String!
+}
+
+input PartyCreateOneWithoutRengasInput {
+  connect: PartyWhereUniqueInput
+  create: PartyCreateWithoutRengasInput
+}
+
+input PartyCreateOneWithoutUsersInput {
+  connect: PartyWhereUniqueInput
+  create: PartyCreateWithoutUsersInput
+}
+
+input PartyCreateWithoutRengasInput {
+  createdAt: DateTime
+  id: String!
+  updatedAt: DateTime
+  users: UserCreateManyWithoutPartyInput
+}
+
+input PartyCreateWithoutUsersInput {
+  createdAt: DateTime
+  id: String!
+  rengas: RengaCreateManyWithoutPartyInput
+  updatedAt: DateTime
+}
+
+input PartyWhereUniqueInput {
+  id: String
 }
 
 input PartyCreateOneWithoutRengasInput {
@@ -125,7 +158,6 @@ input SubmissionCreateManyWithoutRengaInput {
 
 input SubmissionCreateWithoutAuthorInput {
   createdAt: DateTime
-  movieDBId: Int!
   movieTitle: String!
   renga: RengaCreateOneWithoutSubmissionInput!
   updatedAt: DateTime
@@ -135,7 +167,6 @@ input SubmissionCreateWithoutAuthorInput {
 input SubmissionCreateWithoutRengaInput {
   author: UserCreateOneWithoutSubmissionInput!
   createdAt: DateTime
-  movieDBId: Int!
   movieTitle: String!
   updatedAt: DateTime
   valid: Boolean

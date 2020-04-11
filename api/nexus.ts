@@ -113,7 +113,6 @@ export interface NexusGenInputs {
   }
   SubmissionCreateWithoutAuthorInput: { // input type
     createdAt?: any | null; // DateTime
-    movieDBId: number; // Int!
     movieTitle: string; // String!
     renga: NexusGenInputs['RengaCreateOneWithoutSubmissionInput']; // RengaCreateOneWithoutSubmissionInput!
     updatedAt?: any | null; // DateTime
@@ -122,7 +121,7 @@ export interface NexusGenInputs {
   SubmissionCreateWithoutRengaInput: { // input type
     author: NexusGenInputs['UserCreateOneWithoutSubmissionInput']; // UserCreateOneWithoutSubmissionInput!
     createdAt?: any | null; // DateTime
-    movieDBId: number; // Int!
+
     movieTitle: string; // String!
     updatedAt?: any | null; // DateTime
     valid?: boolean | null; // Boolean
@@ -185,6 +184,9 @@ export interface NexusGenEnums {
 
 export interface NexusGenRootTypes {
   Mutation: {};
+  Party: { // root type
+    id: string; // String!
+  }
   Query: {};
   User: { // root type
     id: number; // Int!
@@ -234,6 +236,10 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createOneUser: NexusGenRootTypes['User']; // User!
+    createParty: string; // String!
+  }
+  Party: { // field return type
+    id: string; // String!
   }
   Query: { // field return type
     users: NexusGenRootTypes['User'][]; // [User!]!
@@ -248,6 +254,9 @@ export interface NexusGenArgTypes {
   Mutation: {
     createOneUser: { // args
       data: NexusGenInputs['UserCreateInput']; // UserCreateInput!
+    }
+    createParty: { // args
+      username: string; // String!
     }
   }
   Query: {
@@ -266,7 +275,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Query" | "User";
+export type NexusGenObjectNames = "Mutation" | "Party" | "Query" | "User";
 
 export type NexusGenInputNames = "MovieCreateOneWithoutRengasInput" | "MovieCreateWithoutRengasInput" | "MovieCreategenresInput" | "MovieWhereUniqueInput" | "PartyCreateOneWithoutRengasInput" | "PartyCreateOneWithoutUsersInput" | "PartyCreateWithoutRengasInput" | "PartyCreateWithoutUsersInput" | "PartyWhereUniqueInput" | "RengaCreateManyWithoutAuthorInput" | "RengaCreateManyWithoutPartyInput" | "RengaCreateOneWithoutSubmissionInput" | "RengaCreateWithoutAuthorInput" | "RengaCreateWithoutPartyInput" | "RengaCreateWithoutSubmissionInput" | "RengaCreateemojisInput" | "RengaWhereUniqueInput" | "SubmissionCreateManyWithoutAuthorInput" | "SubmissionCreateManyWithoutRengaInput" | "SubmissionCreateWithoutAuthorInput" | "SubmissionCreateWithoutRengaInput" | "SubmissionWhereUniqueInput" | "UserCreateInput" | "UserCreateManyWithoutPartyInput" | "UserCreateOneWithoutRengasInput" | "UserCreateOneWithoutSubmissionInput" | "UserCreateWithoutPartyInput" | "UserCreateWithoutRengasInput" | "UserCreateWithoutSubmissionInput" | "UserWhereUniqueInput";
 
