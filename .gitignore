@@ -26,5 +26,9 @@ yarn-error.log*
 # tailwind
 /src/tailwind.css
 
-
+# now
 .now
+
+# Prisma
+**/schema.graphql
+**/nexus.ts
