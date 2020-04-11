@@ -18,6 +18,7 @@ async function main() {
                 },
                 data: {
                     username: `player-${index}`,
+                    score: Math.floor(Math.random() * 100),
                     party: { connect: { id: 'party-1' } },
                     rengas: {
                         create: [
