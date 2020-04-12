@@ -74,6 +74,7 @@ const Party = () => {
                         rengaId={solvingRenga}
                         userId={userId}
                         onSolved={onSolvedRenga}
+                        partyId={partyId}
                     ></RengaSubmission>
                 ) : undefined}
             </div>

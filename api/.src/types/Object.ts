@@ -6,6 +6,7 @@ export const User = objectType({
     definition(t) {
         t.model.id()
         t.model.username()
+        t.model.score()
     },
 })
 
@@ -13,6 +14,7 @@ export const Party = objectType({
     name: 'Party',
     definition(t) {
         t.model.id()
+        t.model.users({ ordering: { score: true } })
     },
 })
 
@@ -26,7 +28,7 @@ export const Submission = objectType({
         t.string('maybeTitle', {
             async resolve(parent, args, ctx: Context) {
                 const user = await ctx.user
-                if (user === undefined) return ''
+                if (!user) return ''
                 const validSubmissions = await ctx.prisma.submission.findMany({
                     where: {
                         authorId: user?.userId,
@@ -85,7 +87,7 @@ export const Movie = objectType({
     definition(t) {
         t.model.movieDBId()
         t.string('maybeTitle', {
-            async resolve(parent, args, ctx: Context) {
+            async resolve(parent, _, ctx: Context) {
                 const user = await ctx.user
                 if (user === undefined) return ''
                 const validSubmissions = await ctx.prisma.submission.findMany({
