@@ -3,6 +3,4 @@
 # Prisma Migrate lockfile v1
 # Read more about conflict resolution here: TODO
 
-20200410125153-first-mig
-20200410144956-renga-schema
-20200410154532-add-moviedbid
+20200412194056-initial-migration
