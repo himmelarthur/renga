@@ -5,5 +5,6 @@ export const Query = queryType({
         t.crud.users()
         t.crud.renga()
         t.crud.rengas({ filtering: true, ordering: true })
+        t.crud.party()
     },
 })
