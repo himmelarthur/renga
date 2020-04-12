@@ -1,7 +1,7 @@
-import { mutationType, intArg, stringArg } from '@nexus/schema'
-import { sign } from 'jsonwebtoken'
-import { appSecret } from '../security/authentication'
+import { intArg, mutationType, stringArg } from '@nexus/schema'
+import { sign, verify } from 'jsonwebtoken'
 import { Context } from '../context'
+import { appSecret } from '../security/authentication'
 
 export const Mutation = mutationType({
     definition(t) {
@@ -19,20 +19,26 @@ export const Mutation = mutationType({
                 { rengaId, movieDBId, movieTitle },
                 context: Context
             ) => {
-                const isValid = !!(await context.prisma.renga.findMany({
-                    where: { AND: [{ id: rengaId }, { movie: { movieDBId } }] },
-                })).length
+                const isValid = !!(
+                    await context.prisma.renga.findMany({
+                        where: {
+                            AND: [{ id: rengaId }, { movie: { movieDBId } }],
+                        },
+                    })
+                ).length
 
                 const auth = await context.user
                 if (!auth?.userId) throw Error('User should be authenticated')
-                const user = await context.prisma.user.findOne({where: {id: auth.userId}})
+                const user = await context.prisma.user.findOne({
+                    where: { id: auth.userId },
+                })
                 if (!user) throw Error('User not found')
-                
-                // FIXME should be transaction when available 
+
+                // FIXME should be transaction when available
                 // https://github.com/prisma/prisma-client-js/issues/349
                 await context.prisma.user.update({
                     where: { id: user.id },
-                    data: { score: user.score + 1 }
+                    data: { score: user.score + 1 },
                 })
 
                 return await context.prisma.submission.create({
@@ -61,6 +67,28 @@ export const Mutation = mutationType({
                             },
                         },
                         username,
+                    },
+                })
+                return sign(
+                    { userId: user.id, partyId: user.partyId },
+                    appSecret()
+                )
+            },
+        })
+        t.field('joinParty', {
+            type: 'String',
+            args: {
+                token: stringArg({ required: true }),
+                username: stringArg({ required: true }),
+            },
+            resolve: async (_, { token, username }, ctx: Context) => {
+                const { partyId } = verify(token, appSecret()) as {
+                    partyId: string
+                }
+                const user = await ctx.prisma.user.create({
+                    data: {
+                        username,
+                        party: { connect: { id: partyId } },
                     },
                 })
                 return sign(

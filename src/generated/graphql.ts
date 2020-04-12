@@ -21,6 +21,7 @@ export type Query = {
 =======
 >>>>>>> Update score after submission
   party?: Maybe<Party>;
+  invitePartyLink: Scalars['String'];
 };
 
 
@@ -54,6 +55,11 @@ export type QueryRengasArgs = {
 >>>>>>> Update score after submission
 export type QueryPartyArgs = {
   where: PartyWhereUniqueInput;
+};
+
+
+export type QueryInvitePartyLinkArgs = {
+  partyId: Scalars['String'];
 };
 
 export type UserWhereUniqueInput = {
@@ -303,6 +309,7 @@ export type Mutation = {
   createOneRenga: Renga;
   createSubmission: Submission;
   createParty: Scalars['String'];
+  joinParty: Scalars['String'];
 };
 
 
@@ -324,6 +331,12 @@ export type MutationCreateSubmissionArgs = {
 
 
 export type MutationCreatePartyArgs = {
+  username: Scalars['String'];
+};
+
+
+export type MutationJoinPartyArgs = {
+  token: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -520,6 +533,7 @@ export type CreatePartyMutation = (
 );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type GetRengasQueryVariables = {
   partyId: Scalars['String'];
 };
@@ -539,6 +553,19 @@ export type GetRengasQuery = (
 
 =======
 >>>>>>> Update score after submission
+=======
+export type JoinPartyMutationVariables = {
+  token: Scalars['String'];
+  username: Scalars['String'];
+};
+
+
+export type JoinPartyMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'joinParty'>
+);
+
+>>>>>>> Add joinParty & inviteParty resolvers
 export type GetPlayersQueryVariables = {
   partyId: Scalars['String'];
 };
@@ -651,6 +678,7 @@ export type CreatePartyMutationHookResult = ReturnType<typeof useCreatePartyMuta
 export type CreatePartyMutationResult = ApolloReactCommon.MutationResult<CreatePartyMutation>;
 export type CreatePartyMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePartyMutation, CreatePartyMutationVariables>;
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const GetRengasDocument = gql`
     query GetRengas($partyId: String!) {
   rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
@@ -663,10 +691,16 @@ export const GetRengasDocument = gql`
     createdAt
     isMine
   }
+=======
+export const JoinPartyDocument = gql`
+    mutation joinParty($token: String!, $username: String!) {
+  joinParty(token: $token, username: $username)
+>>>>>>> Add joinParty & inviteParty resolvers
 }
     `;
 
 /**
+<<<<<<< HEAD
  * __useGetRengasQuery__
  *
  * To run a query within a React component, call `useGetRengasQuery` and pass it any options that fit your needs.
@@ -693,6 +727,31 @@ export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQue
 export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
 =======
 >>>>>>> Update score after submission
+=======
+ * __useJoinPartyMutation__
+ *
+ * To run a mutation, you first call `useJoinPartyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinPartyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinPartyMutation, { data, loading, error }] = useJoinPartyMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useJoinPartyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinPartyMutation, JoinPartyMutationVariables>) {
+        return ApolloReactHooks.useMutation<JoinPartyMutation, JoinPartyMutationVariables>(JoinPartyDocument, baseOptions);
+      }
+export type JoinPartyMutationHookResult = ReturnType<typeof useJoinPartyMutation>;
+export type JoinPartyMutationResult = ApolloReactCommon.MutationResult<JoinPartyMutation>;
+export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinPartyMutation, JoinPartyMutationVariables>;
+>>>>>>> Add joinParty & inviteParty resolvers
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {
   party(where: {id: $partyId}) {
