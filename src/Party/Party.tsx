@@ -5,6 +5,7 @@ import { AuthContext } from '../AuthContext'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
 import ConfettiGenerator from 'confetti-js'
+import Leaderboard from '../components/Leaderboard'
 
 const Party = () => {
     const { partyId } = useParams()
@@ -43,6 +44,7 @@ const Party = () => {
             ></canvas>
             <div className="m-20">
                 <h1 className="text-4xl mb-4">Renga</h1>
+                <Leaderboard partyId={partyId} userId={userId}></Leaderboard>
                 {createRengaOn ? (
                     <RengaForm
                         partyId={partyId}
