@@ -110,9 +110,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 {renga?.isResolved && renga.movie.maybeTitle}
             </div>
             <div className="w-full flex justify-center">
-                {data.renga?.emojis.map((e) => {
+                {data.renga?.emojis.map((e, index) => {
                     return (
-                        <span className="mx-2" key={e}>
+                        <span className="mx-2" key={index}>
                             <Emoji native emoji={e} size={48} />
                         </span>
                     )
