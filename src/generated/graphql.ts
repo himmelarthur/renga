@@ -17,6 +17,7 @@ export type Query = {
   users: Array<User>;
   renga?: Maybe<Renga>;
   rengas: Array<Renga>;
+  party?: Maybe<Party>;
 };
 
 
@@ -44,6 +45,11 @@ export type QueryRengasArgs = {
   last?: Maybe<Scalars['Int']>;
 };
 
+
+export type QueryPartyArgs = {
+  where: PartyWhereUniqueInput;
+};
+
 export type UserWhereUniqueInput = {
   id?: Maybe<Scalars['Int']>;
 };
@@ -52,6 +58,7 @@ export type User = {
    __typename?: 'User';
   id: Scalars['Int'];
   username: Scalars['String'];
+  score: Scalars['Int'];
 };
 
 export type RengaWhereUniqueInput = {
@@ -257,6 +264,30 @@ export type RengaOrderByInput = {
   partyId?: Maybe<OrderByArg>;
 };
 
+export type PartyWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
+export type Party = {
+   __typename?: 'Party';
+  id: Scalars['String'];
+  users: Array<User>;
+};
+
+
+export type PartyUsersArgs = {
+  orderBy?: Maybe<PartyUsersOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<UserWhereUniqueInput>;
+  before?: Maybe<UserWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+export type PartyUsersOrderByInput = {
+  score?: Maybe<OrderByArg>;
+};
+
 export type Mutation = {
    __typename?: 'Mutation';
   createOneUser: User;
@@ -459,10 +490,6 @@ export type UserCreateWithoutRengasInput = {
   submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>;
 };
 
-export type PartyWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
-};
-
 export type RengaCreateInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -471,11 +498,6 @@ export type RengaCreateInput = {
   movie: MovieCreateOneWithoutRengasInput;
   author: UserCreateOneWithoutRengasInput;
   party: PartyCreateOneWithoutRengasInput;
-};
-
-export type Party = {
-   __typename?: 'Party';
-  id: Scalars['String'];
 };
 
 export type CreatePartyMutationVariables = {
@@ -502,6 +524,23 @@ export type GetRengasQuery = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
     ) }
+  )> }
+);
+
+export type GetPlayersQueryVariables = {
+  partyId: Scalars['String'];
+};
+
+
+export type GetPlayersQuery = (
+  { __typename?: 'Query' }
+  & { party?: Maybe<(
+    { __typename?: 'Party' }
+    & Pick<Party, 'id'>
+    & { users: Array<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'score'>
+    )> }
   )> }
 );
 
@@ -635,6 +674,44 @@ export function useGetRengasLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetRengasQueryHookResult = ReturnType<typeof useGetRengasQuery>;
 export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQuery>;
 export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
+export const GetPlayersDocument = gql`
+    query getPlayers($partyId: String!) {
+  party(where: {id: $partyId}) {
+    id
+    users(orderBy: {score: desc}) {
+      id
+      username
+      score
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPlayersQuery__
+ *
+ * To run a query within a React component, call `useGetPlayersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPlayersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPlayersQuery({
+ *   variables: {
+ *      partyId: // value for 'partyId'
+ *   },
+ * });
+ */
+export function useGetPlayersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetPlayersQuery, GetPlayersQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetPlayersQuery, GetPlayersQueryVariables>(GetPlayersDocument, baseOptions);
+      }
+export function useGetPlayersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetPlayersQuery, GetPlayersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetPlayersQuery, GetPlayersQueryVariables>(GetPlayersDocument, baseOptions);
+        }
+export type GetPlayersQueryHookResult = ReturnType<typeof useGetPlayersQuery>;
+export type GetPlayersLazyQueryHookResult = ReturnType<typeof useGetPlayersLazyQuery>;
+export type GetPlayersQueryResult = ApolloReactCommon.QueryResult<GetPlayersQuery, GetPlayersQueryVariables>;
 export const CreateRengaDocument = gql`
     mutation createRenga($authorId: Int!, $partyId: String!, $emojis: [String!]!, $movieId: Int!, $movieTitle: String!, $movieYear: Int!) {
   createOneRenga(data: {emojis: {set: $emojis}, author: {connect: {id: $authorId}}, party: {connect: {id: $partyId}}, movie: {create: {movieDBId: $movieId, title: $movieTitle, year: $movieYear}}}) {

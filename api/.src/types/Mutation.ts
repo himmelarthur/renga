@@ -19,20 +19,29 @@ export const Mutation = mutationType({
                 { rengaId, movieDBId, movieTitle },
                 context: Context
             ) => {
-                const res = await context.prisma.renga.findMany({
+                const isValid = !!(await context.prisma.renga.findMany({
                     where: { AND: [{ id: rengaId }, { movie: { movieDBId } }] },
+                })).length
+
+                const auth = await context.user
+                if (!auth?.userId) throw Error('User should be authenticated')
+                const user = await context.prisma.user.findOne({where: {id: auth.userId}})
+                if (!user) throw Error('User not found')
+                
+                // FIXME should be transaction when available 
+                // https://github.com/prisma/prisma-client-js/issues/349
+                await context.prisma.user.update({
+                    where: { id: user.id },
+                    data: { score: user.score + 1 }
                 })
-                const user = await context.user
-                if (user?.userId === undefined) {
-                    throw Error('User should be authenticated')
-                }
+
                 return await context.prisma.submission.create({
                     data: {
-                        author: { connect: { id: user.userId } },
+                        author: { connect: { id: user.id } },
                         renga: { connect: { id: rengaId } },
                         movieDBId,
                         movieTitle,
-                        valid: !!res.length,
+                        valid: isValid,
                     },
                 })
             },
