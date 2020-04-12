@@ -18,7 +18,6 @@ export type Query = {
   renga?: Maybe<Renga>;
   rengas: Array<Renga>;
   party?: Maybe<Party>;
-  invitePartyLink: Scalars['String'];
 };
 
 
@@ -49,11 +48,6 @@ export type QueryRengasArgs = {
 
 export type QueryPartyArgs = {
   where: PartyWhereUniqueInput;
-};
-
-
-export type QueryInvitePartyLinkArgs = {
-  partyId: Scalars['String'];
 };
 
 export type UserWhereUniqueInput = {
@@ -327,7 +321,7 @@ export type MutationCreatePartyArgs = {
 
 
 export type MutationJoinPartyArgs = {
-  token: Scalars['String'];
+  partyId: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -540,18 +534,8 @@ export type GetRengasQuery = (
   )> }
 );
 
-export type GetInvitationLinkQueryVariables = {
-  partyId: Scalars['String'];
-};
-
-
-export type GetInvitationLinkQuery = (
-  { __typename?: 'Query' }
-  & Pick<Query, 'invitePartyLink'>
-);
-
 export type JoinPartyMutationVariables = {
-  token: Scalars['String'];
+  partyId: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -708,40 +692,9 @@ export function useGetRengasLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetRengasQueryHookResult = ReturnType<typeof useGetRengasQuery>;
 export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQuery>;
 export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
-export const GetInvitationLinkDocument = gql`
-    query getInvitationLink($partyId: String!) {
-  invitePartyLink(partyId: $partyId)
-}
-    `;
-
-/**
- * __useGetInvitationLinkQuery__
- *
- * To run a query within a React component, call `useGetInvitationLinkQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetInvitationLinkQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetInvitationLinkQuery({
- *   variables: {
- *      partyId: // value for 'partyId'
- *   },
- * });
- */
-export function useGetInvitationLinkQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetInvitationLinkQuery, GetInvitationLinkQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetInvitationLinkQuery, GetInvitationLinkQueryVariables>(GetInvitationLinkDocument, baseOptions);
-      }
-export function useGetInvitationLinkLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetInvitationLinkQuery, GetInvitationLinkQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetInvitationLinkQuery, GetInvitationLinkQueryVariables>(GetInvitationLinkDocument, baseOptions);
-        }
-export type GetInvitationLinkQueryHookResult = ReturnType<typeof useGetInvitationLinkQuery>;
-export type GetInvitationLinkLazyQueryHookResult = ReturnType<typeof useGetInvitationLinkLazyQuery>;
-export type GetInvitationLinkQueryResult = ApolloReactCommon.QueryResult<GetInvitationLinkQuery, GetInvitationLinkQueryVariables>;
 export const JoinPartyDocument = gql`
-    mutation joinParty($token: String!, $username: String!) {
-  joinParty(token: $token, username: $username)
+    mutation joinParty($partyId: String!, $username: String!) {
+  joinParty(partyId: $partyId, username: $username)
 }
     `;
 
@@ -758,7 +711,7 @@ export const JoinPartyDocument = gql`
  * @example
  * const [joinPartyMutation, { data, loading, error }] = useJoinPartyMutation({
  *   variables: {
- *      token: // value for 'token'
+ *      partyId: // value for 'partyId'
  *      username: // value for 'username'
  *   },
  * });

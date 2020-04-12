@@ -78,13 +78,10 @@ export const Mutation = mutationType({
         t.field('joinParty', {
             type: 'String',
             args: {
-                token: stringArg({ required: true }),
+                partyId: stringArg({ required: true }),
                 username: stringArg({ required: true }),
             },
-            resolve: async (_, { token, username }, ctx: Context) => {
-                const { partyId } = verify(token, appSecret()) as {
-                    partyId: string
-                }
+            resolve: async (_, { partyId, username }, ctx: Context) => {
                 const user = await ctx.prisma.user.create({
                     data: {
                         username,
