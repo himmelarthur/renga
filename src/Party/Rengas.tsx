@@ -16,6 +16,7 @@ gql`
                 username
             }
             createdAt
+            isMine
         }
     }
 `

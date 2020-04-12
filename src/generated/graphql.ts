@@ -66,6 +66,7 @@ export type Renga = {
   movie: Movie;
   submissions: Array<Submission>;
   emojis: Array<Scalars['String']>;
+  isMine: Scalars['Boolean'];
   isResolved: Scalars['Boolean'];
 };
 
@@ -496,7 +497,7 @@ export type GetRengasQuery = (
   { __typename?: 'Query' }
   & { rengas: Array<(
     { __typename?: 'Renga' }
-    & Pick<Renga, 'id' | 'emojis' | 'createdAt'>
+    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'isMine'>
     & { author: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
@@ -531,7 +532,7 @@ export type GetRengaQuery = (
   { __typename?: 'Query' }
   & { renga?: Maybe<(
     { __typename?: 'Renga' }
-    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'isResolved'>
+    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'isResolved' | 'isMine'>
     & { movie: (
       { __typename?: 'Movie' }
       & Pick<Movie, 'maybeTitle' | 'movieDBId'>
@@ -604,6 +605,7 @@ export const GetRengasDocument = gql`
       username
     }
     createdAt
+    isMine
   }
 }
     `;
@@ -677,6 +679,7 @@ export const GetRengaDocument = gql`
     emojis
     createdAt
     isResolved
+    isMine
     movie {
       maybeTitle
       movieDBId

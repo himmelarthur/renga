@@ -66,10 +66,10 @@ const MovieAutocomplete: React.FC<Props> = ({
                     // @ts-ignore
                     <input
                         {...props}
-                        className="appearance-none p-6 border-2 border-red-400 rounded h-10 w-full text-xl font-bold"
+                        className="appearance-none p-6 border-2 rounded h-10 w-full text-xl font-bold"
                     />
                 ) : (
-                    <div className="p-3 border border-red-500 rounded w-full text-xl font-bold relative flex items-center mr-16">
+                    <div className="p-3 border-2 rounded w-full text-xl font-bold relative flex items-center mr-16">
                         {movie.title} (
                         {moment(movie.release_date).format('YYYY')})
                         <div

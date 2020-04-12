@@ -17,8 +17,7 @@ const Renga = ({ renga, onClick }: Props) => {
                 ))}
             </div>
             <div className="flex items-center justify-center text-center text-gray-700 text-xs">
-                Posted by{' '}
-                {renga.author.id === userId ? 'You' : renga.author.username}{' '}
+                Posted by {renga.isMine ? 'You' : renga.author.username}{' '}
                 {moment(renga.createdAt).fromNow()}
             </div>
         </div>
@@ -26,7 +25,7 @@ const Renga = ({ renga, onClick }: Props) => {
 }
 
 type Props = {
-    renga: Pick<RengaType, 'id' | 'emojis' | 'createdAt'> & {
+    renga: Pick<RengaType, 'id' | 'emojis' | 'createdAt' | 'isMine'> & {
         author: { __typename?: 'User' } & Pick<User, 'id' | 'username'>
     }
     onClick: () => void

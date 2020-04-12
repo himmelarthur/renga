@@ -14,12 +14,6 @@ const Party = () => {
     return (
         <div className="m-20">
             <h1 className="text-4xl mb-4">Renga</h1>
-            {solvingRenga ? (
-                <RengaSubmission
-                    rengaId={solvingRenga}
-                    userId={userId}
-                ></RengaSubmission>
-            ) : undefined}
             {createRengaOn ? (
                 <RengaForm
                     partyId={partyId}
@@ -29,7 +23,7 @@ const Party = () => {
             ) : (
                 <div>
                     <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4"
                         onClick={() => setCreateRengaOn(true)}
                     >
                         New Renga
@@ -40,6 +34,12 @@ const Party = () => {
                     />
                 </div>
             )}
+            {solvingRenga ? (
+                <RengaSubmission
+                    rengaId={solvingRenga}
+                    userId={userId}
+                ></RengaSubmission>
+            ) : undefined}
         </div>
     )
 }

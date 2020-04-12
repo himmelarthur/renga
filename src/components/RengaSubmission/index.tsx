@@ -22,6 +22,7 @@ gql`
             emojis
             createdAt
             isResolved
+            isMine
             movie {
                 maybeTitle
                 movieDBId
@@ -62,7 +63,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     rengaId,
     userId,
 }) => {
-    const { data, loading, error } = useGetRengaQuery({
+    const { data, loading } = useGetRengaQuery({
         variables: { rengaId },
     })
     const [createSubmission] = useCreateSubmissionMutation()
@@ -82,9 +83,8 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             ],
         })
     }
-    console.warn('data', data, 'loading', loading, error)
+    if (loading || !data) return <div></div>
 
-    if (!data || loading) return <div>Loading...</div>
     const { renga } = data
 
     return (
@@ -106,7 +106,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 <span className="font-semibold">{renga?.author.username}</span>{' '}
                 {moment(renga?.createdAt).fromNow()}
             </div>
-            {!renga?.isResolved && (
+            {!renga?.isResolved && !renga?.isMine && (
                 <>
                     <MovieAutocomplete
                         movie={movie}
@@ -125,9 +125,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     >
                         Submit
                     </button>
+                    <div className="h-px bg-gray-300"></div>
                 </>
             )}
-            <div className="h-px bg-gray-300"></div>
             <div className="w-full">
                 {renga?.submissions?.map((s) => {
                     const isMe = s.author.id === userId

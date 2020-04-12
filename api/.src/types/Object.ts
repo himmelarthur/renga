@@ -54,8 +54,16 @@ export const Renga = objectType({
             filtering: { authorId: true, valid: true },
         })
         t.model.emojis()
+        t.boolean('isMine', {
+            async resolve(parent, _, ctx: Context) {
+                const user = await ctx.user
+                if (user === undefined) return false
+                // @ts-ignore
+                return parent.authorId === user.userId
+            },
+        })
         t.boolean('isResolved', {
-            async resolve(parent, args, ctx: Context) {
+            async resolve(parent, _, ctx: Context) {
                 const user = await ctx.user
                 if (user === undefined) return false
                 const validSubmissions = await ctx.prisma.submission.findMany({
