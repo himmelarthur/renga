@@ -36,6 +36,7 @@ export type QueryRengaArgs = {
 
 export type QueryRengasArgs = {
   where?: Maybe<RengaWhereInput>;
+  orderBy?: Maybe<RengaOrderByInput>;
   skip?: Maybe<Scalars['Int']>;
   after?: Maybe<RengaWhereUniqueInput>;
   before?: Maybe<RengaWhereUniqueInput>;
@@ -241,6 +242,18 @@ export type MovieWhereInput = {
   AND?: Maybe<Array<MovieWhereInput>>;
   OR?: Maybe<Array<MovieWhereInput>>;
   NOT?: Maybe<Array<MovieWhereInput>>;
+};
+
+export type RengaOrderByInput = {
+  id?: Maybe<OrderByArg>;
+  createdAt?: Maybe<OrderByArg>;
+  updatedAt?: Maybe<OrderByArg>;
+  movie?: Maybe<OrderByArg>;
+  movieId?: Maybe<OrderByArg>;
+  author?: Maybe<OrderByArg>;
+  authorId?: Maybe<OrderByArg>;
+  party?: Maybe<OrderByArg>;
+  partyId?: Maybe<OrderByArg>;
 };
 
 export type Mutation = {
@@ -583,7 +596,7 @@ export type CreatePartyMutationResult = ApolloReactCommon.MutationResult<CreateP
 export type CreatePartyMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePartyMutation, CreatePartyMutationVariables>;
 export const GetRengasDocument = gql`
     query GetRengas($partyId: String!) {
-  rengas(where: {partyId: {equals: $partyId}}) {
+  rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
     id
     emojis
     author {

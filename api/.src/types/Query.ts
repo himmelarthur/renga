@@ -4,6 +4,6 @@ export const Query = queryType({
     definition(t) {
         t.crud.users()
         t.crud.renga()
-        t.crud.rengas({ filtering: true })
+        t.crud.rengas({ filtering: true, ordering: true })
     },
 })
