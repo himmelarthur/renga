@@ -1,42 +1,40 @@
-import * as React from 'react'
-import gql from 'graphql-tag'
-import { useJoinPartyMutation } from '../generated/graphql'
 import classNames from 'classnames'
+import gql from 'graphql-tag'
 import JwtDecode from 'jwt-decode'
-import { useLocation, useHistory } from 'react-router-dom'
+import * as React from 'react'
+import { useHistory, useParams } from 'react-router-dom'
+import { AuthContext } from '../AuthContext'
+import { useJoinPartyMutation } from '../generated/graphql'
 
 interface IJoinPartyProps {
     className?: string
 }
 
 gql`
-    mutation joinParty($token: String!, $username: String!) {
-        joinParty(token: $token, username: $username)
+    mutation joinParty($partyId: String!, $username: String!) {
+        joinParty(partyId: $partyId, username: $username)
     }
 `
 
 const JoinParty: React.FC<IJoinPartyProps> = ({ className }) => {
-    const history = useHistory()
+    const { setUserId } = React.useContext(AuthContext)
+    const { partyId } = useParams()
     const [joinParty, { error }] = useJoinPartyMutation({
         onError: () => 1, // FIXME
         onCompleted: (data) => {
             const token = data.joinParty
-            const { partyId } = JwtDecode(token)
+            const { partyId, userId } = JwtDecode(token)
             localStorage.setItem('token', token)
-            history.push(`/p/${partyId}`)
+            setUserId(userId)
         },
     })
     const [username, setUsername] = React.useState('')
 
-    const { search } = useLocation()
-    const usp = new URLSearchParams(search)
-    const token = usp.get('token')
-
     const handleSubmit = () => {
-        if (!token) throw new Error('Token invitation should be provided')
+        if (!partyId) throw new Error('Token invitation should be provided')
         joinParty({
             variables: {
-                token,
+                partyId,
                 username,
             },
         })
