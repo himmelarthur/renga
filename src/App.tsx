@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Party from './Party/Party'
 import { AuthContext } from './AuthContext'
 import JwtDecode from 'jwt-decode'
+import Join from './Join'
 
 export default () => {
     const [ready, setReady] = useState(false)
@@ -31,6 +32,9 @@ export default () => {
                 <Switch>
                     <Route path="/p/:partyId">
                         <Party></Party>
+                    </Route>
+                    <Route path="/join">
+                        <Join></Join>
                     </Route>
                     <Route path="/" exact>
                         <Landing></Landing>
