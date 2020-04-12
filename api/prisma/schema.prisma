@@ -19,7 +19,7 @@ model Movie {
   id        Int      @default(autoincrement()) @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  movieDBId Int   
+  movieDBId Int
   genres    String[]
   title     String
   year      Int

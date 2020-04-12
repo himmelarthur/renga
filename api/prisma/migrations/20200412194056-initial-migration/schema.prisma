@@ -8,7 +8,7 @@ generator client {
 }
 
 model Party {
-  id        String   @unique
+  id        String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   rengas    Renga[]
@@ -19,7 +19,7 @@ model Movie {
   id        Int      @default(autoincrement()) @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  movieDBId Int      @unique
+  movieDBId Int
   genres    String[]
   title     String
   year      Int
@@ -27,16 +27,17 @@ model Movie {
 }
 
 model Renga {
-  id        Int      @default(autoincrement()) @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  emojis    String[]
-  movie     Movie    @relation(fields: [movieId], references: [id])
-  movieId   Int
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
-  party     Party    @relation(fields: [partyId], references: [id])
-  partyId   String
+  id          Int          @default(autoincrement()) @id
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  emojis      String[]
+  submissions Submission[]
+  movie       Movie        @relation(fields: [movieId], references: [id])
+  movieId     Int
+  author      User         @relation(fields: [authorId], references: [id])
+  authorId    Int
+  party       Party        @relation(fields: [partyId], references: [id])
+  partyId     String
 }
 
 model User {
@@ -60,4 +61,5 @@ model Submission {
   rengaId    Int
   valid      Boolean  @default(false)
   movieTitle String
+  movieDBId  Int
 }
