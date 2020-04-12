@@ -34,13 +34,19 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     } = data
 
     return (
-        <div className={classNames(className, "max-w-md p-4 flex flex-col items-center")}>
+        <div
+            className={classNames(
+                className,
+                'max-w-md p-4 flex flex-col items-center'
+            )}
+        >
             <h3 className="uppercase font-bold text-gray-900">Leaderboard</h3>
             <div className="w-full mt-4 text-gray-700">
                 {users.map((player, index) => {
                     const isMe = userId === player.id
                     return (
                         <div
+                            key={player.id}
                             className={classNames('mb-1 flex justify-between', {
                                 'font-semibold': isMe,
                             })}

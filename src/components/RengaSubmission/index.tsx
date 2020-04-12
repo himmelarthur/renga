@@ -92,7 +92,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
         if (response.data?.createSubmission.valid) {
             onSolved()
         }
-    }, [movie, rengaId, createSubmission, onSolved])
+    }, [movie, rengaId, createSubmission, onSolved, partyId])
     if (loading || !data) return <div></div>
 
     const { renga } = data
