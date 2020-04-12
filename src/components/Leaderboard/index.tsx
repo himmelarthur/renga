@@ -6,6 +6,7 @@ import classNames from 'classnames'
 interface ILeaderboardProps {
     partyId: string
     userId: number
+    className?: string
 }
 
 gql`
@@ -24,6 +25,7 @@ gql`
 const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     partyId,
     userId,
+    className,
 }) => {
     const { data } = useGetPlayersQuery({ variables: { partyId } })
     if (!data?.party) return <div>Loading...</div>
@@ -32,7 +34,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     } = data
 
     return (
-        <div className="max-w-md p-4 flex flex-col items-center">
+        <div className={classNames(className, "max-w-md p-4 flex flex-col items-center")}>
             <h3 className="uppercase font-bold text-gray-900">Leaderboard</h3>
             <div className="w-full mt-4 text-gray-700">
                 {users.map((player, index) => {
