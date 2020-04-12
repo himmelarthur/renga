@@ -8,6 +8,7 @@ export interface MovieResult {
     id: number
     title: string
     release_date: string
+    popularity: number
 }
 
 interface Props {
@@ -34,7 +35,9 @@ const MovieAutocomplete: React.FC<Props> = ({
             `https://api.themoviedb.org/3/search/movie?api_key=ae9fe5055de5c1c32a0c4818ce4671f9&language=en-US&query=${query}&page=1&include_adult=false`
         )
         const body: { results: MovieResult[] } = await response.json()
-        setSuggestions(body.results)
+        setSuggestions(
+            body.results.sort((a, b) => (a.popularity > b.popularity ? -1 : 1))
+        )
     }, [])
     const debouncedSearch = throttle(searchMovies, 1000)
     const handleChange = useCallback(debouncedSearch, [])
@@ -42,7 +45,10 @@ const MovieAutocomplete: React.FC<Props> = ({
     return (
         <Autosuggest
             theme={{
-                container: classNames('relative w-full text-gray-900', className),
+                container: classNames(
+                    'relative w-full text-gray-900',
+                    className
+                ),
             }}
             inputProps={{
                 value: query,
@@ -60,10 +66,10 @@ const MovieAutocomplete: React.FC<Props> = ({
                     // @ts-ignore
                     <input
                         {...props}
-                        className="appearance-none p-6 border-2 border-red-400 rounded h-10 w-full text-xl font-bold"
+                        className="appearance-none p-6 border-2 rounded h-10 w-full text-xl font-bold"
                     />
                 ) : (
-                    <div className="p-3 border border-red-500 rounded w-full text-xl font-bold relative flex items-center mr-16">
+                    <div className="p-3 border-2 rounded w-full text-xl font-bold relative flex items-center mr-16">
                         {movie.title} (
                         {moment(movie.release_date).format('YYYY')})
                         <div

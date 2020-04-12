@@ -16,6 +16,7 @@ export type Query = {
    __typename?: 'Query';
   users: Array<User>;
   renga?: Maybe<Renga>;
+  rengas: Array<Renga>;
 };
 
 
@@ -30,6 +31,17 @@ export type QueryUsersArgs = {
 
 export type QueryRengaArgs = {
   where: RengaWhereUniqueInput;
+};
+
+
+export type QueryRengasArgs = {
+  where?: Maybe<RengaWhereInput>;
+  orderBy?: Maybe<RengaOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<RengaWhereUniqueInput>;
+  before?: Maybe<RengaWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 export type UserWhereUniqueInput = {
@@ -54,6 +66,7 @@ export type Renga = {
   movie: Movie;
   submissions: Array<Submission>;
   emojis: Array<Scalars['String']>;
+  isMine: Scalars['Boolean'];
   isResolved: Scalars['Boolean'];
 };
 
@@ -116,6 +129,132 @@ export type Submission = {
   author: User;
   createdAt: Scalars['DateTime'];
   maybeTitle: Scalars['String'];
+};
+
+export type RengaWhereInput = {
+  id?: Maybe<IntFilter>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
+  submissions?: Maybe<SubmissionFilter>;
+  movieId?: Maybe<IntFilter>;
+  authorId?: Maybe<IntFilter>;
+  partyId?: Maybe<StringFilter>;
+  AND?: Maybe<Array<RengaWhereInput>>;
+  OR?: Maybe<Array<RengaWhereInput>>;
+  NOT?: Maybe<Array<RengaWhereInput>>;
+  movie?: Maybe<MovieWhereInput>;
+  author?: Maybe<UserWhereInput>;
+  party?: Maybe<PartyWhereInput>;
+};
+
+export type DateTimeFilter = {
+  equals?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+};
+
+export type SubmissionFilter = {
+  every?: Maybe<SubmissionWhereInput>;
+  some?: Maybe<SubmissionWhereInput>;
+  none?: Maybe<SubmissionWhereInput>;
+};
+
+export type SubmissionWhereInput = {
+  id?: Maybe<IntFilter>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
+  authorId?: Maybe<IntFilter>;
+  rengaId?: Maybe<IntFilter>;
+  valid?: Maybe<BooleanFilter>;
+  movieTitle?: Maybe<StringFilter>;
+  movieDBId?: Maybe<IntFilter>;
+  AND?: Maybe<Array<SubmissionWhereInput>>;
+  OR?: Maybe<Array<SubmissionWhereInput>>;
+  NOT?: Maybe<Array<SubmissionWhereInput>>;
+  author?: Maybe<UserWhereInput>;
+  renga?: Maybe<RengaWhereInput>;
+};
+
+export type StringFilter = {
+  equals?: Maybe<Scalars['String']>;
+  not?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Scalars['String']>>;
+  notIn?: Maybe<Array<Scalars['String']>>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  contains?: Maybe<Scalars['String']>;
+  startsWith?: Maybe<Scalars['String']>;
+  endsWith?: Maybe<Scalars['String']>;
+};
+
+export type UserWhereInput = {
+  id?: Maybe<IntFilter>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
+  username?: Maybe<StringFilter>;
+  partyId?: Maybe<StringFilter>;
+  score?: Maybe<IntFilter>;
+  rengas?: Maybe<RengaFilter>;
+  submission?: Maybe<SubmissionFilter>;
+  AND?: Maybe<Array<UserWhereInput>>;
+  OR?: Maybe<Array<UserWhereInput>>;
+  NOT?: Maybe<Array<UserWhereInput>>;
+  party?: Maybe<PartyWhereInput>;
+};
+
+export type RengaFilter = {
+  every?: Maybe<RengaWhereInput>;
+  some?: Maybe<RengaWhereInput>;
+  none?: Maybe<RengaWhereInput>;
+};
+
+export type PartyWhereInput = {
+  id?: Maybe<StringFilter>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
+  rengas?: Maybe<RengaFilter>;
+  users?: Maybe<UserFilter>;
+  AND?: Maybe<Array<PartyWhereInput>>;
+  OR?: Maybe<Array<PartyWhereInput>>;
+  NOT?: Maybe<Array<PartyWhereInput>>;
+};
+
+export type UserFilter = {
+  every?: Maybe<UserWhereInput>;
+  some?: Maybe<UserWhereInput>;
+  none?: Maybe<UserWhereInput>;
+};
+
+export type MovieWhereInput = {
+  id?: Maybe<IntFilter>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
+  movieDBId?: Maybe<IntFilter>;
+  title?: Maybe<StringFilter>;
+  year?: Maybe<IntFilter>;
+  rengas?: Maybe<RengaFilter>;
+  AND?: Maybe<Array<MovieWhereInput>>;
+  OR?: Maybe<Array<MovieWhereInput>>;
+  NOT?: Maybe<Array<MovieWhereInput>>;
+};
+
+export type RengaOrderByInput = {
+  id?: Maybe<OrderByArg>;
+  createdAt?: Maybe<OrderByArg>;
+  updatedAt?: Maybe<OrderByArg>;
+  movie?: Maybe<OrderByArg>;
+  movieId?: Maybe<OrderByArg>;
+  author?: Maybe<OrderByArg>;
+  authorId?: Maybe<OrderByArg>;
+  party?: Maybe<OrderByArg>;
+  partyId?: Maybe<OrderByArg>;
 };
 
 export type Mutation = {
@@ -349,6 +488,23 @@ export type CreatePartyMutation = (
   & Pick<Mutation, 'createParty'>
 );
 
+export type GetRengasQueryVariables = {
+  partyId: Scalars['String'];
+};
+
+
+export type GetRengasQuery = (
+  { __typename?: 'Query' }
+  & { rengas: Array<(
+    { __typename?: 'Renga' }
+    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'isMine'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )> }
+);
+
 export type CreateRengaMutationVariables = {
   authorId: Scalars['Int'];
   partyId: Scalars['String'];
@@ -376,16 +532,16 @@ export type GetRengaQuery = (
   { __typename?: 'Query' }
   & { renga?: Maybe<(
     { __typename?: 'Renga' }
-    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'isResolved'>
+    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'isResolved' | 'isMine'>
     & { movie: (
       { __typename?: 'Movie' }
       & Pick<Movie, 'maybeTitle' | 'movieDBId'>
     ), author: (
       { __typename?: 'User' }
-      & Pick<User, 'username'>
+      & Pick<User, 'id' | 'username'>
     ), submissions: Array<(
       { __typename?: 'Submission' }
-      & Pick<Submission, 'createdAt' | 'valid' | 'maybeTitle'>
+      & Pick<Submission, 'id' | 'createdAt' | 'maybeTitle' | 'valid'>
       & { author: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
@@ -439,6 +595,46 @@ export function useCreatePartyMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type CreatePartyMutationHookResult = ReturnType<typeof useCreatePartyMutation>;
 export type CreatePartyMutationResult = ApolloReactCommon.MutationResult<CreatePartyMutation>;
 export type CreatePartyMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePartyMutation, CreatePartyMutationVariables>;
+export const GetRengasDocument = gql`
+    query GetRengas($partyId: String!) {
+  rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
+    id
+    emojis
+    author {
+      id
+      username
+    }
+    createdAt
+    isMine
+  }
+}
+    `;
+
+/**
+ * __useGetRengasQuery__
+ *
+ * To run a query within a React component, call `useGetRengasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRengasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRengasQuery({
+ *   variables: {
+ *      partyId: // value for 'partyId'
+ *   },
+ * });
+ */
+export function useGetRengasQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetRengasQuery, GetRengasQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetRengasQuery, GetRengasQueryVariables>(GetRengasDocument, baseOptions);
+      }
+export function useGetRengasLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetRengasQuery, GetRengasQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetRengasQuery, GetRengasQueryVariables>(GetRengasDocument, baseOptions);
+        }
+export type GetRengasQueryHookResult = ReturnType<typeof useGetRengasQuery>;
+export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQuery>;
+export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
 export const CreateRengaDocument = gql`
     mutation createRenga($authorId: Int!, $partyId: String!, $emojis: [String!]!, $movieId: Int!, $movieTitle: String!, $movieYear: Int!) {
   createOneRenga(data: {emojis: {set: $emojis}, author: {connect: {id: $authorId}}, party: {connect: {id: $partyId}}, movie: {create: {movieDBId: $movieId, title: $movieTitle, year: $movieYear}}}) {
@@ -483,21 +679,24 @@ export const GetRengaDocument = gql`
     emojis
     createdAt
     isResolved
+    isMine
     movie {
       maybeTitle
       movieDBId
     }
     author {
+      id
       username
     }
-    submissions(orderBy: {createdAt: desc}, first: 10) {
+    submissions(orderBy: {createdAt: desc}) {
+      id
       author {
         id
         username
       }
       createdAt
-      valid
       maybeTitle
+      valid
     }
   }
 }

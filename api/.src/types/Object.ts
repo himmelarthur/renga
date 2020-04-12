@@ -28,8 +28,12 @@ export const Submission = objectType({
                 const user = await ctx.user
                 if (user === undefined) return ''
                 const validSubmissions = await ctx.prisma.submission.findMany({
-                    // @ts-ignore
-                    where: { authorId: user?.userId, rengaId: parent.rengaId, valid: true },
+                    where: {
+                        authorId: user?.userId,
+                        // @ts-ignore
+                        rengaId: parent.rengaId,
+                        valid: true,
+                    },
                 })
                 // @ts-ignore
                 return !!validSubmissions.length ? parent.movieTitle : ''
@@ -50,15 +54,27 @@ export const Renga = objectType({
             filtering: { authorId: true, valid: true },
         })
         t.model.emojis()
+        t.boolean('isMine', {
+            async resolve(parent, _, ctx: Context) {
+                const user = await ctx.user
+                if (user === undefined) return false
+                // @ts-ignore
+                return parent.authorId === user.userId
+            },
+        })
         t.boolean('isResolved', {
-            async resolve(parent, args, ctx: Context) {
+            async resolve(parent, _, ctx: Context) {
                 const user = await ctx.user
                 if (user === undefined) return false
                 const validSubmissions = await ctx.prisma.submission.findMany({
-                    where: { authorId: user?.userId, rengaId: parent.id, valid: true },
+                    where: {
+                        authorId: user?.userId,
+                        rengaId: parent.id,
+                        valid: true,
+                    },
                 })
                 // @ts-ignore
-                return !!validSubmissions.length 
+                return !!validSubmissions.length
             },
         })
     },
@@ -73,7 +89,11 @@ export const Movie = objectType({
                 const user = await ctx.user
                 if (user === undefined) return ''
                 const validSubmissions = await ctx.prisma.submission.findMany({
-                    where: { authorId: user?.userId, movieDBId: parent.movieDBId, valid: true },
+                    where: {
+                        authorId: user?.userId,
+                        movieDBId: parent.movieDBId,
+                        valid: true,
+                    },
                 })
                 // @ts-ignore
                 return !!validSubmissions.length ? parent.title : ''
