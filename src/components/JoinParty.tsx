@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import { useJoinPartyMutation } from '../generated/graphql'
 import classNames from 'classnames'
 import JwtDecode from 'jwt-decode'
+import { useLocation, useHistory } from 'react-router-dom'
 
 interface IJoinPartyProps {
     className?: string
@@ -15,33 +16,30 @@ gql`
 `
 
 const JoinParty: React.FC<IJoinPartyProps> = ({ className }) => {
+    const history = useHistory()
     const [joinParty, { error }] = useJoinPartyMutation({
         onError: () => 1, // FIXME
         onCompleted: (data) => {
             const token = data.joinParty
-            const { partyId, userId } = JwtDecode(token)
+            const { partyId } = JwtDecode(token)
             localStorage.setItem('token', token)
-            // TODO change location
+            history.push(`/p/${partyId}`)
         },
     })
     const [username, setUsername] = React.useState('')
 
-    // const { search } = useLocation()
-    // const usp = new URLSearchParams(search);
-    // const token = usp.get("token");
-    // TEMPORARY
+    const { search } = useLocation()
+    const usp = new URLSearchParams(search)
+    const token = usp.get('token')
 
-    const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXJ0eUlkIjoiODBzbnAzbzIwIiwiaWF0IjoxNTg2Njg4MTMwfQ.D7pC9QuSXrjYOXwGGryBSzJU4BmxtjLHQLTBRgyxUGA'
     const handleSubmit = () => {
-        try {
-            joinParty({
-                variables: {
-                    token,
-                    username,
-                },
-            })
-        } catch {}
+        if (!token) throw new Error('Token invitation should be provided')
+        joinParty({
+            variables: {
+                token,
+                username,
+            },
+        })
     }
 
     return (
@@ -59,7 +57,7 @@ const JoinParty: React.FC<IJoinPartyProps> = ({ className }) => {
                 disabled={!username.length}
                 onClick={handleSubmit}
             >
-                Start Party
+                Join
             </button>
             <p className="text-red-700 font-semibold">
                 {error?.graphQLErrors.map((x) => x.message).join(', ')}
