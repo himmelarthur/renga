@@ -5,6 +5,7 @@ import {
     useGetRengaQuery,
     useCreateSubmissionMutation,
     GetRengaDocument,
+    GetPlayersDocument,
 } from '../../generated/graphql'
 import { Emoji } from 'emoji-mart'
 import moment from 'moment'
@@ -14,6 +15,7 @@ interface IRengaSubmissionProps {
     rengaId: number
     userId: number
     onSolved: () => void
+    partyId: string
 }
 
 gql`
@@ -62,6 +64,7 @@ gql`
 `
 
 const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
+    partyId,
     rengaId,
     userId,
     onSolved,
@@ -83,6 +86,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             },
             refetchQueries: [
                 { query: GetRengaDocument, variables: { rengaId } },
+                { query: GetPlayersDocument, variables: { partyId } },
             ],
         })
         if (response.data?.createSubmission.valid) {
