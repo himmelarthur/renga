@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -8,12 +8,11 @@ generator client {
 }
 
 model Party {
-  id           String        @id
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  rengas       Renga[]
-  users        User[]
-  chatMessages ChatMessage[]
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rengas    Renga[]
+  users     User[]
 }
 
 model Movie {
@@ -42,15 +41,14 @@ model Renga {
 }
 
 model User {
-  id           Int           @default(autoincrement()) @id
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  username     String
-  party        Party         @relation(fields: [partyId], references: [id])
-  partyId      String
-  score        Int           @default(0)
-  rengas       Renga[]
-  chatMessages ChatMessage[]
+  id        Int      @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  username  String
+  party     Party    @relation(fields: [partyId], references: [id])
+  partyId   String
+  score     Int      @default(0)
+  rengas    Renga[]
 }
 
 model Submission {

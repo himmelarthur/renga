@@ -103,3 +103,13 @@ export const Movie = objectType({
         })
     },
 })
+
+export const ChatMessage = objectType({
+    name: 'ChatMessage',
+    definition(t) {
+        t.model.id()
+        t.model.createdAt()
+        t.model.author()
+        t.model.message()
+    },
+})

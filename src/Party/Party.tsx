@@ -7,8 +7,8 @@ import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
 import Rengas from './Rengas'
 import JoinForm from './JoinForm'
-import NoRengas from './NoRengas'
 import JoinParty from './JoinParty'
+import Chat from '../components/Chat/Chat'
 
 type Props = {
     partyId: string
@@ -125,6 +125,7 @@ const Party = ({ partyId, userId }: Props) => {
                             partyId={partyId}
                             userId={userId}
                         ></Leaderboard>
+                        <Chat partyId={partyId} userId={userId}></Chat>
                     </div>
                 </div>
             </div>
