@@ -6,9 +6,9 @@ import Leaderboard from '../components/Leaderboard'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
 import Rengas from './Rengas'
-import JoinForm from './JoinForm'
-import JoinParty from './JoinParty'
 import Chat from '../components/Chat/Chat'
+import NoRengas from './NoRengas'
+import JoinParty from './JoinParty'
 
 type Props = {
     partyId: string

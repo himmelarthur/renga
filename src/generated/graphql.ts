@@ -225,8 +225,8 @@ export type UserWhereInput = {
   partyId?: Maybe<StringFilter>;
   score?: Maybe<IntFilter>;
   rengas?: Maybe<RengaFilter>;
+  chatMessages?: Maybe<ChatMessageFilter>;
   submission?: Maybe<SubmissionFilter>;
-  chatMessage?: Maybe<ChatMessageFilter>;
   AND?: Maybe<Array<UserWhereInput>>;
   OR?: Maybe<Array<UserWhereInput>>;
   NOT?: Maybe<Array<UserWhereInput>>;
@@ -265,7 +265,7 @@ export type PartyWhereInput = {
   updatedAt?: Maybe<DateTimeFilter>;
   rengas?: Maybe<RengaFilter>;
   users?: Maybe<UserFilter>;
-  chatMessage?: Maybe<ChatMessageFilter>;
+  chatMessages?: Maybe<ChatMessageFilter>;
   AND?: Maybe<Array<PartyWhereInput>>;
   OR?: Maybe<Array<PartyWhereInput>>;
   NOT?: Maybe<Array<PartyWhereInput>>;
@@ -397,8 +397,8 @@ export type UserCreateInput = {
   score?: Maybe<Scalars['Int']>;
   party: PartyCreateOneWithoutUsersInput;
   rengas?: Maybe<RengaCreateManyWithoutAuthorInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
   submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>;
-  chatMessage?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
 };
 
 export type PartyCreateOneWithoutUsersInput = {
@@ -411,7 +411,7 @@ export type PartyCreateWithoutUsersInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   rengas?: Maybe<RengaCreateManyWithoutPartyInput>;
-  chatMessage?: Maybe<ChatMessageCreateManyWithoutPartyInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutPartyInput>;
 };
 
 export type RengaCreateManyWithoutPartyInput = {
@@ -458,7 +458,7 @@ export type UserCreateWithoutSubmissionInput = {
   score?: Maybe<Scalars['Int']>;
   party: PartyCreateOneWithoutUsersInput;
   rengas?: Maybe<RengaCreateManyWithoutAuthorInput>;
-  chatMessage?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
 };
 
 export type RengaCreateManyWithoutAuthorInput = {
@@ -507,7 +507,7 @@ export type PartyCreateWithoutRengasInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   users?: Maybe<UserCreateManyWithoutPartyInput>;
-  chatMessage?: Maybe<ChatMessageCreateManyWithoutPartyInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutPartyInput>;
 };
 
 export type UserCreateManyWithoutPartyInput = {
@@ -521,8 +521,33 @@ export type UserCreateWithoutPartyInput = {
   username: Scalars['String'];
   score?: Maybe<Scalars['Int']>;
   rengas?: Maybe<RengaCreateManyWithoutAuthorInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
   submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>;
-  chatMessage?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
+};
+
+export type ChatMessageCreateManyWithoutAuthorInput = {
+  create?: Maybe<Array<ChatMessageCreateWithoutAuthorInput>>;
+  connect?: Maybe<Array<ChatMessageWhereUniqueInput>>;
+};
+
+export type ChatMessageCreateWithoutAuthorInput = {
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  message: Scalars['String'];
+  party: PartyCreateOneWithoutChatMessagesInput;
+};
+
+export type PartyCreateOneWithoutChatMessagesInput = {
+  create?: Maybe<PartyCreateWithoutChatMessagesInput>;
+  connect?: Maybe<PartyWhereUniqueInput>;
+};
+
+export type PartyCreateWithoutChatMessagesInput = {
+  id: Scalars['String'];
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  rengas?: Maybe<RengaCreateManyWithoutPartyInput>;
+  users?: Maybe<UserCreateManyWithoutPartyInput>;
 };
 
 export type SubmissionCreateManyWithoutAuthorInput = {
@@ -564,33 +589,8 @@ export type UserCreateWithoutRengasInput = {
   username: Scalars['String'];
   score?: Maybe<Scalars['Int']>;
   party: PartyCreateOneWithoutUsersInput;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
   submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>;
-  chatMessage?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
-};
-
-export type ChatMessageCreateManyWithoutAuthorInput = {
-  create?: Maybe<Array<ChatMessageCreateWithoutAuthorInput>>;
-  connect?: Maybe<Array<ChatMessageWhereUniqueInput>>;
-};
-
-export type ChatMessageCreateWithoutAuthorInput = {
-  createdAt?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  message: Scalars['String'];
-  party: PartyCreateOneWithoutChatMessageInput;
-};
-
-export type PartyCreateOneWithoutChatMessageInput = {
-  create?: Maybe<PartyCreateWithoutChatMessageInput>;
-  connect?: Maybe<PartyWhereUniqueInput>;
-};
-
-export type PartyCreateWithoutChatMessageInput = {
-  id: Scalars['String'];
-  createdAt?: Maybe<Scalars['DateTime']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-  rengas?: Maybe<RengaCreateManyWithoutPartyInput>;
-  users?: Maybe<UserCreateManyWithoutPartyInput>;
 };
 
 export type ChatMessageCreateManyWithoutPartyInput = {
@@ -602,15 +602,15 @@ export type ChatMessageCreateWithoutPartyInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   message: Scalars['String'];
-  author: UserCreateOneWithoutChatMessageInput;
+  author: UserCreateOneWithoutChatMessagesInput;
 };
 
-export type UserCreateOneWithoutChatMessageInput = {
-  create?: Maybe<UserCreateWithoutChatMessageInput>;
+export type UserCreateOneWithoutChatMessagesInput = {
+  create?: Maybe<UserCreateWithoutChatMessagesInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 };
 
-export type UserCreateWithoutChatMessageInput = {
+export type UserCreateWithoutChatMessagesInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   username: Scalars['String'];
@@ -634,8 +634,8 @@ export type ChatMessageCreateInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   message: Scalars['String'];
-  author: UserCreateOneWithoutChatMessageInput;
-  party: PartyCreateOneWithoutChatMessageInput;
+  author: UserCreateOneWithoutChatMessagesInput;
+  party: PartyCreateOneWithoutChatMessagesInput;
 };
 
 export type CreatePartyMutationVariables = {
@@ -865,7 +865,7 @@ export const JoinPartyDocument = gql`
   `
 export const GetChatMessagesDocument = gql`
     query GetChatMessages($partyId: String!) {
-  chatMessages(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
+  chatMessages(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: asc}) {
     id
     message
     createdAt
