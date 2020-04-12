@@ -24,7 +24,7 @@ const Rengas = ({ partyId }: Props) => {
         return <div></div>
     }
     return (
-        <div>
+        <div className="flex flex-row flex-wrap">
             {data?.rengas.map((renga) => (
                 <Renga key={renga.id} renga={renga} />
             ))}
