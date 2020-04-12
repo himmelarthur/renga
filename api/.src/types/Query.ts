@@ -17,7 +17,7 @@ export const Query = queryType({
             resolve: async (_, { partyId }, ctx: Context) => {
                 const user = await ctx.user
                 if (user?.partyId !== partyId) throw new Error("Authenticated user can only invite for current party")
-                    return `joinParty?token=${sign(
+                    return `join?token=${sign(
                         {
                             partyId,
                         },
