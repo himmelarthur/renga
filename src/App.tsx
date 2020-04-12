@@ -11,10 +11,11 @@ export default () => {
     const [userId, setUserId] = useState<number>()
     useEffect(() => {
         const token = localStorage.getItem('token')
-        if (!token) {
-            return
-        }
         try {
+            if (token === null) {
+                setReady(true)
+                return
+            }
             const { userId } = JwtDecode(token)
             setUserId(userId)
         } finally {
