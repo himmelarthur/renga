@@ -541,7 +541,7 @@ export type GetRengaQuery = (
       & Pick<User, 'id' | 'username'>
     ), submissions: Array<(
       { __typename?: 'Submission' }
-      & Pick<Submission, 'createdAt' | 'maybeTitle' | 'valid'>
+      & Pick<Submission, 'id' | 'createdAt' | 'maybeTitle' | 'valid'>
       & { author: (
         { __typename?: 'User' }
         & Pick<User, 'id' | 'username'>
@@ -689,6 +689,7 @@ export const GetRengaDocument = gql`
       username
     }
     submissions(orderBy: {createdAt: desc}) {
+      id
       author {
         id
         username

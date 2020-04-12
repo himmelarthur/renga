@@ -26,7 +26,7 @@ const Landing = () => {
         } catch (err) {
             console.error(err)
         }
-    }, [username])
+    }, [username, create])
     return (
         <div className="m-20">
             <h1 className="text-4xl mb-4">Renga</h1>

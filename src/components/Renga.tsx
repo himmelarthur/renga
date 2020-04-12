@@ -1,11 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Renga as RengaType, User } from '../generated/graphql'
 import { Emoji } from 'emoji-mart'
 import moment from 'moment'
-import { AuthContext } from '../AuthContext'
 
 const Renga = ({ renga, onClick }: Props) => {
-    const { userId } = useContext(AuthContext)
     return (
         <div
             className="flex flex-col justify-center items-center w-40 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer"

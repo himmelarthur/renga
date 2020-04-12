@@ -13,6 +13,7 @@ import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 interface IRengaSubmissionProps {
     rengaId: number
     userId: number
+    onSolved: () => void
 }
 
 gql`
@@ -32,6 +33,7 @@ gql`
                 username
             }
             submissions(orderBy: { createdAt: desc }) {
+                id
                 author {
                     id
                     username
@@ -62,6 +64,7 @@ gql`
 const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     rengaId,
     userId,
+    onSolved,
 }) => {
     const { data, loading } = useGetRengaQuery({
         variables: { rengaId },
@@ -69,10 +72,10 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const [createSubmission] = useCreateSubmissionMutation()
     const [movie, setMovie] = React.useState<MovieResult | undefined>()
 
-    const handleSubmission = () => {
+    const handleSubmission = React.useCallback(async () => {
         if (movie === undefined) throw new Error('Need movie')
 
-        createSubmission({
+        const response = await createSubmission({
             variables: {
                 movieDBId: movie.id,
                 rengaId,
@@ -82,7 +85,10 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 { query: GetRengaDocument, variables: { rengaId } },
             ],
         })
-    }
+        if (response.data?.createSubmission.valid) {
+            onSolved()
+        }
+    }, [movie, rengaId, createSubmission, onSolved])
     if (loading || !data) return <div></div>
 
     const { renga } = data
@@ -95,7 +101,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             <div className="w-full flex justify-center">
                 {data.renga?.emojis.map((e) => {
                     return (
-                        <span className="mx-2">
+                        <span className="mx-2" key={e}>
                             <Emoji native emoji={e} size={48} />
                         </span>
                     )
@@ -132,7 +138,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 {renga?.submissions?.map((s) => {
                     const isMe = s.author.id === userId
                     return (
-                        <div className="flex my-4 items-center">
+                        <div className="flex my-4 items-center" key={s.id}>
                             <div
                                 className={classNames('w-4 h-4 rounded-full', {
                                     'bg-gray-400': !s.valid,
