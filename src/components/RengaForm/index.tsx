@@ -1,7 +1,10 @@
 import * as React from 'react'
 import moment from 'moment'
 import gql from 'graphql-tag'
-import { useCreateRengaMutation } from '../../generated/graphql'
+import {
+    useCreateRengaMutation,
+    GetRengasDocument,
+} from '../../generated/graphql'
 import EmojiSelector, { TBricks as TEmojis } from './EmojiSelector'
 import classNames from 'classnames'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
@@ -76,6 +79,9 @@ export default ({ userId, partyId, onCreated }: IRengaFormProps) => {
                 movieYear: parseInt(moment(movie.release_date).format('YYYY')),
                 partyId,
             },
+            refetchQueries: [
+                { query: GetRengasDocument, variables: { partyId } },
+            ],
         })
         e.stopPropagation()
         e.preventDefault()
