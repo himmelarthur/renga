@@ -38,9 +38,10 @@ gql`
 export interface IRengaFormProps {
     userId: number
     partyId: string
+    onCreated: () => void
 }
 
-export default ({ userId, partyId }: IRengaFormProps) => {
+export default ({ userId, partyId, onCreated }: IRengaFormProps) => {
     const [createRenga] = useCreateRengaMutation()
     const [movie, setMovie] = React.useState<MovieResult | undefined>()
     const [emojis, setEmojis] = React.useState<TEmojis>([
@@ -78,34 +79,32 @@ export default ({ userId, partyId }: IRengaFormProps) => {
         })
         e.stopPropagation()
         e.preventDefault()
+        onCreated()
     }
 
     return (
-            <form onSubmit={handleSubmit}>
-                <div className="bg-gray-200 p-4 rounded-lg mb-3">
-                    <h3 className="text-xl text-gray-900 font-bold mb-2">
-                        Make people guess a movie...
-                    </h3>
-                    <MovieAutocomplete movie={movie} onMovieChange={setMovie} />
-                </div>
-                <div className="bg-gray-200 p-4 rounded-lg">
-                    <h3 className="text-xl text-gray-900 font-bold mb-2">
-                        ...with <span className="text-red-500">three</span> emojis
-                    </h3>
-                    <EmojiSelector emojis={emojis} onEmojisChange={setEmojis} />
-                </div>
-                <input
-                    className={classNames(
-                        'p-4 text-gray-100 rounded mt-4 w-full',
-                        {
-                            'bg-green-700': isValid(),
-                            'bg-green-500 opacity-50': !isValid(),
-                        }
-                    )}
-                    type="submit"
-                    value="Submit Renga"
-                    disabled={!isValid()}
-                />
-            </form>
+        <form onSubmit={handleSubmit}>
+            <div className="bg-gray-200 p-4 rounded-lg mb-3">
+                <h3 className="text-xl text-gray-900 font-bold mb-2">
+                    Make people guess a movie...
+                </h3>
+                <MovieAutocomplete movie={movie} onMovieChange={setMovie} />
+            </div>
+            <div className="bg-gray-200 p-4 rounded-lg">
+                <h3 className="text-xl text-gray-900 font-bold mb-2">
+                    ...with <span className="text-red-500">three</span> emojis
+                </h3>
+                <EmojiSelector emojis={emojis} onEmojisChange={setEmojis} />
+            </div>
+            <input
+                className={classNames('p-4 text-gray-100 rounded mt-4 w-full', {
+                    'bg-green-700': isValid(),
+                    'bg-green-500 opacity-50': !isValid(),
+                })}
+                type="submit"
+                value="Submit Renga"
+                disabled={!isValid()}
+            />
+        </form>
     )
 }

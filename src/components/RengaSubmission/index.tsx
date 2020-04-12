@@ -27,6 +27,7 @@ gql`
                 movieDBId
             }
             author {
+                id
                 username
             }
             submissions(orderBy: { createdAt: desc }) {
@@ -61,7 +62,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     rengaId,
     userId,
 }) => {
-    const { data, loading } = useGetRengaQuery({
+    const { data, loading, error } = useGetRengaQuery({
         variables: { rengaId },
     })
     const [createSubmission] = useCreateSubmissionMutation()
@@ -81,6 +82,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             ],
         })
     }
+    console.warn('data', data, 'loading', loading, error)
 
     if (!data || loading) return <div>Loading...</div>
     const { renga } = data
@@ -100,7 +102,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 })}
             </div>
             <div className="text-gray-900 my-4">
-                👨‍🎨 Posted by{' '}
+                <Emoji size={16} native emoji={'painter'}></Emoji> Posted by{' '}
                 <span className="font-semibold">{renga?.author.username}</span>{' '}
                 {moment(renga?.createdAt).fromNow()}
             </div>
@@ -127,37 +129,36 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             )}
             <div className="h-px bg-gray-300"></div>
             <div className="w-full">
-                    {renga?.submissions?.map((s) => {
-                        const isMe = s.author.id === userId
-                        return (
-                            <div className="flex my-4 items-center">
-                                <div
-                                    className={classNames(
-                                        'w-4 h-4 rounded-full',
-                                        {
-                                            'bg-gray-400': !s.valid,
-                                            'bg-green-600': s.valid,
-                                        }
-                                    )}
-                                ></div>
-                                <div className="text-gray-600 flex flex-col ml-4">
-                                    <div>
-                                        <span className="font-semibold text-gray-800">
-                                            {isMe ? 'You' : s.author.username}
-                                        </span>{' '}
-                                        {s.valid ? 'found' : 'tried'}
-                                        <span className="font-semibold text-gray-800">
-                                            {' '}
-                                            {isMe || renga.isResolved ? s.maybeTitle : 'the movie'}
-                                        </span>
-                                    </div>
-                                    <div className="text-sm">
-                                        {moment(s.createdAt).fromNow()}
-                                    </div>
+                {renga?.submissions?.map((s) => {
+                    const isMe = s.author.id === userId
+                    return (
+                        <div className="flex my-4 items-center">
+                            <div
+                                className={classNames('w-4 h-4 rounded-full', {
+                                    'bg-gray-400': !s.valid,
+                                    'bg-green-600': s.valid,
+                                })}
+                            ></div>
+                            <div className="text-gray-600 flex flex-col ml-4">
+                                <div>
+                                    <span className="font-semibold text-gray-800">
+                                        {isMe ? 'You' : s.author.username}
+                                    </span>{' '}
+                                    {s.valid ? 'found' : 'tried'}
+                                    <span className="font-semibold text-gray-800">
+                                        {' '}
+                                        {isMe || renga.isResolved
+                                            ? s.maybeTitle
+                                            : 'the movie'}
+                                    </span>
+                                </div>
+                                <div className="text-sm">
+                                    {moment(s.createdAt).fromNow()}
                                 </div>
                             </div>
-                        )
-                    })}
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )
