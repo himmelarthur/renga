@@ -14,12 +14,14 @@ interface Props {
     movie: MovieResult | undefined
     placeholder?: string
     onMovieChange?: (movie: MovieResult | undefined) => void
+    className?: string
 }
 
 const MovieAutocomplete: React.FC<Props> = ({
     placeholder,
     movie,
     onMovieChange,
+    className,
 }) => {
     const [query, setQuery] = useState('')
     const [suggestions, setSuggestions] = useState<MovieResult[]>([])
@@ -40,7 +42,7 @@ const MovieAutocomplete: React.FC<Props> = ({
     return (
         <Autosuggest
             theme={{
-                container: 'relative w-full',
+                container: classNames('relative w-full text-gray-900', className),
             }}
             inputProps={{
                 value: query,

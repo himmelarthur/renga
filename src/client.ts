@@ -7,7 +7,13 @@ const httpLink = createHttpLink({
     uri: process.env.REACT_APP_API_URL,
 })
 const authLink = setContext((_, { headers }) => {
-    // TODO
+    const token = localStorage.getItem('token')
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : '',
+        },
+    }
 })
 
 export const client = new ApolloClient({
