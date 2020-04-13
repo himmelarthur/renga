@@ -89,7 +89,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     }, [rengaId])
 
     const handleSubmission = React.useCallback(async () => {
-        if (movie === undefined) throw new Error('Need movie')
+        if (movie === undefined) return
 
         createSubmission({
             variables: {
@@ -141,13 +141,14 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     />
                     <button
                         className={classNames(
-                            'p-4 text-gray-100 rounded mt-4 w-full hover:bg-green-300',
+                            'p-4 text-gray-100 rounded mt-4 w-full',
                             {
                                 'bg-green-500': !!movie,
                                 'bg-green-500 opacity-50': !movie,
                             }
                         )}
                         onClick={handleSubmission}
+                        disabled={!movie}
                     >
                         Submit
                     </button>

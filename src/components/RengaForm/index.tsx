@@ -103,10 +103,13 @@ export default ({ userId, partyId, onCreated }: IRengaFormProps) => {
                 <EmojiSelector emojis={emojis} onEmojisChange={setEmojis} />
             </div>
             <input
-                className={classNames('p-4 text-gray-100 rounded mt-4 w-full', {
-                    'bg-green-500': isValid(),
-                    'bg-green-500 opacity-50': !isValid(),
-                })}
+                className={classNames(
+                    'p-4 text-gray-100 rounded mt-4 w-full hover:bg-green-300 cursor-pointer',
+                    {
+                        'bg-green-500': isValid(),
+                        'bg-green-500 opacity-50': !isValid(),
+                    }
+                )}
                 type="submit"
                 value="Submit Renga"
                 disabled={!isValid()}
