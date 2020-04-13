@@ -3,6 +3,7 @@ import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useCreatePartyMutation } from '../generated/graphql'
 import { useParty } from '../hooks'
+import EmojiRoulette from './EmojiRoulette'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -29,21 +30,36 @@ const Landing = () => {
         }
     }, [username, create, history, addParty])
     return (
-        <div className="m-20">
-            <h1 className="text-4xl mb-4">Renga</h1>
-            <input
-                type="text"
-                placeholder="Your username"
-                className="shadow appearance-none mr-4 rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                value={username}
-                onChange={(evt) => setUsername(evt.target.value)}
-            />
-            <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={onCreate}
-            >
-                Start Party
-            </button>
+        <div
+            className="p-10 h-screen"
+            style={{
+                background: 'linear-gradient(-30deg, #eae2e6 0%, white 100%)',
+            }}
+        >
+            <h1 className="mb-4 text-primary font-logo text-6xl">Renga</h1>
+            <h2 className="text-primary text-center text-2xl font-medium my-8 sm:mt-32">
+                Make your friends guess movies with only three emojis
+            </h2>
+            <EmojiRoulette />
+            <div className="mt-10 justify-center flex flex-col items-center sm:flex-row">
+                <input
+                    type="text"
+                    placeholder="Your username..."
+                    className="shadow w-full sm:w-auto sm:mr-8 text-xl appearance-none rounded py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    value={username}
+                    onChange={(evt) => setUsername(evt.target.value)}
+                />
+                <button
+                    className="hover:bg-blue-700 w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
+                    style={{
+                        background:
+                            'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
+                    }}
+                    onClick={onCreate}
+                >
+                    <span className="mr-2">🎮</span>Start Party
+                </button>
+            </div>
         </div>
     )
 }
