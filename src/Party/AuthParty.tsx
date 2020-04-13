@@ -90,6 +90,9 @@ const AuthParty = ({ partyId, userId }: Props) => {
                                                 userId={userId}
                                                 onSolved={onSolvedRenga}
                                                 partyId={partyId}
+                                                onClose={() =>
+                                                    setSolvingRenga(undefined)
+                                                }
                                             ></RengaSubmission>
                                         </motion.div>
                                     ) : undefined}
