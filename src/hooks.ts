@@ -26,6 +26,21 @@ export const useParty = () => {
         }
     }, [partyId])
 
+    useEffect(() => {
+        if (partyId && window.$crisp && userId) {
+            window.$crisp.push([
+                'set',
+                'user:nickname',
+                [`user:${userId.toString()}`],
+            ])
+            window.$crisp.push([
+                'set',
+                'session:data',
+                [[['partyId', partyId]]],
+            ])
+        }
+    }, [partyId, userId])
+
     const addParty = (token?: string) => {
         if (!token) return
         const { partyId, userId } = JwtDecode(token)
