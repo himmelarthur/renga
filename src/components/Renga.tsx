@@ -13,7 +13,9 @@ const Renga = ({ renga, highlighted, onClick }: Props) => {
         >
             <div className="flex flex-row justify-around">
                 {renga.emojis.map((emoji, index) => (
-                    <Emoji size={32} native emoji={emoji} key={index} />
+                    <div className="pr-1 last:pr-0">
+                        <Emoji size={32} native emoji={emoji} key={index} />
+                    </div>
                 ))}
             </div>
             <div className="flex items-center justify-center text-center text-gray-700 text-xs">

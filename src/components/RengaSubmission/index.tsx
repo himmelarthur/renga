@@ -141,7 +141,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     />
                     <button
                         className={classNames(
-                            'p-4 text-gray-100 rounded mt-4 w-full',
+                            'p-4 text-gray-100 rounded mt-4 w-full hover:bg-green-300',
                             {
                                 'bg-green-500': !!movie,
                                 'bg-green-500 opacity-50': !movie,

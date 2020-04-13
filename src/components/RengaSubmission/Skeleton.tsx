@@ -18,18 +18,6 @@ const RengaSubmissionSkeleton = memo(() => (
             <Emoji size={16} native emoji={'painter'}></Emoji> Posted by{' '}
             <span className="font-semibold invisible"></span>
         </div>
-        <MovieAutocomplete
-            movie={undefined}
-            onMovieChange={() => {}}
-            placeholder="You guess"
-        />
-        <button
-            className="p-4 text-gray-100 rounded mt-4 w-full bg-green-500 opacity-50"
-            onClick={() => {}}
-        >
-            Submit
-        </button>
-        <div className="h-px bg-gray-300"></div>
     </div>
 ))
 

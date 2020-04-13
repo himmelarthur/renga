@@ -7,6 +7,7 @@ import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
 import Rengas from './Rengas'
 import JoinForm from './JoinForm'
+import NoRengas from './NoRengas'
 
 type Props = {
     partyId: string
@@ -130,6 +131,7 @@ const Party = ({ partyId, userId }: Props) => {
                                         <Rengas
                                             highlightedRenga={solvingRenga}
                                             partyId={partyId}
+                                            noRengasComponent={<NoRengas />}
                                             onClickRenga={(rengaId) => {
                                                 confettis?.clear()
                                                 if (rengaId === solvingRenga) {
