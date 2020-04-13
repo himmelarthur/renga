@@ -6,13 +6,14 @@ import Leaderboard from '../components/Leaderboard'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
 import Rengas from './Rengas'
+import JoinForm from './JoinForm'
 
 type Props = {
     partyId: string
-    userId: number
+    userId?: number
 }
 
-const AuthParty = ({ partyId, userId }: Props) => {
+const Party = ({ partyId, userId }: Props) => {
     const [confettis, setConfettis] = useState<ConfettiGenerator>()
     const [createRengaOn, setCreateRengaOn] = useState(false)
     const [solvingRenga, setSolvingRenga] = useState<number>()
@@ -50,9 +51,9 @@ const AuthParty = ({ partyId, userId }: Props) => {
                         <h1 className="text-primary font-logo text-3xl mb-4">
                             Renga
                         </h1>
-                        <InviteLink partyId={partyId} />
+                        {userId ? <InviteLink partyId={partyId} /> : undefined}
                         <div>
-                            {createRengaOn ? (
+                            {createRengaOn && userId ? (
                                 <RengaForm
                                     partyId={partyId}
                                     userId={userId}
@@ -60,22 +61,47 @@ const AuthParty = ({ partyId, userId }: Props) => {
                                 ></RengaForm>
                             ) : (
                                 <div className="sm:mt-8 mt-0">
-                                    <div className="flex justify-center mb-8">
-                                        <button
-                                            className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
-                                            style={{
-                                                background:
-                                                    'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
-                                            }}
-                                            onClick={() => {
-                                                confettis?.clear()
-                                                setCreateRengaOn(true)
+                                    {userId ? (
+                                        <div className="flex justify-center mb-4">
+                                            <button
+                                                className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
+                                                style={{
+                                                    background:
+                                                        'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
+                                                }}
+                                                onClick={() => {
+                                                    confettis?.clear()
+                                                    setCreateRengaOn(true)
+                                                }}
+                                            >
+                                                New Renga
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <motion.div
+                                            animate="visible"
+                                            initial="hidden"
+                                            className="flex mb-8 items-start justify-start flex-col"
+                                            variants={{
+                                                hidden: {
+                                                    opacity: 0,
+                                                    y: -50,
+                                                },
+                                                visible: {
+                                                    opacity: 1,
+                                                    y: 0,
+                                                    transition: {
+                                                        delay: 0.5,
+                                                    },
+                                                },
                                             }}
                                         >
-                                            New Renga
-                                        </button>
-                                    </div>
-                                    {solvingRenga ? (
+                                            <JoinForm
+                                                partyId={partyId}
+                                            ></JoinForm>
+                                        </motion.div>
+                                    )}
+                                    {solvingRenga && userId ? (
                                         <motion.div
                                             className="mb-8"
                                             animate="visible"
@@ -96,7 +122,11 @@ const AuthParty = ({ partyId, userId }: Props) => {
                                             ></RengaSubmission>
                                         </motion.div>
                                     ) : undefined}
-                                    <motion.div>
+                                    <div
+                                        className={`${
+                                            userId ? '' : 'pointer-events-none'
+                                        }`}
+                                    >
                                         <Rengas
                                             highlightedRenga={solvingRenga}
                                             partyId={partyId}
@@ -109,21 +139,23 @@ const AuthParty = ({ partyId, userId }: Props) => {
                                                 }
                                             }}
                                         />
-                                    </motion.div>
+                                    </div>
                                 </div>
                             )}
                         </div>
                     </div>
-                    <div className="sm:w-1/3">
-                        <Leaderboard
-                            partyId={partyId}
-                            userId={userId}
-                        ></Leaderboard>
-                    </div>
+                    {userId ? (
+                        <div className="sm:w-1/3">
+                            <Leaderboard
+                                partyId={partyId}
+                                userId={userId}
+                            ></Leaderboard>
+                        </div>
+                    ) : undefined}
                 </div>
             </div>
         </>
     )
 }
 
-export default AuthParty
+export default Party
