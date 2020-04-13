@@ -21,17 +21,18 @@ gql`
     }
 `
 
-const Rengas = ({ partyId, onClickRenga }: Props) => {
+const Rengas = ({ partyId, highlightedRenga, onClickRenga }: Props) => {
     const { data, loading } = useGetRengasQuery({ variables: { partyId } })
     if (loading) {
         return <div></div>
     }
     return (
-        <div className="flex flex-row flex-wrap">
+        <div className="flex flex-row flex-wrap justify-center sm:justify-start">
             {data?.rengas.map((renga) => (
                 <Renga
                     key={renga.id}
                     renga={renga}
+                    highlighted={highlightedRenga === renga.id}
                     onClick={() => onClickRenga(renga.id)}
                 />
             ))}
@@ -39,6 +40,10 @@ const Rengas = ({ partyId, onClickRenga }: Props) => {
     )
 }
 
-type Props = { partyId: string; onClickRenga: (rengaId: number) => void }
+type Props = {
+    partyId: string
+    onClickRenga: (rengaId: number) => void
+    highlightedRenga?: number
+}
 
 export default Rengas

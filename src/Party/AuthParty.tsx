@@ -1,4 +1,5 @@
 import ConfettiGenerator from 'confetti-js'
+import { motion } from 'framer-motion'
 import React, { useCallback, useState } from 'react'
 import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard'
@@ -43,44 +44,80 @@ const AuthParty = ({ partyId, userId }: Props) => {
                 id="confetti"
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
-            <div className="p-10">
-                <h1 className="text-primary font-logo text-3xl mb-4">Renga</h1>
-                <InviteLink partyId={partyId} />
-                <Leaderboard partyId={partyId} userId={userId}></Leaderboard>
-                {createRengaOn ? (
-                    <RengaForm
-                        partyId={partyId}
-                        userId={userId}
-                        onCreated={() => setCreateRengaOn(false)}
-                    ></RengaForm>
-                ) : (
-                    <div>
-                        <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4"
-                            onClick={() => {
-                                confettis?.clear()
-                                setCreateRengaOn(true)
-                            }}
-                        >
-                            New Renga
-                        </button>
-                        <Rengas
-                            partyId={partyId}
-                            onClickRenga={(rengaId) => {
-                                confettis?.clear()
-                                setSolvingRenga(rengaId)
-                            }}
-                        />
+            <div className="sm:p-10 p-4">
+                <div className="flex sm:flex-row flex-col">
+                    <div className="sm:w-2/3">
+                        <h1 className="text-primary font-logo text-3xl mb-4">
+                            Renga
+                        </h1>
+                        <InviteLink partyId={partyId} />
+                        <div>
+                            {createRengaOn ? (
+                                <RengaForm
+                                    partyId={partyId}
+                                    userId={userId}
+                                    onCreated={() => setCreateRengaOn(false)}
+                                ></RengaForm>
+                            ) : (
+                                <div className="sm:mt-8 mt-0">
+                                    <div className="flex justify-center mb-8">
+                                        <button
+                                            className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
+                                            style={{
+                                                background:
+                                                    'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
+                                            }}
+                                            onClick={() => {
+                                                confettis?.clear()
+                                                setCreateRengaOn(true)
+                                            }}
+                                        >
+                                            New Renga
+                                        </button>
+                                    </div>
+                                    {solvingRenga ? (
+                                        <motion.div
+                                            className="mb-8"
+                                            animate="visible"
+                                            initial="hidden"
+                                            variants={{
+                                                hidden: { opacity: 0, y: -100 },
+                                                visible: { opacity: 1, y: 0 },
+                                            }}
+                                        >
+                                            <RengaSubmission
+                                                rengaId={solvingRenga}
+                                                userId={userId}
+                                                onSolved={onSolvedRenga}
+                                                partyId={partyId}
+                                            ></RengaSubmission>
+                                        </motion.div>
+                                    ) : undefined}
+                                    <motion.div>
+                                        <Rengas
+                                            highlightedRenga={solvingRenga}
+                                            partyId={partyId}
+                                            onClickRenga={(rengaId) => {
+                                                confettis?.clear()
+                                                if (rengaId === solvingRenga) {
+                                                    setSolvingRenga(undefined)
+                                                } else {
+                                                    setSolvingRenga(rengaId)
+                                                }
+                                            }}
+                                        />
+                                    </motion.div>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                )}
-                {solvingRenga ? (
-                    <RengaSubmission
-                        rengaId={solvingRenga}
-                        userId={userId}
-                        onSolved={onSolvedRenga}
-                        partyId={partyId}
-                    ></RengaSubmission>
-                ) : undefined}
+                    <div className="sm:w-1/3">
+                        <Leaderboard
+                            partyId={partyId}
+                            userId={userId}
+                        ></Leaderboard>
+                    </div>
+                </div>
             </div>
         </>
     )

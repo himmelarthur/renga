@@ -23,9 +23,9 @@ export default ({ className }: InviteLinkProps) => {
             )} text-sm text-gray-600 flex sm:items-center flex-col sm:flex-row items-start`}
         >
             <div>Party link:</div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center py-2">
                 <div
-                    className="cursor-pointer sm:mx-4 mt-2 sm:mt-0 text-gray-500 py-1 px-2 rounded-md border-gray-200 border-2"
+                    className="cursor-pointer sm:mx-4 sm:mt-0 text-gray-500 py-1 px-2 rounded-md border-gray-200 border-2"
                     onClick={() => onClickCopy()}
                 >
                     {window.location.href}

@@ -134,7 +134,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                         className={classNames(
                             'p-4 text-gray-100 rounded mt-4 w-full',
                             {
-                                'bg-green-700': !!movie,
+                                'bg-green-500': !!movie,
                                 'bg-green-500 opacity-50': !movie,
                             }
                         )}

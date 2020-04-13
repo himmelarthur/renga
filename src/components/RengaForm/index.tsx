@@ -89,7 +89,7 @@ export default ({ userId, partyId, onCreated }: IRengaFormProps) => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className=" max-w-xl">
+        <form onSubmit={handleSubmit} className="max-w-xl my-2">
             <div className="bg-gray-200 p-4 rounded-lg mb-3">
                 <h3 className="text-xl text-gray-900 font-bold mb-2">
                     Make people guess a movie...
@@ -104,7 +104,7 @@ export default ({ userId, partyId, onCreated }: IRengaFormProps) => {
             </div>
             <input
                 className={classNames('p-4 text-gray-100 rounded mt-4 w-full', {
-                    'bg-green-700': isValid(),
+                    'bg-green-500': isValid(),
                     'bg-green-500 opacity-50': !isValid(),
                 })}
                 type="submit"

@@ -17,7 +17,7 @@ const EmojiSelector: React.FC<Props> = ({ emojis, onEmojisChange }) => {
                 <div className="flex my-4">
                     {emojis.map((emoji, index) => (
                         <div
-                            className="bg-gray-400 rounded mx-2 h-16 w-16 text-5xl text-center"
+                            className="bg-gray-400 rounded mx-2 sm:h-16 sm:w-16 h-12 w-12 text-4xl sm:text-5xl text-center"
                             key={index}
                         >
                             {emoji && emoji.native}
@@ -26,7 +26,7 @@ const EmojiSelector: React.FC<Props> = ({ emojis, onEmojisChange }) => {
                 </div>
                 {!!emojis.filter((emoji) => emoji).length && (
                     <div
-                        className="absolute uppercase right-0 cursor-pointer text-red-700 font-bold"
+                        className="absolute uppercase right-0 cursor-pointer text-red-500 font-bold"
                         onClick={() =>
                             onEmojisChange([undefined, undefined, undefined])
                         }

@@ -5,8 +5,9 @@ import Join from '../Join'
 import AuthParty from './AuthParty'
 
 const Party = () => {
-    const { userId, partyId } = useParty()
+    const { userId, partyId, ready } = useParty()
 
+    if (!ready) return <div></div>
     if (!partyId) {
         return <Redirect to="/"></Redirect>
     } else if (!userId) {

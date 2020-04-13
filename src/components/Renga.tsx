@@ -3,10 +3,12 @@ import { Renga as RengaType, User } from '../generated/graphql'
 import { Emoji } from 'emoji-mart'
 import moment from 'moment'
 
-const Renga = ({ renga, onClick }: Props) => {
+const Renga = ({ renga, highlighted, onClick }: Props) => {
     return (
         <div
-            className="flex flex-col justify-center items-center w-40 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer"
+            className={`flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer ${
+                highlighted ? 'bg-gray-100' : ''
+            }`}
             onClick={onClick}
         >
             <div className="flex flex-row justify-around">
@@ -26,6 +28,7 @@ type Props = {
     renga: Pick<RengaType, 'id' | 'emojis' | 'createdAt' | 'isMine'> & {
         author: { __typename?: 'User' } & Pick<User, 'id' | 'username'>
     }
+    highlighted: boolean
     onClick: () => void
 }
 

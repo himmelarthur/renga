@@ -52,7 +52,7 @@ const JoinParty: React.FC<IJoinPartyProps> = ({ className }) => {
             >
                 Join
             </button>
-            <p className="text-red-700 font-semibold">
+            <p className="text-red-500 font-semibold">
                 {error?.graphQLErrors.map((x) => x.message).join(', ')}
             </p>
         </div>
