@@ -12,7 +12,6 @@ type Props = {
 }
 
 const AuthParty = ({ partyId, userId }: Props) => {
-
     const [confettis, setConfettis] = useState<ConfettiGenerator>()
     const [createRengaOn, setCreateRengaOn] = useState(false)
     const [solvingRenga, setSolvingRenga] = useState<number>()
@@ -42,10 +41,10 @@ const AuthParty = ({ partyId, userId }: Props) => {
         <>
             <canvas
                 id="confetti"
-                style={{ position: 'fixed', top: 0 }}
+                style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
-            <div className="m-20">
-                <h1 className="text-4xl mb-4">Renga</h1>
+            <div className="p-10">
+                <h1 className="text-primary font-logo text-3xl mb-4">Renga</h1>
                 <InviteLink partyId={partyId} />
                 <Leaderboard partyId={partyId} userId={userId}></Leaderboard>
                 {createRengaOn ? (
