@@ -25,19 +25,22 @@ export const Mutation = mutationType({
 
                 const auth = await context.user
                 if (!auth?.userId) throw Error('User should be authenticated')
-                const user = await context.prisma.user.findOne({where: {id: auth.userId}})
-                if (!user) throw Error('User not found')
                 
-                // FIXME should be transaction when available 
-                // https://github.com/prisma/prisma-client-js/issues/349
-                await context.prisma.user.update({
-                    where: { id: user.id },
-                    data: { score: user.score + 1 }
-                })
+                if (isValid) {
+                    const user = await context.prisma.user.findOne({where: {id: auth.userId}})
+                    if (!user) throw Error('User not found')
+                    
+                    // FIXME should be transaction when available 
+                    // https://github.com/prisma/prisma-client-js/issues/349
+                    await context.prisma.user.update({
+                        where: { id: user.id },
+                        data: { score: user.score + 1 }
+                    })
+                }
 
                 return await context.prisma.submission.create({
                     data: {
-                        author: { connect: { id: user.id } },
+                        author: { connect: { id: auth.userId } },
                         renga: { connect: { id: rengaId } },
                         movieDBId,
                         movieTitle,
