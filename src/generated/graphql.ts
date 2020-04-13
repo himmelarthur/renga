@@ -294,6 +294,7 @@ export type Mutation = {
   createOneRenga: Renga;
   createSubmission: Submission;
   createParty: Scalars['String'];
+  joinParty: Scalars['String'];
 };
 
 
@@ -315,6 +316,12 @@ export type MutationCreateSubmissionArgs = {
 
 
 export type MutationCreatePartyArgs = {
+  username: Scalars['String'];
+};
+
+
+export type MutationJoinPartyArgs = {
+  partyId: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -527,6 +534,17 @@ export type GetRengasQuery = (
   )> }
 );
 
+export type JoinPartyMutationVariables = {
+  partyId: Scalars['String'];
+  username: Scalars['String'];
+};
+
+
+export type JoinPartyMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'joinParty'>
+);
+
 export type GetPlayersQueryVariables = {
   partyId: Scalars['String'];
 };
@@ -674,6 +692,36 @@ export function useGetRengasLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetRengasQueryHookResult = ReturnType<typeof useGetRengasQuery>;
 export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQuery>;
 export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
+export const JoinPartyDocument = gql`
+    mutation joinParty($partyId: String!, $username: String!) {
+  joinParty(partyId: $partyId, username: $username)
+}
+    `;
+
+/**
+ * __useJoinPartyMutation__
+ *
+ * To run a mutation, you first call `useJoinPartyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinPartyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinPartyMutation, { data, loading, error }] = useJoinPartyMutation({
+ *   variables: {
+ *      partyId: // value for 'partyId'
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useJoinPartyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinPartyMutation, JoinPartyMutationVariables>) {
+        return ApolloReactHooks.useMutation<JoinPartyMutation, JoinPartyMutationVariables>(JoinPartyDocument, baseOptions);
+      }
+export type JoinPartyMutationHookResult = ReturnType<typeof useJoinPartyMutation>;
+export type JoinPartyMutationResult = ApolloReactCommon.MutationResult<JoinPartyMutation>;
+export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinPartyMutation, JoinPartyMutationVariables>;
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {
   party(where: {id: $partyId}) {
