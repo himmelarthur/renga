@@ -18,14 +18,15 @@ const EmojiRoulette = () => {
     const controls = useAnimation()
     const renga = RENGAS[cursor]
     useEffect(() => {
+        let index = cursor
         setInterval(async () => {
             await controls.start((i) => ({
                 y: 100,
                 opacity: 0,
                 transition: { duration: 0.3, delay: i * 0.1 },
             }))
-            const newCursor = cursor === RENGAS.length - 1 ? 0 : cursor + 1
-            setCursor(newCursor)
+            index = index === RENGAS.length - 1 ? 0 : index + 1
+            setCursor(index)
             await controls.start((i) => ({
                 y: -100,
                 opacity: 0,
@@ -37,7 +38,7 @@ const EmojiRoulette = () => {
                 transition: { duration: 0.3, delay: i * 0.1 },
             }))
         }, 3000)
-    }, [cursor])
+    }, [])
     return (
         <div className="flex justify-center text-5xl my-8">
             <div
