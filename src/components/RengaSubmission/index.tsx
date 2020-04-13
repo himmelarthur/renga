@@ -72,13 +72,23 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const { data, loading } = useGetRengaQuery({
         variables: { rengaId },
     })
-    const [createSubmission] = useCreateSubmissionMutation()
     const [movie, setMovie] = React.useState<MovieResult | undefined>()
+
+    const [createSubmission] = useCreateSubmissionMutation({
+        onCompleted: (data) => {
+            if (data?.createSubmission.valid) onSolved()
+            setMovie(undefined)
+        },
+    })
+
+    React.useEffect(() => {
+        setMovie(undefined)
+    }, [rengaId])
 
     const handleSubmission = React.useCallback(async () => {
         if (movie === undefined) throw new Error('Need movie')
 
-        const response = await createSubmission({
+        createSubmission({
             variables: {
                 movieDBId: movie.id,
                 rengaId,
@@ -89,9 +99,6 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 { query: GetPlayersDocument, variables: { partyId } },
             ],
         })
-        if (response.data?.createSubmission.valid) {
-            onSolved()
-        }
     }, [movie, rengaId, createSubmission, onSolved, partyId])
     if (loading || !data) return <div></div>
 
@@ -103,9 +110,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 {renga?.isResolved && renga.movie.maybeTitle}
             </div>
             <div className="w-full flex justify-center">
-                {data.renga?.emojis.map((e) => {
+                {data.renga?.emojis.map((e, index) => {
                     return (
-                        <span className="mx-2" key={e}>
+                        <span className="mx-2" key={index}>
                             <Emoji native emoji={e} size={48} />
                         </span>
                     )
