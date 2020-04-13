@@ -20,6 +20,12 @@ export const useParty = () => {
         }
     }, [partyId, setUserId])
 
+    useEffect(() => {
+        if (partyId) {
+            sessionStorage.setItem('currentPartyId', partyId)
+        }
+    }, [partyId])
+
     const addParty = (token?: string) => {
         if (!token) return
         const { partyId, userId } = JwtDecode(token)
