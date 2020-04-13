@@ -104,7 +104,7 @@ export default ({ userId, partyId, onCreated }: IRengaFormProps) => {
             </div>
             <input
                 className={classNames(
-                    'p-4 text-gray-100 rounded mt-4 w-full hover:bg-green-300 cursor-pointer',
+                    'p-4 text-gray-100 rounded mt-4 w-full hover:bg-green-300 cursor-pointer font-medium outline-none',
                     {
                         'bg-green-500': isValid(),
                         'bg-green-500 opacity-50': !isValid(),

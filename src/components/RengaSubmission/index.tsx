@@ -141,10 +141,10 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     />
                     <button
                         className={classNames(
-                            'p-4 text-gray-100 rounded mt-4 w-full',
+                            'p-4 text-gray-100 rounded mt-4 w-full font-medium outline-none',
                             {
-                                'bg-green-500': !!movie,
-                                'bg-green-500 opacity-50': !movie,
+                                'bg-green-500 hover:bg-green-300': !!movie,
+                                'bg-green-500 opacity-50  cursor-default ': !movie,
                             }
                         )}
                         onClick={handleSubmission}

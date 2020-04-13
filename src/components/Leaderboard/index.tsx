@@ -37,10 +37,10 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
         <div
             className={classNames(
                 className,
-                'max-w-md p-4 flex flex-col items-start'
+                'max-w-md p-4 flex flex-col items-start pt-0'
             )}
         >
-            <h3 className="text-gray-700 text-2xl">Leaderboard</h3>
+            <h3 className="text-gray-700 text-2xl font-bold">Leaderboard</h3>
             <div className="w-full mt-4 text-gray-600 text-sm">
                 {users.map((player, index) => {
                     const isMe = userId === player.id

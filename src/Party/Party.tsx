@@ -47,11 +47,9 @@ const Party = ({ partyId, userId }: Props) => {
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
             <div className="sm:p-10 p-4">
+                <h1 className="text-primary font-logo text-3xl mb-4">Renga</h1>
                 <div className="flex sm:flex-row flex-col">
                     <div className="sm:w-2/3">
-                        <h1 className="text-primary font-logo text-3xl mb-4">
-                            Renga
-                        </h1>
                         {userId ? <InviteLink partyId={partyId} /> : undefined}
                         <div>
                             {createRengaOn && userId ? (

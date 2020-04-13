@@ -1,5 +1,4 @@
 import React, { memo } from 'react'
-import MovieAutocomplete from '../MovieAutoComplete'
 import { Emoji } from 'emoji-mart'
 
 const RengaSubmissionSkeleton = memo(() => (
