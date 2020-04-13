@@ -12,7 +12,9 @@ export default ({ className }: InviteLinkProps) => {
     return (
         <div className={classNames(className)}>
             <span
-                className="cursor-pointer text-gray-700 font-bold"
+                role="img"
+                aria-label=""
+          className="cursor-pointer text-gray-700 font-bold"
                 onClick={() => setIsCopied(copy(`${window.location.href}`))}
             >
                 🔗 Invite link

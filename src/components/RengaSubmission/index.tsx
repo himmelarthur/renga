@@ -99,7 +99,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 { query: GetPlayersDocument, variables: { partyId } },
             ],
         })
-    }, [movie, rengaId, createSubmission, onSolved, partyId])
+    }, [movie, rengaId, createSubmission, partyId])
     if (loading || !data) return <div></div>
 
     const { renga } = data

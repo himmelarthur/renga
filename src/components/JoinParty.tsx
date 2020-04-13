@@ -1,10 +1,8 @@
 import classNames from 'classnames'
 import gql from 'graphql-tag'
-import JwtDecode from 'jwt-decode'
 import * as React from 'react'
-import { useHistory, useParams } from 'react-router-dom'
-import { AuthContext } from '../AuthContext'
 import { useJoinPartyMutation } from '../generated/graphql'
+import { useParty } from '../hooks'
 
 interface IJoinPartyProps {
     className?: string
@@ -17,21 +15,18 @@ gql`
 `
 
 const JoinParty: React.FC<IJoinPartyProps> = ({ className }) => {
-    const { setUserId } = React.useContext(AuthContext)
-    const { partyId } = useParams()
+    const { partyId, addParty } = useParty()
+
+    if (!partyId) throw new Error('Token invitation should be provided')
+
     const [joinParty, { error }] = useJoinPartyMutation({
-        onError: () => 1, // FIXME
         onCompleted: (data) => {
-            const token = data.joinParty
-            const { partyId, userId } = JwtDecode(token)
-            localStorage.setItem('token', token)
-            setUserId(userId)
+            addParty(data.joinParty)
         },
     })
     const [username, setUsername] = React.useState('')
 
     const handleSubmit = () => {
-        if (!partyId) throw new Error('Token invitation should be provided')
         joinParty({
             variables: {
                 partyId,

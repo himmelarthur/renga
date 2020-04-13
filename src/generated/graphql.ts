@@ -18,6 +18,7 @@ export type Query = {
   renga?: Maybe<Renga>;
   rengas: Array<Renga>;
   party?: Maybe<Party>;
+  invitePartyLink: Scalars['String'];
 };
 
 
@@ -48,6 +49,11 @@ export type QueryRengasArgs = {
 
 export type QueryPartyArgs = {
   where: PartyWhereUniqueInput;
+};
+
+
+export type QueryInvitePartyLinkArgs = {
+  partyId: Scalars['String'];
 };
 
 export type UserWhereUniqueInput = {

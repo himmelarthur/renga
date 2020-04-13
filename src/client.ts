@@ -7,7 +7,8 @@ const httpLink = createHttpLink({
     uri: process.env.REACT_APP_API_URL,
 })
 const authLink = setContext((_, { headers }) => {
-    const token = localStorage.getItem('token')
+    const currentPartyId = sessionStorage.getItem('currentPartyId')
+    const token = localStorage.getItem(`token:${currentPartyId}`)
     return {
         headers: {
             ...headers,
