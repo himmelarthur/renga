@@ -1,16 +1,18 @@
-import React, { useContext, useState, useCallback } from 'react'
-import Rengas from './Rengas'
-import { useParams, Redirect } from 'react-router-dom'
-import { AuthContext } from '../AuthContext'
+import ConfettiGenerator from 'confetti-js'
+import React, { useCallback, useState } from 'react'
+import InviteLink from '../components/InviteLink'
+import Leaderboard from '../components/Leaderboard'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
-import ConfettiGenerator from 'confetti-js'
-import Leaderboard from '../components/Leaderboard'
-import InviteLink from '../components/InviteLink'
+import Rengas from './Rengas'
 
-const Party = () => {
-    const { partyId } = useParams()
-    const { userId } = useContext(AuthContext)
+type Props = {
+    partyId: string
+    userId: number
+}
+
+const AuthParty = ({ partyId, userId }: Props) => {
+
     const [confettis, setConfettis] = useState<ConfettiGenerator>()
     const [createRengaOn, setCreateRengaOn] = useState(false)
     const [solvingRenga, setSolvingRenga] = useState<number>()
@@ -36,7 +38,6 @@ const Party = () => {
         return () => confetti.clear()
     }, [])
 
-    if (!partyId || !userId) return <Redirect to="/"></Redirect>
     return (
         <>
             <canvas
@@ -45,7 +46,7 @@ const Party = () => {
             ></canvas>
             <div className="m-20">
                 <h1 className="text-4xl mb-4">Renga</h1>
-                <InviteLink partyId={partyId} />    
+                <InviteLink partyId={partyId} />
                 <Leaderboard partyId={partyId} userId={userId}></Leaderboard>
                 {createRengaOn ? (
                     <RengaForm
@@ -86,4 +87,4 @@ const Party = () => {
     )
 }
 
-export default Party
+export default AuthParty

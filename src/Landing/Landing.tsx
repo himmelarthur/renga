@@ -1,7 +1,8 @@
-import React, { useState, useCallback } from 'react'
-import jwtDecode from 'jwt-decode'
 import gql from 'graphql-tag'
+import React, { useCallback, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useCreatePartyMutation } from '../generated/graphql'
+import { useParty } from '../hooks'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -12,21 +13,21 @@ gql`
 const Landing = () => {
     const [create] = useCreatePartyMutation()
     const [username, setUsername] = useState('')
+    const { addParty } = useParty()
+    const history = useHistory()
+
     const onCreate = useCallback(async () => {
         if (!username) return
         const res = await create({ variables: { username } })
         try {
-            const token = res.data?.createParty
-            if (!token) {
-                return
+            const partyId = addParty(res.data?.createParty)
+            if (partyId) {
+                history.push(`/p/${partyId}`)
             }
-            const { partyId } = jwtDecode(token)
-            localStorage.setItem('token', token)
-            window.location.href = `/p/${partyId}`
         } catch (err) {
             console.error(err)
         }
-    }, [username, create])
+    }, [username, create, history, addParty])
     return (
         <div className="m-20">
             <h1 className="text-4xl mb-4">Renga</h1>
