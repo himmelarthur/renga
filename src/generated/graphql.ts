@@ -18,7 +18,6 @@ export type Query = {
   renga?: Maybe<Renga>;
   rengas: Array<Renga>;
   party?: Maybe<Party>;
-  invitePartyLink: Scalars['String'];
 };
 
 
@@ -49,11 +48,6 @@ export type QueryRengasArgs = {
 
 export type QueryPartyArgs = {
   where: PartyWhereUniqueInput;
-};
-
-
-export type QueryInvitePartyLinkArgs = {
-  partyId: Scalars['String'];
 };
 
 export type UserWhereUniqueInput = {
@@ -523,23 +517,6 @@ export type CreatePartyMutation = (
   & Pick<Mutation, 'createParty'>
 );
 
-export type GetRengasQueryVariables = {
-  partyId: Scalars['String'];
-};
-
-
-export type GetRengasQuery = (
-  { __typename?: 'Query' }
-  & { rengas: Array<(
-    { __typename?: 'Renga' }
-    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'isMine'>
-    & { author: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
-    ) }
-  )> }
-);
-
 export type JoinPartyMutationVariables = {
   partyId: Scalars['String'];
   username: Scalars['String'];
@@ -549,6 +526,23 @@ export type JoinPartyMutationVariables = {
 export type JoinPartyMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'joinParty'>
+);
+
+export type GetRengasQueryVariables = {
+  partyId: Scalars['String'];
+};
+
+
+export type GetRengasQuery = (
+  { __typename?: 'Query' }
+  & { rengas: Array<(
+    { __typename?: 'Renga' }
+    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'isMine' | 'isResolved'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )> }
 );
 
 export type GetPlayersQueryVariables = {
@@ -658,46 +652,6 @@ export function useCreatePartyMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type CreatePartyMutationHookResult = ReturnType<typeof useCreatePartyMutation>;
 export type CreatePartyMutationResult = ApolloReactCommon.MutationResult<CreatePartyMutation>;
 export type CreatePartyMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePartyMutation, CreatePartyMutationVariables>;
-export const GetRengasDocument = gql`
-    query GetRengas($partyId: String!) {
-  rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
-    id
-    emojis
-    author {
-      id
-      username
-    }
-    createdAt
-    isMine
-  }
-}
-    `;
-
-/**
- * __useGetRengasQuery__
- *
- * To run a query within a React component, call `useGetRengasQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetRengasQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetRengasQuery({
- *   variables: {
- *      partyId: // value for 'partyId'
- *   },
- * });
- */
-export function useGetRengasQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetRengasQuery, GetRengasQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetRengasQuery, GetRengasQueryVariables>(GetRengasDocument, baseOptions);
-      }
-export function useGetRengasLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetRengasQuery, GetRengasQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetRengasQuery, GetRengasQueryVariables>(GetRengasDocument, baseOptions);
-        }
-export type GetRengasQueryHookResult = ReturnType<typeof useGetRengasQuery>;
-export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQuery>;
-export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
 export const JoinPartyDocument = gql`
     mutation joinParty($partyId: String!, $username: String!) {
   joinParty(partyId: $partyId, username: $username)
@@ -728,6 +682,47 @@ export function useJoinPartyMutation(baseOptions?: ApolloReactHooks.MutationHook
 export type JoinPartyMutationHookResult = ReturnType<typeof useJoinPartyMutation>;
 export type JoinPartyMutationResult = ApolloReactCommon.MutationResult<JoinPartyMutation>;
 export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinPartyMutation, JoinPartyMutationVariables>;
+export const GetRengasDocument = gql`
+    query GetRengas($partyId: String!) {
+  rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
+    id
+    emojis
+    author {
+      id
+      username
+    }
+    createdAt
+    isMine
+    isResolved
+  }
+}
+    `;
+
+/**
+ * __useGetRengasQuery__
+ *
+ * To run a query within a React component, call `useGetRengasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRengasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRengasQuery({
+ *   variables: {
+ *      partyId: // value for 'partyId'
+ *   },
+ * });
+ */
+export function useGetRengasQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetRengasQuery, GetRengasQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetRengasQuery, GetRengasQueryVariables>(GetRengasDocument, baseOptions);
+      }
+export function useGetRengasLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetRengasQuery, GetRengasQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetRengasQuery, GetRengasQueryVariables>(GetRengasDocument, baseOptions);
+        }
+export type GetRengasQueryHookResult = ReturnType<typeof useGetRengasQuery>;
+export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQuery>;
+export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {
   party(where: {id: $partyId}) {
