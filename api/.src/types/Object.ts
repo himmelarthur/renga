@@ -29,14 +29,14 @@ export const Submission = objectType({
             async resolve(parent, args, ctx: Context) {
                 const user = await ctx.user
                 if (!user) return ''
-                const hasValidSubmission = (await ctx.prisma.submission.count({
+                const hasValidSubmission = await ctx.prisma.submission.count({
                     where: {
                         authorId: user?.userId,
                         // @ts-ignore
                         rengaId: parent.rengaId,
                         valid: true,
                     },
-                })) > 0
+                }) > 0
 
                 // @ts-ignore
                 return (hasValidSubmission || !parent.valid) ? parent.movieTitle : ''
@@ -69,15 +69,14 @@ export const Renga = objectType({
             async resolve(parent, _, ctx: Context) {
                 const user = await ctx.user
                 if (user === undefined) return false
-                const validSubmissions = await ctx.prisma.submission.findMany({
+                const hasValidSubmission = await ctx.prisma.submission.count({
                     where: {
                         authorId: user?.userId,
                         rengaId: parent.id,
                         valid: true,
                     },
-                })
-                // @ts-ignore
-                return !!validSubmissions.length
+                }) > 0
+                return hasValidSubmission
             },
         })
     },
@@ -91,15 +90,15 @@ export const Movie = objectType({
             async resolve(parent, _, ctx: Context) {
                 const user = await ctx.user
                 if (user === undefined) return ''
-                const validSubmissions = await ctx.prisma.submission.findMany({
+                const hasValidSubmission = await ctx.prisma.submission.count({
                     where: {
                         authorId: user?.userId,
                         movieDBId: parent.movieDBId,
                         valid: true,
                     },
-                })
+                }) > 0
                 // @ts-ignore
-                return !!validSubmissions.length ? parent.title : ''
+                return hasValidSubmission ? parent.title : ''
             },
         })
     },
