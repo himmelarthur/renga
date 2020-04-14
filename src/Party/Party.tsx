@@ -5,14 +5,12 @@ import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
-import Rengas from './Rengas'
-import JoinForm from './JoinForm'
 import NoRengas from './NoRengas'
-import JoinParty from './JoinParty'
+import Rengas from './Rengas'
 
 type Props = {
     partyId: string
-    userId?: number
+    userId: number
 }
 
 const Party = ({ partyId, userId }: Props) => {
@@ -40,12 +38,6 @@ const Party = ({ partyId, userId }: Props) => {
         setConfettis(confetti)
         return () => confetti.clear()
     }, [])
-
-    if (!userId) {
-        // The user is not logged in
-        return <JoinParty partyId={partyId} />
-    }
-
     return (
         <>
             <canvas
