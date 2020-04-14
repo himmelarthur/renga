@@ -18,9 +18,17 @@ const Renga = ({ renga, highlighted, onClick }: Props) => {
                     </div>
                 ))}
             </div>
-            <div className="flex items-center justify-center text-center text-gray-700 text-xs">
-                Posted by {renga.isMine ? 'You' : renga.author.username}{' '}
-                {moment(renga.createdAt).fromNow()}
+            <div className="flex flex-col items-center justify-center  text-gray-700 text-xs">
+                <div className="flex">
+                    <span>Posted by </span>
+                    <span className="font-semibold ml-1">
+                        {renga.isMine ? ' You' : renga.author.username}
+                    </span>
+                </div>
+
+                <div className="text-gray-600">
+                    {moment(renga.createdAt).fromNow()}
+                </div>
             </div>
         </div>
     )
