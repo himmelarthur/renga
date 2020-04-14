@@ -11,18 +11,24 @@ interface Props {
 }
 
 const EmojiSelector: React.FC<Props> = ({ emojis, onEmojisChange }) => {
+    
     return (
         <div className="flex flex-col items-center">
             <div className="relative w-full flex items-center justify-center">
-                <div className="flex my-4 relative">
-                    {emojis.map((emoji, index) => (
-                        <div
-                            className="bg-gray-400 rounded mx-2 sm:h-16 sm:w-16 h-12 w-12 text-4xl sm:text-5xl text-center"
-                            key={index}
-                        >
-                            {emoji && emoji.native}
-                        </div>
-                    ))}
+                <div className="flex flex-col items-center my-3 group">
+                    <div className="flex relative">
+                        {emojis.map((emoji, index) => (
+                            <div
+                                className="bg-gray-400 rounded mx-2 sm:h-16 sm:w-16 h-12 w-12 text-4xl sm:text-5xl text-center cursor-pointer"
+                                key={index}
+                                onClick={() => {
+                                    const newEmojis = emojis.filter((_, i) => index !== i)
+                                    onEmojisChange([newEmojis[0], newEmojis[1], undefined])
+                                }}
+                            >
+                                {emoji && emoji.native}
+                            </div>
+                        ))}
                     {!!emojis.filter((emoji) => emoji).length && (
                         <div
                             className="absolute uppercase cursor-pointer text-red-500 font-bold items-center h-full mr-4 flex"
@@ -38,6 +44,9 @@ const EmojiSelector: React.FC<Props> = ({ emojis, onEmojisChange }) => {
                             Clear
                         </div>
                     )}
+                    </div>
+                    <div className='mt-1 text-gray-500 text-xs invisible group-hover:visible'>Click to remove one emoji</div>
+
                 </div>
             </div>
             <Picker
