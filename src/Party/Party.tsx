@@ -57,6 +57,7 @@ const Party = ({ partyId, userId }: Props) => {
                                     partyId={partyId}
                                     userId={userId}
                                     onCreated={() => setCreateRengaOn(false)}
+                                    onClose={() => setCreateRengaOn(false)}
                                 ></RengaForm>
                             ) : (
                                 <div className="sm:mt-8 mt-0">
