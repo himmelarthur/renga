@@ -29,16 +29,16 @@ export const Submission = objectType({
             async resolve(parent, args, ctx: Context) {
                 const user = await ctx.user
                 if (!user) return ''
-                const validSubmissions = await ctx.prisma.submission.findMany({
+                const hasValidSubmission = !!(await ctx.prisma.submission.findMany({
                     where: {
                         authorId: user?.userId,
                         // @ts-ignore
                         rengaId: parent.rengaId,
                         valid: true,
                     },
-                })
+                })).length
                 // @ts-ignore
-                return !!validSubmissions.length ? parent.movieTitle : ''
+                return (hasValidSubmission || !parent.valid) ? parent.movieTitle : ''
             },
         })
     },
