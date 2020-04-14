@@ -1,14 +1,12 @@
 import ConfettiGenerator from 'confetti-js'
 import { motion } from 'framer-motion'
 import React, { useCallback, useState } from 'react'
-import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
-import Rengas from './Rengas'
-import JoinForm from './JoinForm'
-import NoRengas from './NoRengas'
 import JoinParty from './JoinParty'
+import NoRengas from './NoRengas'
+import Rengas from './Rengas'
 
 type Props = {
     partyId: string
@@ -52,12 +50,22 @@ const Party = ({ partyId, userId }: Props) => {
                 id="confetti"
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
-            <div className="sm:p-10 p-4">
-                <h1 className="text-primary font-logo text-3xl mb-4">Renga</h1>
-                <div className="flex sm:flex-row flex-col">
+            <div className="sm:flex sm:flex-col items-center sm:px-10 sm:py-4 p-4">
+                <div className="flex flex-row justify-between items-center sticky top-0 w-full">
+                    <div className="flex flex-row items-baseline">
+                        <h1 className="flex justify-center items-center text-primary font-logo text-3xl rounded-lg h-12 w-12 m-auto align-middle leading-none border-2 border-pink-500 text-center">
+                            R
+                        </h1>
+                        {/* <InviteLink partyId={partyId} /> */}
+                    </div>
+                    <button className="h-12 px-3 border border-pink-500 text-pink-500 rounded">
+                        New party
+                    </button>
+                </div>
+                <div className="flex sm:flex-row flex-col sm:justify-center max-w-6xl mt-4 w-full">
                     <div className="sm:w-2/3">
-                        {userId ? <InviteLink partyId={partyId} /> : undefined}
-                        <div>
+                        <div >
+                        <h3 className="text-gray-700 text-2xl font-bold">Rengas</h3>
                             {createRengaOn && userId ? (
                                 <RengaForm
                                     partyId={partyId}
@@ -66,22 +74,7 @@ const Party = ({ partyId, userId }: Props) => {
                                     onClose={() => setCreateRengaOn(false)}
                                 ></RengaForm>
                             ) : (
-                                <div className="sm:mt-8 mt-0">
-                                    <div className="flex justify-center mb-4">
-                                        <button
-                                            className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
-                                            style={{
-                                                background:
-                                                    'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
-                                            }}
-                                            onClick={() => {
-                                                confettis?.clear()
-                                                setCreateRengaOn(true)
-                                            }}
-                                        >
-                                            New Renga
-                                        </button>
-                                    </div>
+                                <div className="">
                                     {solvingRenga ? (
                                         <motion.div
                                             className="mb-8"
@@ -128,6 +121,21 @@ const Party = ({ partyId, userId }: Props) => {
                     </div>
                 </div>
             </div>
+                <div className="w-full h-24 fixed bottom-0 bg-gray-100 flex justify-center items-center">
+                    <button
+                        className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
+                        style={{
+                            background:
+                                'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
+                        }}
+                        onClick={() => {
+                            confettis?.clear()
+                            setCreateRengaOn(true)
+                        }}
+                    >
+                        New Renga
+                    </button>
+                </div>
         </>
     )
 }

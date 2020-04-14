@@ -32,17 +32,19 @@ const Rengas = ({
         return <div></div>
     }
     return (
-        <div className="flex flex-row flex-wrap justify-center sm:justify-start">
-            {data?.rengas.length
-                ? data?.rengas.map((renga) => (
-                      <Renga
-                          key={renga.id}
-                          renga={renga}
-                          highlighted={highlightedRenga === renga.id}
-                          onClick={() => onClickRenga(renga.id)}
-                      />
-                  ))
-                : noRengasComponent}
+        <div>
+            <div className="flex flex-row flex-wrap justify-center sm:justify-start mt-2">
+                {data?.rengas.length
+                    ? data?.rengas.map((renga) => (
+                          <Renga
+                              key={renga.id}
+                              renga={renga}
+                              highlighted={highlightedRenga === renga.id}
+                              onClick={() => onClickRenga(renga.id)}
+                          />
+                      ))
+                    : noRengasComponent}
+            </div>
         </div>
     )
 }

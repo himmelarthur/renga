@@ -41,7 +41,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
             )}
         >
             <h3 className="text-gray-700 text-2xl font-bold">Leaderboard</h3>
-            <div className="w-full mt-4 text-gray-600 text-sm">
+            <div className="w-full mt-4 text-gray-600">
                 {users.map((player, index) => {
                     const isMe = userId === player.id
                     return (

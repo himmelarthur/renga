@@ -108,7 +108,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const { renga } = data
 
     return (
-        <div className="rounded p-4 bg-gray-100 flex flex-col relative">
+        <div className="rounded p-4 bg-gray-100 flex flex-col relative mt-2">
             <div className="w-full text-3xl font-bold text-center">
                 {renga?.isResolved && renga.movie.maybeTitle}
             </div>
