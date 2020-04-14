@@ -128,7 +128,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 })}
             </div>
             <div className="text-gray-600 text-sm my-4">
-                <Emoji size={16} native emoji={'painter'}></Emoji> Posted by{' '}
+                <Emoji size={16} native emoji={'male-artist'}></Emoji> Posted by{' '}
                 <span className="font-medium">{renga?.author.username}</span>{' '}
                 {moment(renga?.createdAt).fromNow()}
             </div>
