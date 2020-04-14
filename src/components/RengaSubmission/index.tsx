@@ -10,11 +10,13 @@ import {
 import { Emoji } from 'emoji-mart'
 import moment from 'moment'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
+import RengaSubmissionSkeleton from './Skeleton'
 
 interface IRengaSubmissionProps {
     rengaId: number
     userId: number
     onSolved: () => void
+    onClose: () => void
     partyId: string
 }
 
@@ -68,6 +70,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     rengaId,
     userId,
     onSolved,
+    onClose,
 }) => {
     const { data, loading } = useGetRengaQuery({
         variables: { rengaId },
@@ -86,7 +89,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     }, [rengaId])
 
     const handleSubmission = React.useCallback(async () => {
-        if (movie === undefined) throw new Error('Need movie')
+        if (movie === undefined) return
 
         createSubmission({
             variables: {
@@ -100,14 +103,20 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             ],
         })
     }, [movie, rengaId, createSubmission, partyId])
-    if (loading || !data) return <div></div>
+    if (loading || !data) return <RengaSubmissionSkeleton />
 
     const { renga } = data
 
     return (
-        <div className="rounded p-4 bg-gray-100 flex flex-col max-w-xl">
+        <div className="rounded p-4 bg-gray-100 flex flex-col relative">
             <div className="w-full text-3xl font-bold text-center">
                 {renga?.isResolved && renga.movie.maybeTitle}
+            </div>
+            <div
+                className="absolute top-0 p-4 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"
+                onClick={onClose}
+            >
+                ✕
             </div>
             <div className="w-full flex justify-center">
                 {data.renga?.emojis.map((e, index) => {
@@ -118,9 +127,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     )
                 })}
             </div>
-            <div className="text-gray-900 my-4">
+            <div className="text-gray-600 text-sm my-4">
                 <Emoji size={16} native emoji={'painter'}></Emoji> Posted by{' '}
-                <span className="font-semibold">{renga?.author.username}</span>{' '}
+                <span className="font-medium">{renga?.author.username}</span>{' '}
                 {moment(renga?.createdAt).fromNow()}
             </div>
             {!renga?.isResolved && !renga?.isMine && (
@@ -128,17 +137,18 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     <MovieAutocomplete
                         movie={movie}
                         onMovieChange={setMovie}
-                        placeholder="You guess"
+                        placeholder="Your guess"
                     />
                     <button
                         className={classNames(
-                            'p-4 text-gray-100 rounded mt-4 w-full',
+                            'p-4 text-gray-100 rounded mt-4 w-full font-medium outline-none',
                             {
-                                'bg-green-700': !!movie,
-                                'bg-green-500 opacity-50': !movie,
+                                'bg-green-500 hover:bg-green-300': !!movie,
+                                'bg-green-500 opacity-50  cursor-default ': !movie,
                             }
                         )}
                         onClick={handleSubmission}
+                        disabled={!movie}
                     >
                         Submit
                     </button>

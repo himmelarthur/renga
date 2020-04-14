@@ -69,12 +69,12 @@ const MovieAutocomplete: React.FC<Props> = ({
                         className="appearance-none p-6 border-2 rounded h-10 w-full text-xl font-bold"
                     />
                 ) : (
-                    <div className="p-3 border-2 rounded w-full text-xl font-bold relative flex items-center mr-16">
+                    <div className="p-3 border-2 rounded w-full text-xl font-bold relative flex items-center mr-16 bg-white">
                         {movie.title} (
                         {moment(movie.release_date).format('YYYY')})
                         <div
                             onClick={() => onMovieChange?.(undefined)}
-                            className="uppercase text-red-700 absolute right-0 cursor-pointer text-sm mr-2"
+                            className="uppercase text-red-500 absolute right-0 cursor-pointer text-sm mr-2"
                         >
                             change
                         </div>

@@ -21,24 +21,37 @@ gql`
     }
 `
 
-const Rengas = ({ partyId, onClickRenga }: Props) => {
+const Rengas = ({
+    partyId,
+    highlightedRenga,
+    noRengasComponent,
+    onClickRenga,
+}: Props) => {
     const { data, loading } = useGetRengasQuery({ variables: { partyId } })
     if (loading) {
         return <div></div>
     }
     return (
-        <div className="flex flex-row flex-wrap">
-            {data?.rengas.map((renga) => (
-                <Renga
-                    key={renga.id}
-                    renga={renga}
-                    onClick={() => onClickRenga(renga.id)}
-                />
-            ))}
+        <div className="flex flex-row flex-wrap justify-center sm:justify-start">
+            {data?.rengas.length
+                ? data?.rengas.map((renga) => (
+                      <Renga
+                          key={renga.id}
+                          renga={renga}
+                          highlighted={highlightedRenga === renga.id}
+                          onClick={() => onClickRenga(renga.id)}
+                      />
+                  ))
+                : noRengasComponent}
         </div>
     )
 }
 
-type Props = { partyId: string; onClickRenga: (rengaId: number) => void }
+type Props = {
+    partyId: string
+    onClickRenga: (rengaId: number) => void
+    noRengasComponent?: JSX.Element
+    highlightedRenga?: number
+}
 
 export default Rengas

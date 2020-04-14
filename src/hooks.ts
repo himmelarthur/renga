@@ -1,9 +1,10 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
 import JwtDecode from 'jwt-decode'
 import { useParams } from 'react-router-dom'
 
 export const useParty = () => {
+    const [ready, setReady] = useState(false)
     const { userId, setUserId } = useContext(AuthContext)
     const { partyId } = useParams()
 
@@ -18,6 +19,7 @@ export const useParty = () => {
         } else {
             setUserId(undefined)
         }
+        setReady(true)
     }, [partyId, setUserId])
 
     useEffect(() => {
@@ -49,5 +51,5 @@ export const useParty = () => {
         return partyId
     }
 
-    return { addParty, userId, partyId }
+    return { addParty, userId, partyId, ready }
 }

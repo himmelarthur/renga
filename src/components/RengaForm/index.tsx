@@ -42,9 +42,10 @@ export interface IRengaFormProps {
     userId: number
     partyId: string
     onCreated: () => void
+    onClose: () => void
 }
 
-export default ({ userId, partyId, onCreated }: IRengaFormProps) => {
+export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
     const [createRenga] = useCreateRengaMutation()
     const [movie, setMovie] = React.useState<MovieResult | undefined>()
     const [emojis, setEmojis] = React.useState<TEmojis>([
@@ -89,24 +90,31 @@ export default ({ userId, partyId, onCreated }: IRengaFormProps) => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className=" max-w-xl">
-            <div className="bg-gray-200 p-4 rounded-lg mb-3">
+        <form onSubmit={handleSubmit} className="my-2">
+            <div className="bg-gray-200 p-4 rounded-lg mb-3 relative">
                 <h3 className="text-xl text-gray-900 font-bold mb-2">
                     Make people guess a movie...
                 </h3>
                 <MovieAutocomplete movie={movie} onMovieChange={setMovie} />
-            </div>
-            <div className="bg-gray-200 p-4 rounded-lg">
-                <h3 className="text-xl text-gray-900 font-bold mb-2">
+                <div
+                    className="absolute top-0 p-4 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"
+                    onClick={onClose}
+                >
+                    ✕
+                </div>
+                <h3 className="text-xl text-gray-900 font-bold my-2">
                     ...with <span className="text-red-500">three</span> emojis
                 </h3>
                 <EmojiSelector emojis={emojis} onEmojisChange={setEmojis} />
             </div>
             <input
-                className={classNames('p-4 text-gray-100 rounded mt-4 w-full', {
-                    'bg-green-700': isValid(),
-                    'bg-green-500 opacity-50': !isValid(),
-                })}
+                className={classNames(
+                    'p-4 text-gray-100 rounded mt-4 w-full hover:bg-green-300 cursor-pointer font-medium outline-none',
+                    {
+                        'bg-green-500': isValid(),
+                        'bg-green-500 opacity-50': !isValid(),
+                    }
+                )}
                 type="submit"
                 value="Submit Renga"
                 disabled={!isValid()}
