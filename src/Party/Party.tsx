@@ -50,7 +50,7 @@ const Party = ({ partyId, userId }: Props) => {
                 id="confetti"
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
-            <div className="sm:flex sm:flex-col items-center sm:px-10 sm:py-4 p-4">
+            <div className="sm:flex sm:flex-col items-center sm:px-10 sm:py-4 p-4 mb-20">
                 <div className="flex flex-row justify-between items-center sticky top-0 w-full">
                     <div className="flex flex-row items-baseline">
                         <h1 className="flex justify-center items-center text-primary font-logo text-3xl rounded-lg h-12 w-12 m-auto align-middle leading-none border-2 border-pink-500 text-center">
