@@ -55,7 +55,7 @@ const Party = ({ partyId, userId }: Props) => {
             <div className="sm:p-10 p-4 h-full">
                 <h1 className="text-primary font-logo text-3xl mb-4">Renga</h1>
                 <div className="flex sm:flex-row flex-col h-full">
-                    <div className="sm:w-2/3">
+                    <div className="sm:w-2/3 sm:mr-4">
                         {userId ? <InviteLink partyId={partyId} /> : undefined}
                         <div>
                             {createRengaOn && userId ? (

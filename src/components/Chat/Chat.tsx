@@ -6,6 +6,21 @@ import {
     GetChatMessagesDocument,
 } from '../../generated/graphql'
 import moment from 'moment'
+import data from 'emoji-mart/data/all.json'
+import { Emoji } from 'emoji-mart'
+
+const EMOJIS = Object.values(data.categories)[1].emojis
+const EMOJIS_LENGTH = EMOJIS.length
+
+const userEmoji = (userId: number, partyId: string) =>
+    EMOJIS[
+        (userId +
+            partyId.split('').reduce(function (a: number, b: string) {
+                a = (a << 5) - a + b.charCodeAt(0)
+                return a & a
+            }, 0)) &
+            EMOJIS_LENGTH
+    ]
 
 gql`
     query GetChatMessages($partyId: String!) {
@@ -77,7 +92,7 @@ const Chat = ({ partyId, userId }: Props) => {
     }, [data])
     if (!data || loading) return <div></div>
     return (
-        <div className="absolute bottom-0 right-0 pb-24 w-full">
+        <div className="sm:absolute relative bottom-0 right-0 pb-24 w-full">
             <h3 className="text-gray-700 text-2xl font-bold">Chat</h3>
             <div
                 className="overflow-y-auto my-4"
@@ -87,6 +102,16 @@ const Chat = ({ partyId, userId }: Props) => {
                 {data.chatMessages.map((message) => (
                     <div key={message.id} className="mb-4 last:mb-0">
                         <div className="flex items-baseline">
+                            <div>
+                                <Emoji
+                                    native
+                                    size={16}
+                                    emoji={userEmoji(
+                                        message.author.id,
+                                        partyId
+                                    )}
+                                ></Emoji>
+                            </div>
                             <div className="text-sm font-bold mr-3">
                                 {message.author.username}
                             </div>
@@ -94,6 +119,7 @@ const Chat = ({ partyId, userId }: Props) => {
                                 {moment(message.createdAt).format('HH:mm')}
                             </div>
                         </div>
+
                         <div className="text-gray-700 text-sm">
                             {message.message}
                         </div>
