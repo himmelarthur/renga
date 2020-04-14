@@ -3,3 +3,7 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.grayed {
+    filter: grayscale(1)
+}
