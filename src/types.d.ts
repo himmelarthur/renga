@@ -16,3 +16,11 @@ declare module 'confetti-js' {
         clear: () => void
     }
 }
+
+interface Crisp {
+    push: (arg: [string, string, any[]]) => void
+}
+
+interface Window {
+    $crisp?: Crisp
+}
