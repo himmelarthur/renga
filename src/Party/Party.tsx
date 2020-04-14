@@ -8,6 +8,7 @@ import RengaSubmission from '../components/RengaSubmission'
 import Rengas from './Rengas'
 import JoinForm from './JoinForm'
 import NoRengas from './NoRengas'
+import JoinParty from './JoinParty'
 
 type Props = {
     partyId: string
@@ -40,6 +41,11 @@ const Party = ({ partyId, userId }: Props) => {
         return () => confetti.clear()
     }, [])
 
+    if (!userId) {
+        // The user is not logged in
+        return <JoinParty partyId={partyId} />
+    }
+
     return (
         <>
             <canvas
@@ -61,47 +67,22 @@ const Party = ({ partyId, userId }: Props) => {
                                 ></RengaForm>
                             ) : (
                                 <div className="sm:mt-8 mt-0">
-                                    {userId ? (
-                                        <div className="flex justify-center mb-4">
-                                            <button
-                                                className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
-                                                style={{
-                                                    background:
-                                                        'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
-                                                }}
-                                                onClick={() => {
-                                                    confettis?.clear()
-                                                    setCreateRengaOn(true)
-                                                }}
-                                            >
-                                                New Renga
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <motion.div
-                                            animate="visible"
-                                            initial="hidden"
-                                            className="flex mb-8 items-start justify-start flex-col"
-                                            variants={{
-                                                hidden: {
-                                                    opacity: 0,
-                                                    y: -50,
-                                                },
-                                                visible: {
-                                                    opacity: 1,
-                                                    y: 0,
-                                                    transition: {
-                                                        delay: 0.5,
-                                                    },
-                                                },
+                                    <div className="flex justify-center mb-4">
+                                        <button
+                                            className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
+                                            style={{
+                                                background:
+                                                    'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
+                                            }}
+                                            onClick={() => {
+                                                confettis?.clear()
+                                                setCreateRengaOn(true)
                                             }}
                                         >
-                                            <JoinForm
-                                                partyId={partyId}
-                                            ></JoinForm>
-                                        </motion.div>
-                                    )}
-                                    {solvingRenga && userId ? (
+                                            New Renga
+                                        </button>
+                                    </div>
+                                    {solvingRenga ? (
                                         <motion.div
                                             className="mb-8"
                                             animate="visible"
@@ -122,37 +103,29 @@ const Party = ({ partyId, userId }: Props) => {
                                             ></RengaSubmission>
                                         </motion.div>
                                     ) : undefined}
-                                    <div
-                                        className={`${
-                                            userId ? '' : 'pointer-events-none'
-                                        }`}
-                                    >
-                                        <Rengas
-                                            highlightedRenga={solvingRenga}
-                                            partyId={partyId}
-                                            noRengasComponent={<NoRengas />}
-                                            onClickRenga={(rengaId) => {
-                                                confettis?.clear()
-                                                if (rengaId === solvingRenga) {
-                                                    setSolvingRenga(undefined)
-                                                } else {
-                                                    setSolvingRenga(rengaId)
-                                                }
-                                            }}
-                                        />
-                                    </div>
+                                    <Rengas
+                                        highlightedRenga={solvingRenga}
+                                        partyId={partyId}
+                                        noRengasComponent={<NoRengas />}
+                                        onClickRenga={(rengaId) => {
+                                            confettis?.clear()
+                                            if (rengaId === solvingRenga) {
+                                                setSolvingRenga(undefined)
+                                            } else {
+                                                setSolvingRenga(rengaId)
+                                            }
+                                        }}
+                                    />
                                 </div>
                             )}
                         </div>
                     </div>
-                    {userId ? (
-                        <div className="sm:w-1/3">
-                            <Leaderboard
-                                partyId={partyId}
-                                userId={userId}
-                            ></Leaderboard>
-                        </div>
-                    ) : undefined}
+                    <div className="sm:w-1/3">
+                        <Leaderboard
+                            partyId={partyId}
+                            userId={userId}
+                        ></Leaderboard>
+                    </div>
                 </div>
             </div>
         </>

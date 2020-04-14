@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 interface ILeaderboardProps {
     partyId: string
-    userId: number
+    userId?: number
     className?: string
 }
 
