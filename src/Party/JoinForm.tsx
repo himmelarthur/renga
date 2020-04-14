@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FormEvent } from 'react'
 import gql from 'graphql-tag'
 import { useJoinPartyMutation } from '../generated/graphql'
 import { useParty } from '../hooks'
@@ -17,13 +17,16 @@ const JoinForm = ({ partyId }: Props) => {
     })
     const [username, setUsername] = React.useState('')
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         joinParty({
             variables: {
                 partyId,
                 username,
             },
         })
+        e.stopPropagation()
+        e.preventDefault()
+        return false
     }
 
     return (
@@ -32,7 +35,10 @@ const JoinForm = ({ partyId }: Props) => {
                 Enter your username and start guessing which movies are behind
                 the emojis below.
             </div>
-            <div className="flex flex-col sm:flex-row items-center">
+            <form
+                className="flex flex-col sm:flex-row items-center"
+                onSubmit={handleSubmit}
+            >
                 <input
                     type="text"
                     value={username}
@@ -42,7 +48,6 @@ const JoinForm = ({ partyId }: Props) => {
                 />
                 <button
                     disabled={!username.length}
-                    onClick={handleSubmit}
                     className="bg-primary hover:opacity-75 text-white py-2 px-4 rounded"
                 >
                     Join the party
@@ -50,7 +55,7 @@ const JoinForm = ({ partyId }: Props) => {
                 <p className="text-red-500 font-semibold">
                     {error?.graphQLErrors.map((x) => x.message).join(', ')}
                 </p>
-            </div>
+            </form>
         </div>
     )
 }

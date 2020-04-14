@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, FormEvent } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useCreatePartyMutation } from '../generated/graphql'
 import { useParty } from '../hooks'
@@ -17,18 +17,25 @@ const Landing = () => {
     const { addParty } = useParty()
     const history = useHistory()
 
-    const onCreate = useCallback(async () => {
-        if (!username) return
-        const res = await create({ variables: { username } })
-        try {
-            const partyId = addParty(res.data?.createParty)
-            if (partyId) {
-                history.push(`/p/${partyId}`)
+    const onCreate = useCallback(
+        async (e: FormEvent) => {
+            e.stopPropagation()
+            e.preventDefault()
+            if (!username) return false
+            const res = await create({ variables: { username } })
+            try {
+                const partyId = addParty(res.data?.createParty)
+                if (partyId) {
+                    history.push(`/p/${partyId}`)
+                }
+            } catch (err) {
+                console.error(err)
             }
-        } catch (err) {
-            console.error(err)
-        }
-    }, [username, create, history, addParty])
+
+            return false
+        },
+        [username, create, history, addParty]
+    )
     return (
         <div
             className="p-10 h-screen"
@@ -41,7 +48,10 @@ const Landing = () => {
                 Make your friends guess movies with only three emojis
             </h2>
             <EmojiRoulette />
-            <div className="mt-10 justify-center flex flex-col items-center sm:flex-row">
+            <form
+                className="mt-10 justify-center flex flex-col items-center sm:flex-row"
+                onSubmit={onCreate}
+            >
                 <input
                     type="text"
                     placeholder="Your username..."
@@ -55,11 +65,10 @@ const Landing = () => {
                         background:
                             'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
                     }}
-                    onClick={onCreate}
                 >
                     <span className="mr-2">🎮</span>Start Party
                 </button>
-            </div>
+            </form>
         </div>
     )
 }
