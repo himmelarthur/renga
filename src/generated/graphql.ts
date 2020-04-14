@@ -18,7 +18,6 @@ export type Query = {
   renga?: Maybe<Renga>;
   rengas: Array<Renga>;
   party?: Maybe<Party>;
-  invitePartyLink: Scalars['String'];
   chatMessages: Array<ChatMessage>;
 };
 
@@ -53,9 +52,6 @@ export type QueryPartyArgs = {
 };
 
 
-export type QueryInvitePartyLinkArgs = {
-  partyId: Scalars['String'];
-}
 export type QueryChatMessagesArgs = {
   where?: Maybe<ChatMessageWhereInput>;
   orderBy?: Maybe<ChatMessageOrderByInput>;
@@ -385,7 +381,9 @@ export type MutationCreatePartyArgs = {
 export type MutationJoinPartyArgs = {
   partyId: Scalars['String'];
   username: Scalars['String'];
-}
+};
+
+
 export type MutationCreateOneChatMessageArgs = {
   data: ChatMessageCreateInput;
 };
@@ -648,6 +646,17 @@ export type CreatePartyMutation = (
   & Pick<Mutation, 'createParty'>
 );
 
+export type JoinPartyMutationVariables = {
+  partyId: Scalars['String'];
+  username: Scalars['String'];
+};
+
+
+export type JoinPartyMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'joinParty'>
+);
+
 export type GetRengasQueryVariables = {
   partyId: Scalars['String'];
 };
@@ -665,16 +674,6 @@ export type GetRengasQuery = (
   )> }
 );
 
-export type JoinPartyMutationVariables = {
-  partyId: Scalars['String'];
-  username: Scalars['String'];
-};
-
-
-export type JoinPartyMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'joinParty'>
-);
 export type GetChatMessagesQueryVariables = {
   partyId: Scalars['String'];
 };
@@ -709,7 +708,6 @@ export type PostMessageMutation = (
       & Pick<User, 'id' | 'username'>
     ) }
   ) }
->>>>>>> POC Chat
 );
 
 export type GetPlayersQueryVariables = {
@@ -819,6 +817,36 @@ export function useCreatePartyMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type CreatePartyMutationHookResult = ReturnType<typeof useCreatePartyMutation>;
 export type CreatePartyMutationResult = ApolloReactCommon.MutationResult<CreatePartyMutation>;
 export type CreatePartyMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePartyMutation, CreatePartyMutationVariables>;
+export const JoinPartyDocument = gql`
+    mutation joinParty($partyId: String!, $username: String!) {
+  joinParty(partyId: $partyId, username: $username)
+}
+    `;
+
+/**
+ * __useJoinPartyMutation__
+ *
+ * To run a mutation, you first call `useJoinPartyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinPartyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinPartyMutation, { data, loading, error }] = useJoinPartyMutation({
+ *   variables: {
+ *      partyId: // value for 'partyId'
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useJoinPartyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinPartyMutation, JoinPartyMutationVariables>) {
+        return ApolloReactHooks.useMutation<JoinPartyMutation, JoinPartyMutationVariables>(JoinPartyDocument, baseOptions);
+      }
+export type JoinPartyMutationHookResult = ReturnType<typeof useJoinPartyMutation>;
+export type JoinPartyMutationResult = ApolloReactCommon.MutationResult<JoinPartyMutation>;
+export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinPartyMutation, JoinPartyMutationVariables>;
 export const GetRengasDocument = gql`
     query GetRengas($partyId: String!) {
   rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
@@ -859,10 +887,6 @@ export function useGetRengasLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetRengasQueryHookResult = ReturnType<typeof useGetRengasQuery>;
 export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQuery>;
 export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
-export const JoinPartyDocument = gql`
-    mutation joinParty($partyId: String!, $username: String!) {
-  joinParty(partyId: $partyId, username: $username)
-  `
 export const GetChatMessagesDocument = gql`
     query GetChatMessages($partyId: String!) {
   chatMessages(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: asc}) {
@@ -878,12 +902,6 @@ export const GetChatMessagesDocument = gql`
     `;
 
 /**
-<<<<<<< HEAD
- * __useJoinPartyMutation__
- *
- * To run a mutation, you first call `useJoinPartyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useJoinPartyMutation` returns a tuple that includes:
-=======
  * __useGetChatMessagesQuery__
  *
  * To run a query within a React component, call `useGetChatMessagesQuery` and pass it any options that fit your needs.
@@ -927,28 +945,12 @@ export const PostMessageDocument = gql`
  *
  * To run a mutation, you first call `usePostMessageMutation` within a React component and pass it any options that fit your needs.
  * When your component renders, `usePostMessageMutation` returns a tuple that includes:
->>>>>>> POC Chat
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
-<<<<<<< HEAD
- * const [joinPartyMutation, { data, loading, error }] = useJoinPartyMutation({
- *   variables: {
- *      partyId: // value for 'partyId'
- *      username: // value for 'username'
- *   },
- * });
- */
-export function useJoinPartyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinPartyMutation, JoinPartyMutationVariables>) {
-        return ApolloReactHooks.useMutation<JoinPartyMutation, JoinPartyMutationVariables>(JoinPartyDocument, baseOptions);
-      }
-export type JoinPartyMutationHookResult = ReturnType<typeof useJoinPartyMutation>;
-export type JoinPartyMutationResult = ApolloReactCommon.MutationResult<JoinPartyMutation>;
-export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinPartyMutation, JoinPartyMutationVariables>;
-=======
  * const [postMessageMutation, { data, loading, error }] = usePostMessageMutation({
  *   variables: {
  *      partyId: // value for 'partyId'
@@ -963,7 +965,6 @@ export function usePostMessageMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type PostMessageMutationHookResult = ReturnType<typeof usePostMessageMutation>;
 export type PostMessageMutationResult = ApolloReactCommon.MutationResult<PostMessageMutation>;
 export type PostMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<PostMessageMutation, PostMessageMutationVariables>;
->>>>>>> POC Chat
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {
   party(where: {id: $partyId}) {

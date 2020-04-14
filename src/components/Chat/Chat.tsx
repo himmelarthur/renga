@@ -1,4 +1,4 @@
-import React, { useState, useCallback, FormEvent } from 'react'
+import React, { useState, FormEvent, useEffect, useRef } from 'react'
 import gql from 'graphql-tag'
 import {
     useGetChatMessagesQuery,
@@ -54,6 +54,7 @@ const Chat = ({ partyId, userId }: Props) => {
         ],
     })
     const [message, setMessage] = useState('')
+    const scrollingComponent = useRef<HTMLDivElement>(null)
     const onPost = async (e: FormEvent) => {
         e.preventDefault()
         await post({
@@ -66,12 +67,25 @@ const Chat = ({ partyId, userId }: Props) => {
         setMessage('')
         return false
     }
+    useEffect(() => {
+        if (scrollingComponent.current) {
+            scrollingComponent.current.scrollTo(
+                0,
+                scrollingComponent.current.scrollHeight
+            )
+        }
+    }, [data])
     if (!data || loading) return <div></div>
     return (
-        <div className="absolute bottom-0 right-0 p-8">
-            <div className="overflow-y-scroll p-4" style={{ maxHeight: 400 }}>
+        <div className="absolute bottom-0 right-0 pb-24 w-full">
+            <h3 className="text-gray-700 text-2xl font-bold">Chat</h3>
+            <div
+                className="overflow-y-auto my-4"
+                style={{ maxHeight: 400 }}
+                ref={scrollingComponent}
+            >
                 {data.chatMessages.map((message) => (
-                    <div key={message.id} className="mb-4">
+                    <div key={message.id} className="mb-4 last:mb-0">
                         <div className="flex items-baseline">
                             <div className="text-sm font-bold mr-3">
                                 {message.author.username}
@@ -80,24 +94,20 @@ const Chat = ({ partyId, userId }: Props) => {
                                 {moment(message.createdAt).format('HH:mm')}
                             </div>
                         </div>
-                        <div>{message.message}</div>
+                        <div className="text-gray-700 text-sm">
+                            {message.message}
+                        </div>
                     </div>
                 ))}
             </div>
-            <form onSubmit={onPost} className="mt-4">
+            <form onSubmit={onPost}>
                 <input
                     type="text"
                     value={message}
                     placeholder="Your message..."
-                    className="shadow appearance-none mr-4 rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                    className="w-full shadow appearance-none mr-4 rounded py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     onChange={(e) => setMessage(e.target.value)}
                 />
-                <button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    disabled={!message}
-                >
-                    Post message
-                </button>
             </form>
         </div>
     )
