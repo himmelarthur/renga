@@ -55,10 +55,10 @@ const JoinForm = ({ partyId }: Props) => {
                 >
                     Join the party
                 </button>
-                <p className="text-red-500 font-semibold">
-                    {error?.graphQLErrors.map((x) => x.message).join(', ')}
-                </p>
             </form>
+            <p className="text-red-500 mt-2 text-sm">
+                {error && 'Sorry this party does not exist, start a new one'}
+            </p>
         </div>
     )
 }
