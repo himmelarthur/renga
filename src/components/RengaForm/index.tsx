@@ -91,8 +91,8 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
 
     return (
         <form onSubmit={handleSubmit} className="">
-            <div className="bg-gray-200 p-4 rounded-lg mb-3 relative">
-                <h3 className="text-xl text-gray-900 font-bold mb-2">
+            <div className="bg-gray-100 p-4 rounded-lg mb-3 relative">
+                <h3 className="text-xl text-gray-800 font-bold mb-2">
                     Make people guess a movie...
                 </h3>
                 <MovieAutocomplete movie={movie} onMovieChange={setMovie} />
@@ -102,23 +102,23 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 >
                     ✕
                 </div>
-                <h3 className="text-xl text-gray-900 font-bold my-2">
-                    ...with <span className="text-red-500">three</span> emojis
+                <input
+                    className={classNames(
+                        'p-4 text-gray-100 rounded mt-4 w-full hover:bg-teal-600 cursor-pointer font-medium outline-none',
+                        {
+                            'bg-teal-500': isValid(),
+                            'bg-teal-500 opacity-50': !isValid(),
+                        }
+                    )}
+                    type="submit"
+                    value="Submit Renga"
+                    disabled={!isValid()}
+                />
+                <h3 className="text-xl text-gray-800 font-bold my-2">
+                    ...with <span className="text-primary">three</span> emojis
                 </h3>
                 <EmojiSelector emojis={emojis} onEmojisChange={setEmojis} />
             </div>
-            <input
-                className={classNames(
-                    'p-4 text-gray-100 rounded mt-4 w-full hover:bg-green-300 cursor-pointer font-medium outline-none',
-                    {
-                        'bg-green-500': isValid(),
-                        'bg-green-500 opacity-50': !isValid(),
-                    }
-                )}
-                type="submit"
-                value="Submit Renga"
-                disabled={!isValid()}
-            />
         </form>
     )
 }
