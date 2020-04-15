@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react'
 import gql from 'graphql-tag'
-import { useJoinPartyMutation } from '../generated/graphql'
+import { useJoinPartyMutation, GetPlayersDocument } from '../generated/graphql'
 import { useParty } from '../hooks'
 
 gql`
@@ -23,6 +23,9 @@ const JoinForm = ({ partyId }: Props) => {
                 partyId,
                 username,
             },
+            refetchQueries: [
+                { query: GetPlayersDocument, variables: { partyId } },
+            ],
         })
         e.stopPropagation()
         e.preventDefault()
