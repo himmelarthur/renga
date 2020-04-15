@@ -1,5 +1,5 @@
 import React from 'react'
-import { Renga as RengaType, User } from '../generated/graphql'
+import { Renga as RengaType, User, Status } from '../generated/graphql'
 import { Emoji } from 'emoji-mart'
 import moment from 'moment'
 import classNames from 'classnames'
@@ -9,7 +9,7 @@ const Renga = ({ renga, highlighted, onClick }: Props) => {
         <div
             className={classNames(
                 'flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer',
-                { 'bg-gray-100': highlighted, 'grayed opacity-75': renga.isResolved }
+                { 'bg-gray-100': highlighted, 'grayed opacity-75': renga.status.isResolved }
             )}
             onClick={onClick}
         >
@@ -24,7 +24,7 @@ const Renga = ({ renga, highlighted, onClick }: Props) => {
                 <div className="flex">
                     <span>Posted by </span>
                     <span className="font-semibold ml-1">
-                        {renga.isMine ? ' You' : renga.author.username}
+                        {renga.status.isMine ? ' You' : renga.author.username}
                     </span>
                 </div>
 
@@ -39,9 +39,11 @@ const Renga = ({ renga, highlighted, onClick }: Props) => {
 type Props = {
     renga: Pick<
         RengaType,
-        'id' | 'emojis' | 'createdAt' | 'isMine' | 'isResolved'
+        'id' | 'emojis' | 'createdAt'
     > & {
         author: { __typename?: 'User' } & Pick<User, 'id' | 'username'>
+    } & {
+        status: { __typename?: 'Status' } & Pick<Status, 'isMine' | 'isResolved' >
     }
     highlighted: boolean
     onClick: () => void

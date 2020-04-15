@@ -27,11 +27,10 @@ gql`
             id
             emojis
             createdAt
-            isResolved
-            isMine
-            movie {
+            status {
+                isResolved
+                isMine
                 maybeTitle
-                movieDBId
             }
             author {
                 id
@@ -110,8 +109,8 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
 
     return (
         <div className="rounded p-4 bg-gray-100 flex flex-col relative">
-            {(renga?.isResolved || renga?.isMine) && (
-                <BlurTitle title={renga.movie.maybeTitle} rengaId={rengaId} />
+            {(renga?.status.isResolved || renga?.status.isMine) && (
+                <BlurTitle title={renga.status.maybeTitle} rengaId={rengaId} />
             )}
             <div
                 className="absolute top-0 p-4 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"
@@ -133,7 +132,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 <span className="font-medium">{renga?.author.username}</span>{' '}
                 {moment(renga?.createdAt).fromNow()}
             </div>
-            {!renga?.isResolved && !renga?.isMine && (
+            {!renga?.status.isResolved && !renga?.status.isMine && (
                 <>
                     <MovieAutocomplete
                         movie={movie}
@@ -175,7 +174,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                                     {s.valid ? 'found' : 'tried'}
                                     <span className="font-semibold text-gray-800">
                                         {' '}
-                                        {(isMe || renga.isResolved || !s.valid)
+                                        {isMe || renga.status.isResolved || !s.valid
                                             ? s.maybeTitle
                                             : 'the movie'}
                                     </span>

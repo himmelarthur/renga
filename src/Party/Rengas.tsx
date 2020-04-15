@@ -16,8 +16,10 @@ gql`
                 username
             }
             createdAt
-            isMine
-            isResolved
+            status {
+                isResolved
+                isMine
+            }
         }
     }
 `
