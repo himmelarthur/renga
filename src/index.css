@@ -3,3 +3,7 @@
 @tailwind components;
 
 @tailwind utilities;
+
+.blur-1 {
+    filter: blur(1rem)
+}

@@ -9,6 +9,7 @@ import {
 } from '../../generated/graphql'
 import { Emoji } from 'emoji-mart'
 import moment from 'moment'
+import BlurTitle from './BlurTitle'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 import RengaSubmissionSkeleton from './Skeleton'
 
@@ -109,9 +110,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
 
     return (
         <div className="rounded p-4 bg-gray-100 flex flex-col relative">
-            <div className="w-full text-3xl font-bold text-center">
-                {renga?.isResolved && renga.movie.maybeTitle}
-            </div>
+            {(renga?.isResolved || renga?.isMine) && (
+                <BlurTitle title={renga.movie.maybeTitle} rengaId={rengaId} />
+            )}
             <div
                 className="absolute top-0 p-4 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"
                 onClick={onClose}
