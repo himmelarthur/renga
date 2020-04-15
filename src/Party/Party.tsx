@@ -45,11 +45,15 @@ const Party = ({ partyId, userId }: Props) => {
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
             <div className="sm:p-10 p-4">
-                <h1 className="text-primary font-logo text-3xl mb-4">Renga</h1>
-                <div className="flex sm:flex-row flex-col">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center mb-4 justify-between">
+                    <h1 className="text-primary font-logo text-3xl">Renga</h1>
+                    <div className="hidden sm:block">
+                        <InviteLink partyId={partyId} />
+                    </div>
+                </div>
+                <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
                     <div className="sm:w-2/3">
-                        {userId ? <InviteLink partyId={partyId} /> : undefined}
-                        <div>
+                        <div className="sm:mx-4">
                             {createRengaOn && userId ? (
                                 <RengaForm
                                     partyId={partyId}
@@ -58,22 +62,7 @@ const Party = ({ partyId, userId }: Props) => {
                                     onClose={() => setCreateRengaOn(false)}
                                 ></RengaForm>
                             ) : (
-                                <div className="sm:mt-8 mt-0">
-                                    <div className="flex justify-center mb-4">
-                                        <button
-                                            className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
-                                            style={{
-                                                background:
-                                                    'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
-                                            }}
-                                            onClick={() => {
-                                                confettis?.clear()
-                                                setCreateRengaOn(true)
-                                            }}
-                                        >
-                                            New Renga
-                                        </button>
-                                    </div>
+                                <div className="mt-0">
                                     {solvingRenga ? (
                                         <motion.div
                                             className="mb-8"
@@ -96,9 +85,21 @@ const Party = ({ partyId, userId }: Props) => {
                                         </motion.div>
                                     ) : undefined}
                                     <Rengas
+                                        displayNewButton
+                                        onClickNew={() => {
+                                            confettis?.clear()
+                                            setSolvingRenga(undefined)
+                                            setCreateRengaOn(true)
+                                        }}
                                         highlightedRenga={solvingRenga}
                                         partyId={partyId}
-                                        noRengasComponent={<NoRengas />}
+                                        noRengasComponent={
+                                            <NoRengas
+                                                onClickNew={() =>
+                                                    setCreateRengaOn(true)
+                                                }
+                                            />
+                                        }
                                         onClickRenga={(rengaId) => {
                                             confettis?.clear()
                                             if (rengaId === solvingRenga) {
@@ -112,7 +113,7 @@ const Party = ({ partyId, userId }: Props) => {
                             )}
                         </div>
                     </div>
-                    <div className="sm:w-1/3">
+                    <div className="sm:w-1/3 mt-4 sm:mt-0">
                         <Leaderboard
                             partyId={partyId}
                             userId={userId}

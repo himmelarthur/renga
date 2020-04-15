@@ -40,30 +40,24 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
         <div
             className={classNames(
                 className,
-                'max-w-md p-4 flex flex-col items-start pt-0'
+                'max-w-md p-4 px-6 flex flex-col items-start bg-gray-100 rounded-md'
             )}
         >
             <h3 className="text-gray-700 text-2xl font-bold">Leaderboard</h3>
-            <div className="w-full mt-4 text-gray-600 text-sm">
+            <div className="w-full text-gray-600 text-sm">
                 {users.map((player, index) => {
                     const isMe = userId === player.id
                     return (
                         <div
                             key={player.id}
-                            className={classNames('my-2 flex justify-between', {
+                            className={classNames('my-3 flex justify-between', {
                                 'font-medium': isMe,
                                 'text-gray-700': isMe,
                             })}
                         >
                             <div className="flex">
                                 <div className="w-4 text-center text-gray-400">
-                                    {index === 0
-                                        ? '🥇'
-                                        : index === 1
-                                        ? '🥈'
-                                        : index === 2
-                                        ? '🥉'
-                                        : `#${index + 1}`}
+                                    {index === 0 ? '🏅' : `#${index + 1}`}
                                 </div>
                                 <div className="ml-3">{player.username}</div>
                             </div>

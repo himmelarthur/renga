@@ -90,7 +90,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="my-2">
+        <form onSubmit={handleSubmit} className="">
             <div className="bg-gray-200 p-4 rounded-lg mb-3 relative">
                 <h3 className="text-xl text-gray-900 font-bold mb-2">
                     Make people guess a movie...
