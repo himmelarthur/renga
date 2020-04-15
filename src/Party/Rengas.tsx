@@ -27,6 +27,8 @@ const Rengas = ({
     highlightedRenga,
     noRengasComponent,
     onClickRenga,
+    displayNewButton,
+    onClickNew,
 }: Props) => {
     const { data, loading } = useGetRengasQuery({ variables: { partyId } })
     if (loading) {
@@ -34,6 +36,14 @@ const Rengas = ({
     }
     return (
         <div className="flex flex-row flex-wrap justify-center sm:justify-start">
+            {displayNewButton ? (
+                <div
+                    className="flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer text-primary font-medium uppercase bg-gray-100"
+                    onClick={onClickNew}
+                >
+                    + New renga
+                </div>
+            ) : undefined}
             {data?.rengas.length
                 ? data?.rengas.map((renga) => (
                       <Renga
@@ -53,6 +63,8 @@ type Props = {
     onClickRenga: (rengaId: number) => void
     noRengasComponent?: JSX.Element
     highlightedRenga?: number
+    displayNewButton?: boolean
+    onClickNew?: () => void
 }
 
 export default Rengas

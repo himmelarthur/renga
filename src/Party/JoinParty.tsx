@@ -11,54 +11,50 @@ type Props = {
 
 const JoinParty = ({ partyId }: Props) => {
     return (
-        <>
-            <canvas
-                id="confetti"
-                style={{ position: 'fixed', top: 0, zIndex: -1 }}
-            ></canvas>
-            <div className="sm:p-10 p-4">
-                <h1 className="text-primary font-logo text-3xl mb-4">Renga</h1>
-                <div className="flex sm:flex-row flex-col">
-                    <div className="sm:w-2/3">
-                        <div>
-                            <div className="sm:mt-8 mt-0">
-                                <motion.div
-                                    animate="visible"
-                                    initial="hidden"
-                                    className="flex mb-8 items-start justify-start flex-col"
-                                    variants={{
-                                        hidden: {
-                                            opacity: 0,
-                                            y: -50,
+        <div className="sm:p-10 p-4">
+            <div className="flex items-center  mb-4 justify-between">
+                <h1 className="text-primary font-logo text-3xl">Renga</h1>
+            </div>
+            <div className="flex sm:flex-row flex-col px-20 mt-20">
+                <div className="sm:w-2/3">
+                    <div className="mx-4">
+                        <div className="mt-0">
+                            <motion.div
+                                animate="visible"
+                                initial="hidden"
+                                className="flex mb-8 items-start justify-start flex-col"
+                                variants={{
+                                    hidden: {
+                                        opacity: 0,
+                                        y: -50,
+                                    },
+                                    visible: {
+                                        opacity: 1,
+                                        y: 0,
+                                        transition: {
+                                            delay: 0.5,
                                         },
-                                        visible: {
-                                            opacity: 1,
-                                            y: 0,
-                                            transition: {
-                                                delay: 0.5,
-                                            },
-                                        },
-                                    }}
-                                >
-                                    <JoinForm partyId={partyId}></JoinForm>
-                                </motion.div>
+                                    },
+                                }}
+                            >
+                                <JoinForm partyId={partyId}></JoinForm>
+                            </motion.div>
 
-                                <div className="pointer-events-none">
-                                    <Rengas
-                                        partyId={partyId}
-                                        noRengasComponent={<NoRengas />}
-                                        onClickRenga={() => {}}
-                                    />
-                                </div>
+                            <div className="pointer-events-none">
+                                <Rengas
+                                    partyId={partyId}
+                                    noRengasComponent={<NoRengas />}
+                                    onClickRenga={() => {}}
+                                />
                             </div>
                         </div>
                     </div>
-                    <div className="sm:w-1/3">
-                        <Leaderboard partyId={partyId}></Leaderboard>
-                    </div>
+                </div>
+                <div className="sm:w-1/3">
+                    <Leaderboard partyId={partyId}></Leaderboard>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

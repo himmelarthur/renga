@@ -57,9 +57,9 @@ const Party = ({ partyId, userId }: Props) => {
                     <h1 className="text-primary font-logo text-3xl">Renga</h1>
                     <InviteLink partyId={partyId} />
                 </div>
-                <div className="flex sm:flex-row flex-col">
+                <div className="flex sm:flex-row flex-col px-20 mt-20">
                     <div className="sm:w-2/3">
-                        <div>
+                        <div className="mx-4">
                             {createRengaOn && userId ? (
                                 <RengaForm
                                     partyId={partyId}
@@ -68,22 +68,7 @@ const Party = ({ partyId, userId }: Props) => {
                                     onClose={() => setCreateRengaOn(false)}
                                 ></RengaForm>
                             ) : (
-                                <div className="sm:mt-8 mt-0">
-                                    <div className="flex justify-center mb-4">
-                                        <button
-                                            className="w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
-                                            style={{
-                                                background:
-                                                    'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
-                                            }}
-                                            onClick={() => {
-                                                confettis?.clear()
-                                                setCreateRengaOn(true)
-                                            }}
-                                        >
-                                            New Renga
-                                        </button>
-                                    </div>
+                                <div className="mt-0">
                                     {solvingRenga ? (
                                         <motion.div
                                             className="mb-8"
@@ -106,6 +91,12 @@ const Party = ({ partyId, userId }: Props) => {
                                         </motion.div>
                                     ) : undefined}
                                     <Rengas
+                                        displayNewButton
+                                        onClickNew={() => {
+                                            confettis?.clear()
+                                            setSolvingRenga(undefined)
+                                            setCreateRengaOn(true)
+                                        }}
                                         highlightedRenga={solvingRenga}
                                         partyId={partyId}
                                         noRengasComponent={<NoRengas />}
