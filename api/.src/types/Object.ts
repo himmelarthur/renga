@@ -29,17 +29,20 @@ export const Submission = objectType({
             async resolve(parent, args, ctx: Context) {
                 const user = await ctx.user
                 if (!user) return ''
-                const hasValidSubmission = await ctx.prisma.submission.count({
-                    where: {
-                        authorId: user?.userId,
-                        // @ts-ignore
-                        rengaId: parent.rengaId,
-                        valid: true,
-                    },
-                }) > 0
+                const hasValidSubmission =
+                    (await ctx.prisma.submission.count({
+                        where: {
+                            authorId: user?.userId,
+                            // @ts-ignore
+                            rengaId: parent.rengaId,
+                            valid: true,
+                        },
+                    })) > 0
 
-                // @ts-ignore
-                return (hasValidSubmission || !parent.valid) ? parent.movieTitle : ''
+                return hasValidSubmission || !parent.valid
+                    ? // @ts-ignore
+                      parent.movieTitle
+                    : ''
             },
         })
     },
@@ -57,49 +60,56 @@ export const Renga = objectType({
             filtering: { authorId: true, valid: true },
         })
         t.model.emojis()
-        t.boolean('isMine', {
-            async resolve(parent, _, ctx: Context) {
+        t.field('status', {
+            type: 'Status',
+            resolve: async (parent, {}, ctx: Context) => {
                 const user = await ctx.user
-                if (user === undefined) return false
                 // @ts-ignore
-                return parent.authorId === user.userId
+                const isMine = parent.authorId === user?.userId
+                const isResolved =
+                    (await ctx.prisma.submission.count({
+                        where: {
+                            authorId: user?.userId,
+                            // @ts-ignore
+                            rengaId: parent.id,
+                            valid: true,
+                        },
+                    })) > 0 && !!user?.userId
+
+                const movieTitle = (
+                    await ctx.prisma.movie.findOne({
+                        select: { title: true },
+                        // @ts-ignore
+                        where: { id: parent.movieId },
+                    })
+                ).title
+                
+                // @ts-ignore
+                const maybeTitle = isResolved || isMine ? movieTitle : ''
+
+                return {
+                    isMine,
+                    isResolved,
+                    maybeTitle,
+                }
             },
         })
-        t.boolean('isResolved', {
-            async resolve(parent, _, ctx: Context) {
-                const user = await ctx.user
-                if (user === undefined) return false
-                const hasValidSubmission = await ctx.prisma.submission.count({
-                    where: {
-                        authorId: user?.userId,
-                        rengaId: parent.id,
-                        valid: true,
-                    },
-                }) > 0
-                return hasValidSubmission
-            },
-        })
+    },
+})
+
+export const status = objectType({
+    name: 'Status',
+    definition(t) {
+        t.string('maybeTitle')
+        t.boolean('isMine')
+        t.boolean('isResolved')
     },
 })
 
 export const Movie = objectType({
     name: 'Movie',
     definition(t) {
+        t.model.id()
         t.model.movieDBId()
-        t.string('maybeTitle', {
-            async resolve(parent, _, ctx: Context) {
-                const user = await ctx.user
-                if (user === undefined) return ''
-                const hasValidSubmission = await ctx.prisma.submission.count({
-                    where: {
-                        authorId: user?.userId,
-                        movieDBId: parent.movieDBId,
-                        valid: true,
-                    },
-                }) > 0
-                // @ts-ignore
-                return hasValidSubmission ? parent.title : ''
-            },
-        })
     },
 })
