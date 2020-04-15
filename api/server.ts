@@ -9,7 +9,8 @@ import { permissions } from './.src/security/permissions'
 dotenv.config()
 
 Sentry.init({
-    dsn: 'https://dbbff303002a4521a2de4c7bffac69bb@sentry.io/1841359',
+    dsn:
+        'https://f80e05cbcee64135a0c28df600eabe64@o378128.ingest.sentry.io/5201075',
 })
 
 const schemaMiddleware = applyMiddleware(schema, permissions)
