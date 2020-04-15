@@ -17,6 +17,7 @@ gql`
             }
             createdAt
             isMine
+            isResolved
         }
     }
 `
