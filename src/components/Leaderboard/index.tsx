@@ -1,8 +1,9 @@
-import * as React from 'react'
+import React, { useEffect, useState, useLayoutEffect, useRef } from 'react'
 import gql from 'graphql-tag'
 import { useGetPlayersQuery } from '../../generated/graphql'
 import classNames from 'classnames'
 import pluralize from 'pluralize'
+import { motion, useAnimation } from 'framer-motion'
 
 interface ILeaderboardProps {
     partyId: string
@@ -28,11 +29,30 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     userId,
     className,
 }) => {
+    const [userScore, setUserScore] = useState<number>()
     const { data } = useGetPlayersQuery({
         variables: { partyId },
         pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
+        onCompleted: (data) =>
+            setUserScore(
+                data.party?.users.find(({ id }) => id === userId)?.score
+            ),
     })
+    const myScoreAnimationControl = useAnimation()
+
+    useLayoutEffect(() => {
+        const newUserScore = data?.party?.users.find(({ id }) => id === userId)
+            ?.score
+        if (newUserScore && userScore && newUserScore > userScore) {
+            myScoreAnimationControl.start({
+                x: [-5, 5, -5, 5, -5, 5, 0],
+            })
+        }
+        setUserScore(newUserScore)
+    }, [data, userScore])
+
     if (!data?.party) return <div></div>
+
     const {
         party: { users },
     } = data
@@ -49,7 +69,8 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                 {users.map((player, index) => {
                     const isMe = userId === player.id
                     return (
-                        <div
+                        <motion.div
+                            animate={isMe ? myScoreAnimationControl : undefined}
                             key={player.id}
                             className={classNames('my-3 flex justify-between', {
                                 'font-medium': isMe,
@@ -65,7 +86,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                             <div className="text-gray-600">
                                 {pluralize('point', player.score, true)}
                             </div>
-                        </div>
+                        </motion.div>
                     )
                 })}
             </div>
