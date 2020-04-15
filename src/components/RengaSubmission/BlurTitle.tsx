@@ -8,9 +8,9 @@ export interface BlurTitleProps {
 }
 
 export default ({ className, title, rengaId }: BlurTitleProps) => {
-    const [isShown, setIsShow] = useState(false)
+    const [isShown, setIsShown] = useState(false)
     useEffect(() => {
-        setIsShow(false)
+        setIsShown(false)
     }, [rengaId])
     return (
         <div className={classNames("flex flex-col items-center p-4", className)}>
@@ -23,7 +23,7 @@ export default ({ className, title, rengaId }: BlurTitleProps) => {
             >
                 {title}
             </div>
-            <div className="text-sm uppercase text-teal-800 mt-2 cursor-pointer " onClick={() => setIsShow(!isShown)}>{isShown ? 'hide' : 'show'}</div>
+            <div className="text-sm uppercase text-teal-800 mt-2 cursor-pointer " onClick={() => setIsShown(!isShown)}>{isShown ? 'hide' : 'show'}</div>
         </div>
     )
 }
