@@ -19,7 +19,7 @@ const EmojiSelector: React.FC<Props> = ({ emojis, onEmojisChange }) => {
                     <div className="flex relative">
                         {emojis.map((emoji, index) => (
                             <div
-                                className="bg-gray-400 rounded mx-2 sm:h-16 sm:w-16 h-12 w-12 text-4xl sm:text-5xl text-center cursor-pointer"
+                                className="bg-white rounded-lg mx-2 sm:h-16 sm:w-16 h-12 w-12 text-4xl sm:text-5xl text-center cursor-pointer"
                                 key={index}
                                 onClick={() => {
                                     const newEmojis = emojis.filter((_, i) => index !== i)
