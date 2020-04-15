@@ -8,20 +8,12 @@ const Renga = ({ renga, highlighted, onClick }: Props) => {
     return (
         <div
             className={classNames(
-                'flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4',
-                'relative rounded hover:bg-gray-200 p-2 cursor-pointer',
-                { 'bg-gray-100': highlighted }
+                'flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer',
+                { 'bg-gray-100': highlighted, 'grayed opacity-75': renga.isResolved }
             )}
             onClick={onClick}
         >
-            {renga.isResolved && (
-                <span className="absolute right-0 bottom-0 colored">✅</span>
-            )}
-            <div
-                className={classNames('flex flex-row justify-around', {
-                    'grayed opacity-75': renga.isResolved,
-                })}
-            >
+            <div className="flex flex-row justify-around">
                 {renga.emojis.map((emoji, index) => (
                     <div className="pr-1 last:pr-0">
                         <Emoji size={32} native emoji={emoji} key={index} />
