@@ -53,13 +53,15 @@ const Party = ({ partyId, userId }: Props) => {
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
             <div className="sm:p-10 p-4">
-                <div className="flex items-center  mb-4 justify-between">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center mb-4 justify-between">
                     <h1 className="text-primary font-logo text-3xl">Renga</h1>
-                    <InviteLink partyId={partyId} />
+                    <div className="hidden sm:block">
+                        <InviteLink partyId={partyId} />
+                    </div>
                 </div>
-                <div className="flex sm:flex-row flex-col px-20 mt-20">
+                <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
                     <div className="sm:w-2/3">
-                        <div className="mx-4">
+                        <div className="sm:mx-4">
                             {createRengaOn && userId ? (
                                 <RengaForm
                                     partyId={partyId}

@@ -15,9 +15,9 @@ const JoinParty = ({ partyId }: Props) => {
             <div className="flex items-center  mb-4 justify-between">
                 <h1 className="text-primary font-logo text-3xl">Renga</h1>
             </div>
-            <div className="flex sm:flex-row flex-col px-20 mt-20">
+            <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
                 <div className="sm:w-2/3">
-                    <div className="mx-4">
+                    <div className="sm:mx-4">
                         <div className="mt-0">
                             <motion.div
                                 animate="visible"

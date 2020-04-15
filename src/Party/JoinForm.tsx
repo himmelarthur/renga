@@ -44,11 +44,11 @@ const JoinForm = ({ partyId }: Props) => {
                     value={username}
                     onChange={(evt) => setUsername(evt.target.value)}
                     placeholder="Enter your username"
-                    className="shadow appearance-none mr-4 mb-4 sm:mb-0 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow appearance-none sm:mr-4 sm:mb-0 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full sm:w-auto "
                 />
                 <button
                     disabled={!username.length}
-                    className="bg-primary hover:opacity-75 text-white py-2 px-4 rounded"
+                    className="bg-primary hover:opacity-75 text-white py-2 px-4 my-4 sm:my-0 rounded w-full sm:w-auto"
                 >
                     Join the party
                 </button>
