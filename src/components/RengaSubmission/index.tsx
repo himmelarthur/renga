@@ -144,8 +144,8 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                         className={classNames(
                             'p-4 text-gray-100 rounded mt-4 w-full font-medium outline-none',
                             {
-                                'bg-green-500 hover:bg-green-300': !!movie,
-                                'bg-green-500 opacity-50  cursor-default ': !movie,
+                                'bg-teal-500 hover:bg-teal-600': !!movie,
+                                'bg-teal-500 opacity-50  cursor-default ': !movie,
                             }
                         )}
                         onClick={handleSubmission}
@@ -164,7 +164,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                             <div
                                 className={classNames('w-4 h-4 rounded-full', {
                                     'bg-gray-400': !s.valid,
-                                    'bg-green-600': s.valid,
+                                    'bg-teal-600': s.valid,
                                 })}
                             ></div>
                             <div className="text-gray-600 flex flex-col ml-4">
