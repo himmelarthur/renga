@@ -27,7 +27,10 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     userId,
     className,
 }) => {
-    const { data } = useGetPlayersQuery({ variables: { partyId } })
+    const { data } = useGetPlayersQuery({
+        variables: { partyId },
+        pollInterval: 6000,
+    })
     if (!data?.party) return <div></div>
     const {
         party: { users },
