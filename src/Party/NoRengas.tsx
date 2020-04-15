@@ -38,7 +38,9 @@ const NoRengas = ({ onClickNew }: Props) => {
                     </div>
                 </div>
                 <div className="justify-center flex my-4">
-                    <Button onClick={onClickNew}>New Renga</Button>
+                    <Button className="sm:w-auto" onClick={onClickNew}>
+                        New Renga
+                    </Button>
                 </div>
                 <div className="">
                     <div className="mb-4 font-bold mt-2 text-lg">

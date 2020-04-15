@@ -3,6 +3,7 @@ import React, {
     ButtonHTMLAttributes,
     FormEvent,
 } from 'react'
+import classNames from 'classnames'
 import Loader from 'react-loader-spinner'
 
 type Props = {
@@ -10,20 +11,24 @@ type Props = {
     children: JSX.Element | JSX.Element[] | string
     loading?: boolean
     onClick: (e: FormEvent) => any
+    className?: string
 }
 
-const Button = ({ loading, children, ...props }: Props) => {
+const Button = ({ loading, children, className, ...props }: Props) => {
     const disabled = props.disabled || loading
     return (
         <button
             disabled={disabled}
-            className={`w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 ${
-                disabled ? '' : 'hover:opacity-75'
-            } relative flex items-center justify-center ${
-                disabled ? 'cursor-default' : ''
-            }`}
+            className={classNames(
+                `w-full text-white py-2 px-4 rounded text-xl font-medium outline-none transition duration-150 ${
+                    disabled ? 'cursor-default bg-gray-300' : 'hover:opacity-75'
+                } relative flex items-center justify-center`,
+                className
+            )}
             style={{
-                background: 'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
+                background: props.disabled
+                    ? ''
+                    : 'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
             }}
             {...props}
         >

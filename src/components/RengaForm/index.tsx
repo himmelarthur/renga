@@ -8,6 +8,7 @@ import {
 import EmojiSelector, { TBricks as TEmojis } from './EmojiSelector'
 import classNames from 'classnames'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
+import Button from '../Button'
 
 gql`
     mutation createRenga(
@@ -58,7 +59,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
         return emojis.filter((x) => x).length === 3 && movie !== undefined
     }
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent) => {
         const emojiIds: string[] = emojis
             .filter((x) => x)
             .map((x) => x?.id ?? '')
@@ -90,8 +91,11 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="">
-            <div className="bg-gray-100 p-4 rounded-lg mb-3 relative">
+        <form
+            onSubmit={handleSubmit}
+            className="flex sm:flex-row flex-col items-start"
+        >
+            <div className="bg-gray-100 p-4 rounded-lg mb-3 relative w-full sm:w-5/6">
                 <h3 className="text-xl text-gray-800 font-bold mb-2">
                     Make people guess a movie...
                 </h3>
@@ -102,23 +106,18 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 >
                     ✕
                 </div>
-                <input
-                    className={classNames(
-                        'p-4 text-gray-100 rounded mt-4 w-full hover:bg-teal-600 cursor-pointer font-medium outline-none',
-                        {
-                            'bg-teal-500': isValid(),
-                            'bg-teal-500 opacity-50': !isValid(),
-                        }
-                    )}
-                    type="submit"
-                    value="Submit Renga"
-                    disabled={!isValid()}
-                />
                 <h3 className="text-xl text-gray-800 font-bold my-2">
                     ...with <span className="text-primary">three</span> emojis
                 </h3>
                 <EmojiSelector emojis={emojis} onEmojisChange={setEmojis} />
             </div>
+            <Button
+                className={classNames('sm:w-48 sm:ml-4 sm:mt-0')}
+                disabled={!isValid()}
+                onClick={handleSubmit}
+            >
+                Create Renga
+            </Button>
         </form>
     )
 }
