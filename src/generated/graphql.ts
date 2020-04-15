@@ -18,7 +18,7 @@ export type Query = {
   renga?: Maybe<Renga>;
   rengas: Array<Renga>;
   party?: Maybe<Party>;
-  invitePartyLink: Scalars['String'];
+  chatMessages: Array<ChatMessage>;
 };
 
 
@@ -52,8 +52,14 @@ export type QueryPartyArgs = {
 };
 
 
-export type QueryInvitePartyLinkArgs = {
-  partyId: Scalars['String'];
+export type QueryChatMessagesArgs = {
+  where?: Maybe<ChatMessageWhereInput>;
+  orderBy?: Maybe<ChatMessageOrderByInput>;
+  skip?: Maybe<Scalars['Int']>;
+  after?: Maybe<ChatMessageWhereUniqueInput>;
+  before?: Maybe<ChatMessageWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 export type UserWhereUniqueInput = {
@@ -215,6 +221,7 @@ export type UserWhereInput = {
   partyId?: Maybe<StringFilter>;
   score?: Maybe<IntFilter>;
   rengas?: Maybe<RengaFilter>;
+  chatMessages?: Maybe<ChatMessageFilter>;
   submission?: Maybe<SubmissionFilter>;
   AND?: Maybe<Array<UserWhereInput>>;
   OR?: Maybe<Array<UserWhereInput>>;
@@ -228,12 +235,33 @@ export type RengaFilter = {
   none?: Maybe<RengaWhereInput>;
 };
 
+export type ChatMessageFilter = {
+  every?: Maybe<ChatMessageWhereInput>;
+  some?: Maybe<ChatMessageWhereInput>;
+  none?: Maybe<ChatMessageWhereInput>;
+};
+
+export type ChatMessageWhereInput = {
+  id?: Maybe<IntFilter>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
+  authorId?: Maybe<IntFilter>;
+  partyId?: Maybe<StringFilter>;
+  message?: Maybe<StringFilter>;
+  AND?: Maybe<Array<ChatMessageWhereInput>>;
+  OR?: Maybe<Array<ChatMessageWhereInput>>;
+  NOT?: Maybe<Array<ChatMessageWhereInput>>;
+  author?: Maybe<UserWhereInput>;
+  party?: Maybe<PartyWhereInput>;
+};
+
 export type PartyWhereInput = {
   id?: Maybe<StringFilter>;
   createdAt?: Maybe<DateTimeFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
   rengas?: Maybe<RengaFilter>;
   users?: Maybe<UserFilter>;
+  chatMessages?: Maybe<ChatMessageFilter>;
   AND?: Maybe<Array<PartyWhereInput>>;
   OR?: Maybe<Array<PartyWhereInput>>;
   NOT?: Maybe<Array<PartyWhereInput>>;
@@ -294,6 +322,29 @@ export type PartyUsersOrderByInput = {
   score?: Maybe<OrderByArg>;
 };
 
+export type ChatMessageOrderByInput = {
+  id?: Maybe<OrderByArg>;
+  createdAt?: Maybe<OrderByArg>;
+  updatedAt?: Maybe<OrderByArg>;
+  author?: Maybe<OrderByArg>;
+  authorId?: Maybe<OrderByArg>;
+  party?: Maybe<OrderByArg>;
+  partyId?: Maybe<OrderByArg>;
+  message?: Maybe<OrderByArg>;
+};
+
+export type ChatMessageWhereUniqueInput = {
+  id?: Maybe<Scalars['Int']>;
+};
+
+export type ChatMessage = {
+   __typename?: 'ChatMessage';
+  id: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
+  author: User;
+  message: Scalars['String'];
+};
+
 export type Mutation = {
    __typename?: 'Mutation';
   createOneUser: User;
@@ -301,6 +352,7 @@ export type Mutation = {
   createSubmission: Submission;
   createParty: Scalars['String'];
   joinParty: Scalars['String'];
+  createOneChatMessage: ChatMessage;
 };
 
 
@@ -331,6 +383,11 @@ export type MutationJoinPartyArgs = {
   username: Scalars['String'];
 };
 
+
+export type MutationCreateOneChatMessageArgs = {
+  data: ChatMessageCreateInput;
+};
+
 export type UserCreateInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
@@ -338,6 +395,7 @@ export type UserCreateInput = {
   score?: Maybe<Scalars['Int']>;
   party: PartyCreateOneWithoutUsersInput;
   rengas?: Maybe<RengaCreateManyWithoutAuthorInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
   submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>;
 };
 
@@ -351,6 +409,7 @@ export type PartyCreateWithoutUsersInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   rengas?: Maybe<RengaCreateManyWithoutPartyInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutPartyInput>;
 };
 
 export type RengaCreateManyWithoutPartyInput = {
@@ -397,6 +456,7 @@ export type UserCreateWithoutSubmissionInput = {
   score?: Maybe<Scalars['Int']>;
   party: PartyCreateOneWithoutUsersInput;
   rengas?: Maybe<RengaCreateManyWithoutAuthorInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
 };
 
 export type RengaCreateManyWithoutAuthorInput = {
@@ -445,6 +505,7 @@ export type PartyCreateWithoutRengasInput = {
   createdAt?: Maybe<Scalars['DateTime']>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   users?: Maybe<UserCreateManyWithoutPartyInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutPartyInput>;
 };
 
 export type UserCreateManyWithoutPartyInput = {
@@ -458,7 +519,33 @@ export type UserCreateWithoutPartyInput = {
   username: Scalars['String'];
   score?: Maybe<Scalars['Int']>;
   rengas?: Maybe<RengaCreateManyWithoutAuthorInput>;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
   submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>;
+};
+
+export type ChatMessageCreateManyWithoutAuthorInput = {
+  create?: Maybe<Array<ChatMessageCreateWithoutAuthorInput>>;
+  connect?: Maybe<Array<ChatMessageWhereUniqueInput>>;
+};
+
+export type ChatMessageCreateWithoutAuthorInput = {
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  message: Scalars['String'];
+  party: PartyCreateOneWithoutChatMessagesInput;
+};
+
+export type PartyCreateOneWithoutChatMessagesInput = {
+  create?: Maybe<PartyCreateWithoutChatMessagesInput>;
+  connect?: Maybe<PartyWhereUniqueInput>;
+};
+
+export type PartyCreateWithoutChatMessagesInput = {
+  id: Scalars['String'];
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  rengas?: Maybe<RengaCreateManyWithoutPartyInput>;
+  users?: Maybe<UserCreateManyWithoutPartyInput>;
 };
 
 export type SubmissionCreateManyWithoutAuthorInput = {
@@ -500,6 +587,34 @@ export type UserCreateWithoutRengasInput = {
   username: Scalars['String'];
   score?: Maybe<Scalars['Int']>;
   party: PartyCreateOneWithoutUsersInput;
+  chatMessages?: Maybe<ChatMessageCreateManyWithoutAuthorInput>;
+  submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>;
+};
+
+export type ChatMessageCreateManyWithoutPartyInput = {
+  create?: Maybe<Array<ChatMessageCreateWithoutPartyInput>>;
+  connect?: Maybe<Array<ChatMessageWhereUniqueInput>>;
+};
+
+export type ChatMessageCreateWithoutPartyInput = {
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  message: Scalars['String'];
+  author: UserCreateOneWithoutChatMessagesInput;
+};
+
+export type UserCreateOneWithoutChatMessagesInput = {
+  create?: Maybe<UserCreateWithoutChatMessagesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+};
+
+export type UserCreateWithoutChatMessagesInput = {
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  username: Scalars['String'];
+  score?: Maybe<Scalars['Int']>;
+  party: PartyCreateOneWithoutUsersInput;
+  rengas?: Maybe<RengaCreateManyWithoutAuthorInput>;
   submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>;
 };
 
@@ -513,6 +628,14 @@ export type RengaCreateInput = {
   party: PartyCreateOneWithoutRengasInput;
 };
 
+export type ChatMessageCreateInput = {
+  createdAt?: Maybe<Scalars['DateTime']>;
+  updatedAt?: Maybe<Scalars['DateTime']>;
+  message: Scalars['String'];
+  author: UserCreateOneWithoutChatMessagesInput;
+  party: PartyCreateOneWithoutChatMessagesInput;
+};
+
 export type CreatePartyMutationVariables = {
   username: Scalars['String'];
 };
@@ -521,6 +644,17 @@ export type CreatePartyMutationVariables = {
 export type CreatePartyMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createParty'>
+);
+
+export type JoinPartyMutationVariables = {
+  partyId: Scalars['String'];
+  username: Scalars['String'];
+};
+
+
+export type JoinPartyMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'joinParty'>
 );
 
 export type GetRengasQueryVariables = {
@@ -540,15 +674,40 @@ export type GetRengasQuery = (
   )> }
 );
 
-export type JoinPartyMutationVariables = {
+export type GetChatMessagesQueryVariables = {
   partyId: Scalars['String'];
-  username: Scalars['String'];
 };
 
 
-export type JoinPartyMutation = (
+export type GetChatMessagesQuery = (
+  { __typename?: 'Query' }
+  & { chatMessages: Array<(
+    { __typename?: 'ChatMessage' }
+    & Pick<ChatMessage, 'id' | 'message' | 'createdAt'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  )> }
+);
+
+export type PostMessageMutationVariables = {
+  partyId: Scalars['String'];
+  authorId?: Maybe<Scalars['Int']>;
+  message: Scalars['String'];
+};
+
+
+export type PostMessageMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'joinParty'>
+  & { createOneChatMessage: (
+    { __typename?: 'ChatMessage' }
+    & Pick<ChatMessage, 'id' | 'message' | 'createdAt'>
+    & { author: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    ) }
+  ) }
 );
 
 export type GetPlayersQueryVariables = {
@@ -658,6 +817,36 @@ export function useCreatePartyMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type CreatePartyMutationHookResult = ReturnType<typeof useCreatePartyMutation>;
 export type CreatePartyMutationResult = ApolloReactCommon.MutationResult<CreatePartyMutation>;
 export type CreatePartyMutationOptions = ApolloReactCommon.BaseMutationOptions<CreatePartyMutation, CreatePartyMutationVariables>;
+export const JoinPartyDocument = gql`
+    mutation joinParty($partyId: String!, $username: String!) {
+  joinParty(partyId: $partyId, username: $username)
+}
+    `;
+
+/**
+ * __useJoinPartyMutation__
+ *
+ * To run a mutation, you first call `useJoinPartyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useJoinPartyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [joinPartyMutation, { data, loading, error }] = useJoinPartyMutation({
+ *   variables: {
+ *      partyId: // value for 'partyId'
+ *      username: // value for 'username'
+ *   },
+ * });
+ */
+export function useJoinPartyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinPartyMutation, JoinPartyMutationVariables>) {
+        return ApolloReactHooks.useMutation<JoinPartyMutation, JoinPartyMutationVariables>(JoinPartyDocument, baseOptions);
+      }
+export type JoinPartyMutationHookResult = ReturnType<typeof useJoinPartyMutation>;
+export type JoinPartyMutationResult = ApolloReactCommon.MutationResult<JoinPartyMutation>;
+export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinPartyMutation, JoinPartyMutationVariables>;
 export const GetRengasDocument = gql`
     query GetRengas($partyId: String!) {
   rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
@@ -698,36 +887,84 @@ export function useGetRengasLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type GetRengasQueryHookResult = ReturnType<typeof useGetRengasQuery>;
 export type GetRengasLazyQueryHookResult = ReturnType<typeof useGetRengasLazyQuery>;
 export type GetRengasQueryResult = ApolloReactCommon.QueryResult<GetRengasQuery, GetRengasQueryVariables>;
-export const JoinPartyDocument = gql`
-    mutation joinParty($partyId: String!, $username: String!) {
-  joinParty(partyId: $partyId, username: $username)
+export const GetChatMessagesDocument = gql`
+    query GetChatMessages($partyId: String!) {
+  chatMessages(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: asc}) {
+    id
+    message
+    createdAt
+    author {
+      id
+      username
+    }
+  }
 }
     `;
 
 /**
- * __useJoinPartyMutation__
+ * __useGetChatMessagesQuery__
  *
- * To run a mutation, you first call `useJoinPartyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useJoinPartyMutation` returns a tuple that includes:
+ * To run a query within a React component, call `useGetChatMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetChatMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetChatMessagesQuery({
+ *   variables: {
+ *      partyId: // value for 'partyId'
+ *   },
+ * });
+ */
+export function useGetChatMessagesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetChatMessagesQuery, GetChatMessagesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetChatMessagesQuery, GetChatMessagesQueryVariables>(GetChatMessagesDocument, baseOptions);
+      }
+export function useGetChatMessagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetChatMessagesQuery, GetChatMessagesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetChatMessagesQuery, GetChatMessagesQueryVariables>(GetChatMessagesDocument, baseOptions);
+        }
+export type GetChatMessagesQueryHookResult = ReturnType<typeof useGetChatMessagesQuery>;
+export type GetChatMessagesLazyQueryHookResult = ReturnType<typeof useGetChatMessagesLazyQuery>;
+export type GetChatMessagesQueryResult = ApolloReactCommon.QueryResult<GetChatMessagesQuery, GetChatMessagesQueryVariables>;
+export const PostMessageDocument = gql`
+    mutation PostMessage($partyId: String!, $authorId: Int, $message: String!) {
+  createOneChatMessage(data: {message: $message, author: {connect: {id: $authorId}}, party: {connect: {id: $partyId}}}) {
+    id
+    message
+    createdAt
+    author {
+      id
+      username
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostMessageMutation__
+ *
+ * To run a mutation, you first call `usePostMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePostMessageMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [joinPartyMutation, { data, loading, error }] = useJoinPartyMutation({
+ * const [postMessageMutation, { data, loading, error }] = usePostMessageMutation({
  *   variables: {
  *      partyId: // value for 'partyId'
- *      username: // value for 'username'
+ *      authorId: // value for 'authorId'
+ *      message: // value for 'message'
  *   },
  * });
  */
-export function useJoinPartyMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<JoinPartyMutation, JoinPartyMutationVariables>) {
-        return ApolloReactHooks.useMutation<JoinPartyMutation, JoinPartyMutationVariables>(JoinPartyDocument, baseOptions);
+export function usePostMessageMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<PostMessageMutation, PostMessageMutationVariables>) {
+        return ApolloReactHooks.useMutation<PostMessageMutation, PostMessageMutationVariables>(PostMessageDocument, baseOptions);
       }
-export type JoinPartyMutationHookResult = ReturnType<typeof useJoinPartyMutation>;
-export type JoinPartyMutationResult = ApolloReactCommon.MutationResult<JoinPartyMutation>;
-export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinPartyMutation, JoinPartyMutationVariables>;
+export type PostMessageMutationHookResult = ReturnType<typeof usePostMessageMutation>;
+export type PostMessageMutationResult = ApolloReactCommon.MutationResult<PostMessageMutation>;
+export type PostMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<PostMessageMutation, PostMessageMutationVariables>;
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {
   party(where: {id: $partyId}) {

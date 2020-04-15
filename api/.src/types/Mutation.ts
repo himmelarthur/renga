@@ -30,19 +30,18 @@ export const Mutation = mutationType({
                 const auth = await context.user
                 if (!auth?.userId) throw Error('User should be authenticated')
 
-                
                 if (isValid) {
                     const user = await context.prisma.user.findOne({
-                      where: { id: auth.userId },
+                        where: { id: auth.userId },
                     })
-                    
+
                     if (!user) throw Error('User not found')
-                    
-                    // FIXME should be transaction when available 
+
+                    // FIXME should be transaction when available
                     // https://github.com/prisma/prisma-client-js/issues/349
                     await context.prisma.user.update({
                         where: { id: user.id },
-                        data: { score: user.score + 1 }
+                        data: { score: user.score + 1 },
                     })
                 }
 
@@ -99,5 +98,6 @@ export const Mutation = mutationType({
                 )
             },
         })
+        t.crud.createOneChatMessage()
     },
 })

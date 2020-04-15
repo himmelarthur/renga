@@ -6,7 +6,7 @@ import Leaderboard from '../components/Leaderboard'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
 import Rengas from './Rengas'
-import JoinForm from './JoinForm'
+import Chat from '../components/Chat/Chat'
 import NoRengas from './NoRengas'
 import JoinParty from './JoinParty'
 
@@ -52,10 +52,10 @@ const Party = ({ partyId, userId }: Props) => {
                 id="confetti"
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
-            <div className="sm:p-10 p-4">
+            <div className="sm:p-10 p-4 h-full">
                 <h1 className="text-primary font-logo text-3xl mb-4">Renga</h1>
-                <div className="flex sm:flex-row flex-col">
-                    <div className="sm:w-2/3">
+                <div className="flex sm:flex-row flex-col h-full">
+                    <div className="sm:w-2/3 sm:mr-4">
                         {userId ? <InviteLink partyId={partyId} /> : undefined}
                         <div>
                             {createRengaOn && userId ? (
@@ -120,11 +120,12 @@ const Party = ({ partyId, userId }: Props) => {
                             )}
                         </div>
                     </div>
-                    <div className="sm:w-1/3">
+                    <div className="sm:w-1/3 relative h-full">
                         <Leaderboard
                             partyId={partyId}
                             userId={userId}
                         ></Leaderboard>
+                        <Chat partyId={partyId} userId={userId}></Chat>
                     </div>
                 </div>
             </div>

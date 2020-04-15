@@ -6,5 +6,6 @@ export const Query = queryType({
         t.crud.renga()
         t.crud.rengas({ filtering: true, ordering: true })
         t.crud.party()
+        t.crud.chatMessages({ filtering: true, ordering: true })
     },
 })

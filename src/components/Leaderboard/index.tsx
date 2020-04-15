@@ -37,7 +37,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
         <div
             className={classNames(
                 className,
-                'max-w-md p-4 flex flex-col items-start pt-0'
+                'max-w-md py-4 flex flex-col items-start pt-0'
             )}
         >
             <h3 className="text-gray-700 text-2xl font-bold">Leaderboard</h3>
