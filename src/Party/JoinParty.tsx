@@ -43,7 +43,9 @@ const JoinParty = ({ partyId }: Props) => {
                             <div className="pointer-events-none">
                                 <Rengas
                                     partyId={partyId}
-                                    noRengasComponent={<NoRengas />}
+                                    noRengasComponent={
+                                        <NoRengas onClickNew={() => {}} />
+                                    }
                                     onClickRenga={() => {}}
                                 />
                             </div>

@@ -101,7 +101,13 @@ const Party = ({ partyId, userId }: Props) => {
                                         }}
                                         highlightedRenga={solvingRenga}
                                         partyId={partyId}
-                                        noRengasComponent={<NoRengas />}
+                                        noRengasComponent={
+                                            <NoRengas
+                                                onClickNew={() =>
+                                                    setCreateRengaOn(true)
+                                                }
+                                            />
+                                        }
                                         onClickRenga={(rengaId) => {
                                             confettis?.clear()
                                             if (rengaId === solvingRenga) {
@@ -115,7 +121,7 @@ const Party = ({ partyId, userId }: Props) => {
                             )}
                         </div>
                     </div>
-                    <div className="sm:w-1/3">
+                    <div className="sm:w-1/3 mt-4 sm:mt-0">
                         <Leaderboard
                             partyId={partyId}
                             userId={userId}
