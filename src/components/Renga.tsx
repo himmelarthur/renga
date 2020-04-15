@@ -8,8 +8,11 @@ const Renga = ({ renga, highlighted, onClick }: Props) => {
     return (
         <div
             className={classNames(
-                'flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer',
-                { 'bg-gray-100': highlighted, 'grayed opacity-75': renga.status.isResolved }
+                'flex flex-col justify-center items-center sm:w-40 w-32 h-24 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer',
+                {
+                    'bg-gray-100': highlighted,
+                    'grayed opacity-75': renga.status.isResolved,
+                }
             )}
             onClick={onClick}
         >
@@ -37,13 +40,13 @@ const Renga = ({ renga, highlighted, onClick }: Props) => {
 }
 
 type Props = {
-    renga: Pick<
-        RengaType,
-        'id' | 'emojis' | 'createdAt'
-    > & {
+    renga: Pick<RengaType, 'id' | 'emojis' | 'createdAt'> & {
         author: { __typename?: 'User' } & Pick<User, 'id' | 'username'>
     } & {
-        status: { __typename?: 'Status' } & Pick<Status, 'isMine' | 'isResolved' >
+        status: { __typename?: 'Status' } & Pick<
+            Status,
+            'isMine' | 'isResolved'
+        >
     }
     highlighted: boolean
     onClick: () => void

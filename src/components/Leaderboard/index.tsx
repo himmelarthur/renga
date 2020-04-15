@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useLayoutEffect, useRef } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import gql from 'graphql-tag'
 import { useGetPlayersQuery } from '../../generated/graphql'
 import classNames from 'classnames'
 import pluralize from 'pluralize'
-import { motion, useAnimation } from 'framer-motion'
+import { motion, useAnimation, AnimateSharedLayout } from 'framer-motion'
 
 interface ILeaderboardProps {
     partyId: string
@@ -38,6 +38,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                 data.party?.users.find(({ id }) => id === userId)?.score
             ),
     })
+
     const myScoreAnimationControl = useAnimation()
 
     useLayoutEffect(() => {
@@ -45,7 +46,8 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
             ?.score
         if (newUserScore && userScore && newUserScore > userScore) {
             myScoreAnimationControl.start({
-                x: [-5, 5, -5, 5, -5, 5, 0],
+                scale: [1, 1.3, 1],
+                transition: { delay: 1, duration: 0.5 },
             })
         }
         setUserScore(newUserScore)
@@ -64,32 +66,44 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                 'max-w-md p-4 px-6 flex flex-col items-start bg-gray-100 rounded-md'
             )}
         >
-            <h3 className="text-gray-800 text-2xl font-bold">Leaderboard</h3>
-            <div className="w-full text-gray-600 text-sm">
-                {users.map((player, index) => {
-                    const isMe = userId === player.id
-                    return (
-                        <motion.div
-                            animate={isMe ? myScoreAnimationControl : undefined}
-                            key={player.id}
-                            className={classNames('my-3 flex justify-between', {
-                                'font-medium': isMe,
-                                'text-gray-700': isMe,
-                            })}
-                        >
-                            <div className="flex">
-                                <div className="w-4 text-center text-gray-400">
-                                    {index === 0 ? '🏅' : `#${index + 1}`}
+            <AnimateSharedLayout>
+                <h3 className="text-gray-800 text-2xl font-bold">
+                    Leaderboard
+                </h3>
+                <div className="w-full text-gray-600 text-sm">
+                    {users.map((player, index) => {
+                        const isMe = userId === player.id
+                        return (
+                            <motion.div
+                                animate={
+                                    isMe ? myScoreAnimationControl : undefined
+                                }
+                                key={player.id}
+                                layoutId={player.id.toString()}
+                                className={classNames(
+                                    'my-3 flex justify-between',
+                                    {
+                                        'font-medium': isMe,
+                                        'text-gray-700': isMe,
+                                    }
+                                )}
+                            >
+                                <div className="flex">
+                                    <div className="w-4 text-center text-gray-400">
+                                        {index === 0 ? '🏅' : `#${index + 1}`}
+                                    </div>
+                                    <div className="ml-3">
+                                        {player.username}
+                                    </div>
                                 </div>
-                                <div className="ml-3">{player.username}</div>
-                            </div>
-                            <div className="text-gray-600">
-                                {pluralize('point', player.score, true)}
-                            </div>
-                        </motion.div>
-                    )
-                })}
-            </div>
+                                <div className="text-gray-600">
+                                    {pluralize('point', player.score, true)}
+                                </div>
+                            </motion.div>
+                        )
+                    })}
+                </div>
+            </AnimateSharedLayout>
         </div>
     )
 }

@@ -25,7 +25,7 @@
         "confetti-js": "^0.0.18",
         "copy-to-clipboard": "^3.3.1",
         "emoji-mart": "^3.0.0",
-        "framer-motion": "^1.10.3",
+        "framer-motion": "^2.0.0-beta.45",
         "graphql": "^15.0.0",
         "graphql-tag": "^2.10.3",
         "jwt-decode": "^2.2.0",
