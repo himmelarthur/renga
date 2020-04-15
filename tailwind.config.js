@@ -1,18 +1,18 @@
 module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        primary: '#ff7eb2',
-      },
-      borderRadius: {
-        xl: '24px'
-      },
+    theme: {
+        extend: {
+            colors: {
+                primary: '#ff7eb2',
+            },
+            borderRadius: {
+                xl: '24px',
+            },
+        },
+        fontFamily: {
+            sans: ['Rubik'],
+            logo: ['Chivo'],
+        },
     },
-    fontFamily: {
-      'sans': ['Rubik'],
-      'logo': ['Chivo']
-    }
-  },
-  variants: {},
-  plugins: [],
+    variants: { visibility: ['group-hover'] },
+    plugins: [],
 }
