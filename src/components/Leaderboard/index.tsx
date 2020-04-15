@@ -2,6 +2,7 @@ import * as React from 'react'
 import gql from 'graphql-tag'
 import { useGetPlayersQuery } from '../../generated/graphql'
 import classNames from 'classnames'
+import pluralize from 'pluralize'
 
 interface ILeaderboardProps {
     partyId: string
@@ -62,7 +63,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                 <div className="ml-3">{player.username}</div>
                             </div>
                             <div className="text-gray-600">
-                                {player.score} points
+                                {pluralize('point', player.score, true)}
                             </div>
                         </div>
                     )

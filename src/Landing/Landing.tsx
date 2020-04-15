@@ -61,7 +61,7 @@ const Landing = () => {
                     value={username}
                     onChange={(evt) => setUsername(evt.target.value)}
                 />
-                <Button loading={loading}>
+                <Button loading={loading} onClick={onCreate}>
                     <>
                         <span className="mr-2">🎮</span>Start Party
                     </>

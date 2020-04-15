@@ -1,12 +1,15 @@
-import React, { DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
+import React, {
+    DetailedHTMLProps,
+    ButtonHTMLAttributes,
+    FormEvent,
+} from 'react'
 import Loader from 'react-loader-spinner'
 
-interface Props
-    extends DetailedHTMLProps<
-        ButtonHTMLAttributes<HTMLButtonElement>,
-        HTMLElement
-    > {
+type Props = {
+    disabled?: boolean
+    children: JSX.Element | JSX.Element[] | string
     loading?: boolean
+    onClick: (e: FormEvent) => any
 }
 
 const Button = ({ loading, children, ...props }: Props) => {
@@ -22,6 +25,7 @@ const Button = ({ loading, children, ...props }: Props) => {
             style={{
                 background: 'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
             }}
+            {...props}
         >
             {loading ? (
                 <div className="absolute">
