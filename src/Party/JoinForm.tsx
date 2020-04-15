@@ -53,7 +53,7 @@ const JoinForm = ({ partyId }: Props) => {
                     Join the party
                 </button>
             </form>
-            <p className="text-red-500 font-medium">
+            <p className="text-red-500 mt-2 text-sm">
                 {error && 'Sorry this party does not exist, start a new one'}
             </p>
         </div>
