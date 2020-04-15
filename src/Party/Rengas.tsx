@@ -28,7 +28,10 @@ const Rengas = ({
     noRengasComponent,
     onClickRenga,
 }: Props) => {
-    const { data, loading } = useGetRengasQuery({ variables: { partyId } })
+    const { data, loading } = useGetRengasQuery({
+        variables: { partyId },
+        pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
+    })
     if (loading) {
         return <div></div>
     }
