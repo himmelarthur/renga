@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '../components/Button'
 
 const MOVIES = [
     { title: 'Psycho', emojis: ['🚿', '🔪', '😱'] },
@@ -37,16 +38,9 @@ const NoRengas = ({ onClickNew }: Props) => {
                     </div>
                 </div>
                 <div className="justify-center flex my-4">
-                    <button
-                        className="hover:bg-blue-700 w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium hover:opacity-75"
-                        onClick={onClickNew}
-                        style={{
-                            background:
-                                'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
-                        }}
-                    >
+                    <Button className="sm:w-auto" onClick={onClickNew}>
                         New Renga
-                    </button>
+                    </Button>
                 </div>
                 <div className="">
                     <div className="mb-4 font-bold mt-2 text-lg">

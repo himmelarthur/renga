@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { useCreatePartyMutation } from '../generated/graphql'
 import { useParty } from '../hooks'
 import EmojiRoulette from './EmojiRoulette'
+import Button from '../components/Button'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -12,7 +13,7 @@ gql`
 `
 
 const Landing = () => {
-    const [create] = useCreatePartyMutation()
+    const [create, { loading }] = useCreatePartyMutation()
     const [username, setUsername] = useState('')
     const { addParty } = useParty()
     const history = useHistory()
@@ -22,6 +23,7 @@ const Landing = () => {
             e.stopPropagation()
             e.preventDefault()
             if (!username) return false
+            if (loading) return false
             const res = await create({ variables: { username } })
             try {
                 const partyId = addParty(res.data?.createParty)
@@ -59,15 +61,15 @@ const Landing = () => {
                     value={username}
                     onChange={(evt) => setUsername(evt.target.value)}
                 />
-                <button
-                    className="hover:bg-blue-700 w-full sm:w-auto text-white py-2 px-4 rounded text-xl font-medium mt-4 sm:mt-0 hover:opacity-75"
-                    style={{
-                        background:
-                            'linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%)',
-                    }}
+                <Button
+                    loading={loading}
+                    onClick={onCreate}
+                    className="sm:w-auto mt-4 sm:mt-0"
                 >
-                    <span className="mr-2">🎮</span>Start Party
-                </button>
+                    <>
+                        <span className="mr-2">🎮</span>Start Party
+                    </>
+                </Button>
             </form>
         </div>
     )

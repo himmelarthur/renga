@@ -174,7 +174,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                                     {s.valid ? 'found' : 'tried'}
                                     <span className="font-semibold text-gray-800">
                                         {' '}
-                                        {isMe || renga.status.isResolved || !s.valid
+                                        {isMe ||
+                                        renga.status.isResolved ||
+                                        !s.valid
                                             ? s.maybeTitle
                                             : 'the movie'}
                                     </span>

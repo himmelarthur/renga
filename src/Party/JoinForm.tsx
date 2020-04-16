@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react'
 import gql from 'graphql-tag'
 import { useJoinPartyMutation, GetPlayersDocument } from '../generated/graphql'
 import { useParty } from '../hooks'
+import Button from '../components/Button'
 
 gql`
     mutation joinParty($partyId: String!, $username: String!) {
@@ -17,7 +18,7 @@ const JoinForm = ({ partyId }: Props) => {
     })
     const [username, setUsername] = React.useState('')
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: FormEvent) => {
         joinParty({
             variables: {
                 partyId,
@@ -47,14 +48,15 @@ const JoinForm = ({ partyId }: Props) => {
                     value={username}
                     onChange={(evt) => setUsername(evt.target.value)}
                     placeholder="Enter your username"
-                    className="shadow appearance-none sm:mr-4 sm:mb-0 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full sm:w-auto "
+                    className="shadow outline-none appearance-none sm:mr-4 sm:mb-0 rounded p-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-full sm:w-auto "
                 />
-                <button
+                <Button
                     disabled={!username.length}
-                    className="bg-primary hover:opacity-75 text-white py-2 px-4 my-4 sm:my-0 rounded w-full sm:w-auto"
+                    className="my-4 sm:my-0 rounded w-full sm:w-auto"
+                    onClick={handleSubmit}
                 >
                     Join the party
-                </button>
+                </Button>
             </form>
             <p className="text-red-500 mt-2 text-sm">
                 {error && 'Sorry this party does not exist, start a new one'}
