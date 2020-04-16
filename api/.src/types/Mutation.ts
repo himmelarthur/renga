@@ -1,5 +1,5 @@
 import { intArg, mutationType, stringArg } from '@nexus/schema'
-import { sign, verify } from 'jsonwebtoken'
+import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
 
@@ -19,30 +19,34 @@ export const Mutation = mutationType({
                 { rengaId, movieDBId, movieTitle },
                 context: Context
             ) => {
-                const isValid = !!(
-                    await context.prisma.renga.findMany({
+                const isValid =
+                    (await context.prisma.renga.count({
                         where: {
                             AND: [{ id: rengaId }, { movie: { movieDBId } }],
                         },
-                    })
-                ).length
+                    })) > 0
 
                 const auth = await context.user
                 if (!auth?.userId) throw Error('User should be authenticated')
 
-                
                 if (isValid) {
                     const user = await context.prisma.user.findOne({
-                      where: { id: auth.userId },
+                        where: { id: auth.userId },
                     })
-                    
                     if (!user) throw Error('User not found')
-                    
-                    // FIXME should be transaction when available 
+
+                    const isFirstSolved =
+                        (await context.prisma.submission.count({
+                            where: { rengaId, valid: true },
+                        })) === 0
+
+                    const points = isFirstSolved ? 2 : 1
+
+                    // FIXME should be transaction when available
                     // https://github.com/prisma/prisma-client-js/issues/349
                     await context.prisma.user.update({
                         where: { id: user.id },
-                        data: { score: user.score + 1 }
+                        data: { score: user.score + points },
                     })
                 }
 
