@@ -51,7 +51,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
             })
         }
         setUserScore(newUserScore)
-    }, [data, userScore])
+    }, [data, userScore, myScoreAnimationControl, userId])
 
     if (!data?.party) return <div></div>
 

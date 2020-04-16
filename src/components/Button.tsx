@@ -1,9 +1,5 @@
-import React, {
-    DetailedHTMLProps,
-    ButtonHTMLAttributes,
-    FormEvent,
-} from 'react'
 import classNames from 'classnames'
+import React, { FormEvent } from 'react'
 import Loader from 'react-loader-spinner'
 
 type Props = {
