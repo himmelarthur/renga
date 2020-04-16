@@ -85,6 +85,11 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 { query: GetRengasDocument, variables: { partyId } },
             ],
         })
+        window.heap?.track('Created Renga', {
+            movieId: movie.id,
+            movieTitle: movie.title,
+            emojis: emojiIds.join(''),
+        })
         e.stopPropagation()
         e.preventDefault()
         onCreated()
