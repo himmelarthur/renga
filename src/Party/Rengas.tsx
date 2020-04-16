@@ -56,7 +56,7 @@ const Rengas = ({
             )
             setRengaIds(data?.rengas.map(({ id }) => id))
         }
-    }, [data])
+    }, [data, newRengasAnimationControl, rengaIds])
     if (loading) {
         return <div></div>
     }

@@ -36,7 +36,7 @@ const Landing = () => {
 
             return false
         },
-        [username, create, history, addParty]
+        [username, create, history, addParty, loading]
     )
     return (
         <div
@@ -67,7 +67,7 @@ const Landing = () => {
                     className="sm:w-auto mt-4 sm:mt-0"
                 >
                     <>
-                        <span className="mr-2">🎮</span>Start Party
+                        <span className="mr-2" role="img" aria-label="">🎮</span>Start Party
                     </>
                 </Button>
             </form>

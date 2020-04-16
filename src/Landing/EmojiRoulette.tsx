@@ -38,7 +38,7 @@ const EmojiRoulette = () => {
                 transition: { duration: 0.3, delay: i * 0.1 },
             }))
         }, 3000)
-    }, [])
+    }, [controls, cursor])
     return (
         <div className="flex justify-center text-5xl my-8">
             <div
