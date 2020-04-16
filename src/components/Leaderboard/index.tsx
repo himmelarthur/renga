@@ -1,9 +1,11 @@
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, Component, FC } from 'react'
 import gql from 'graphql-tag'
 import { useGetPlayersQuery } from '../../generated/graphql'
 import classNames from 'classnames'
 import pluralize from 'pluralize'
+import { userEmoji } from '../../utils/emojis'
 import { motion, useAnimation, AnimateSharedLayout } from 'framer-motion'
+import { Emoji } from 'emoji-mart'
 
 interface ILeaderboardProps {
     partyId: string
@@ -88,13 +90,18 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                     }
                                 )}
                             >
-                                <div className="flex">
+                                <div className="flex items-center">
                                     <div className="w-4 text-center text-gray-400">
                                         {index === 0 ? '🏅' : `#${index + 1}`}
                                     </div>
-                                    <div className="ml-3">
+                                    <div className="ml-3 mr-2">
                                         {player.username}
                                     </div>
+                                    <Emoji
+                                        size={16}
+                                        native
+                                        emoji={userEmoji(partyId, player.id)}
+                                    />
                                 </div>
                                 <div className="text-gray-600">
                                     {pluralize('point', player.score, true)}
