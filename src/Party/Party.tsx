@@ -21,10 +21,23 @@ const Party = ({ partyId, userId }: Props) => {
     const { hash } = useLocation()
 
     useEffect(() => {
-        try {
-            const selectedRengaId = Number(hash.replace('#', ''))
-            setSolvingRenga(selectedRengaId)
-        } catch (err) {}
+        switch (hash) {
+            case '#':
+                setCreateRengaOn(false)
+                setSolvingRenga(undefined)
+                return
+            case '#new':
+                setCreateRengaOn(true)
+                setSolvingRenga(undefined)
+                return
+            default:
+                setCreateRengaOn(false)
+                try {
+                    const selectedRengaId = Number(hash.replace('#', ''))
+                    setSolvingRenga(selectedRengaId)
+                } catch (err) {}
+                return
+        }
     }, [hash])
 
     const onSolvedRenga = useCallback(() => {
@@ -67,8 +80,10 @@ const Party = ({ partyId, userId }: Props) => {
                                 <RengaForm
                                     partyId={partyId}
                                     userId={userId}
-                                    onCreated={() => setCreateRengaOn(false)}
-                                    onClose={() => setCreateRengaOn(false)}
+                                    onCreated={() =>
+                                        (window.location.hash = '')
+                                    }
+                                    onClose={() => (window.location.hash = '')}
                                 ></RengaForm>
                             ) : (
                                 <div className="mt-0">
@@ -88,7 +103,7 @@ const Party = ({ partyId, userId }: Props) => {
                                                 onSolved={onSolvedRenga}
                                                 partyId={partyId}
                                                 onClose={() =>
-                                                    setSolvingRenga(undefined)
+                                                    (window.location.hash = '')
                                                 }
                                             ></RengaSubmission>
                                         </motion.div>
@@ -97,15 +112,15 @@ const Party = ({ partyId, userId }: Props) => {
                                         displayNewButton
                                         onClickNew={() => {
                                             confettis?.clear()
-                                            setSolvingRenga(undefined)
-                                            setCreateRengaOn(true)
+                                            window.location.hash = 'new'
                                         }}
                                         highlightedRenga={solvingRenga}
                                         partyId={partyId}
                                         noRengasComponent={
                                             <NoRengas
                                                 onClickNew={() =>
-                                                    setCreateRengaOn(true)
+                                                    (window.location.hash =
+                                                        'new')
                                                 }
                                             />
                                         }
