@@ -7,7 +7,7 @@ export interface InviteLinkProps {
     partyId: string
 }
 
-export default ({ className }: InviteLinkProps) => {
+export default ({ className, partyId }: InviteLinkProps) => {
     const [isCopied, setIsCopied] = React.useState(false)
     const onClickCopy = React.useCallback(() => {
         copy(`${window.location.href}`)
@@ -28,7 +28,7 @@ export default ({ className }: InviteLinkProps) => {
                     className="cursor-pointer sm:mx-4 sm:mt-0 text-primary py-1 px-4 rounded-md border-primary  border"
                     onClick={() => onClickCopy()}
                 >
-                    {window.location.href}
+                    {`${window.location.origin}/p/${partyId}`}
                 </div>
                 <span className="text-gray-400 text-sm ml-1">
                     {isCopied && 'Copied!'}
