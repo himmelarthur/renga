@@ -19,15 +19,15 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     userId,
     className,
 }) => {
-    const { fetchState, animationControl } = useFetchLeaderboard(
+    const { data, loading, animationControl } = useFetchLeaderboard(
         partyId,
         userId
     )
-    if (!fetchState.data?.party) return <div></div>
+    if (!data?.party) return <div></div>
 
     const {
         party: { users },
-    } = fetchState.data
+    } = data
 
     return (
         <div

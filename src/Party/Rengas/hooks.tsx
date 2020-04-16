@@ -5,21 +5,21 @@ import { useGetRengasQuery } from '../../generated/graphql'
 export const useFetchRengas = (partyId: string) => {
     const animationControl = useAnimation()
     const [rengaIds, setRengaIds] = useState<number[]>()
-    const fetchState = useGetRengasQuery({
+    const { loading, data } = useGetRengasQuery({
         variables: { partyId },
         pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
         onCompleted: (data) => setRengaIds(data.rengas.map(({ id }) => id)),
     })
 
     useLayoutEffect(() => {
-        if (!rengaIds?.length) {
+        if (!data || !rengaIds?.length) {
             // Rengas not fetched yet
             return
         }
-        const newRengaIds = fetchState.data?.rengas
-            .filter(({ id }) => !rengaIds?.includes(id))
+        const newRengaIds = data.rengas
+            .filter(({ id }) => !rengaIds.includes(id))
             .map(({ id }) => id)
-        if (!newRengaIds?.length) {
+        if (!newRengaIds.length) {
             // No new rengas
             return
         }
@@ -31,8 +31,8 @@ export const useFetchRengas = (partyId: string) => {
                   }
                 : {}
         )
-        setRengaIds(fetchState.data?.rengas.map(({ id }) => id))
-    }, [fetchState.data, rengaIds, animationControl])
+        setRengaIds(data.rengas.map(({ id }) => id))
+    }, [data, rengaIds, animationControl])
 
-    return { animationControl: animationControl, fetchState }
+    return { animationControl, loading, data }
 }

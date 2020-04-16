@@ -11,15 +11,15 @@ const Rengas = ({
     displayNewButton,
     onClickNew,
 }: Props) => {
-    const { animationControl, fetchState } = useFetchRengas(partyId)
+    const { animationControl, data, loading } = useFetchRengas(partyId)
 
-    if (fetchState.loading) {
+    if (loading) {
         return <div></div>
     }
     return (
         <div className="flex flex-row flex-wrap justify-center sm:justify-start">
             <AnimateSharedLayout type="switch">
-                {fetchState.data?.rengas.length ? (
+                {data?.rengas.length ? (
                     <>
                         {displayNewButton ? (
                             <div
@@ -29,7 +29,7 @@ const Rengas = ({
                                 + New renga
                             </div>
                         ) : undefined}
-                        {fetchState.data.rengas.map((renga) => (
+                        {data.rengas.map((renga) => (
                             <motion.div
                                 key={renga.id}
                                 layoutId={renga.id.toString()}

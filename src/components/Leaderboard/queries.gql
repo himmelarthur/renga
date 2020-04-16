@@ -1,0 +1,10 @@
+query getPlayers($partyId: String!) {
+    party(where: { id: $partyId }) {
+        id
+        users(orderBy: { score: desc }) {
+            id
+            username
+            score
+        }
+    }
+}

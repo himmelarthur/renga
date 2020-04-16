@@ -4,7 +4,7 @@ import { useAnimation } from 'framer-motion'
 
 export const useFetchLeaderboard = (partyId: string, userId?: number) => {
     const [userScore, setUserScore] = useState<number>()
-    const fetchState = useGetPlayersQuery({
+    const { data, loading } = useGetPlayersQuery({
         variables: { partyId },
         pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
         onCompleted: (data) =>
@@ -16,9 +16,11 @@ export const useFetchLeaderboard = (partyId: string, userId?: number) => {
     const animationControl = useAnimation()
 
     useLayoutEffect(() => {
-        const newUserScore = fetchState.data?.party?.users.find(
-            ({ id }) => id === userId
-        )?.score
+        if (!data) {
+            return
+        }
+        const newUserScore = data.party?.users.find(({ id }) => id === userId)
+            ?.score
         if (newUserScore && userScore && newUserScore > userScore) {
             animationControl.start({
                 scale: [1, 1.3, 1],
@@ -26,6 +28,6 @@ export const useFetchLeaderboard = (partyId: string, userId?: number) => {
             })
         }
         setUserScore(newUserScore)
-    }, [fetchState.data, userScore])
-    return { fetchState, animationControl }
+    }, [data, userScore])
+    return { data, loading, animationControl }
 }
