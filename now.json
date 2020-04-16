@@ -4,7 +4,6 @@
     "build": {
         "env": {
             "REACT_APP_API_URL": "/api",
-            "REACT_APP_HEAP_ID": "1047904116",
             "REACT_APP_POLL_INTERVAL": "6000"
         }
     },
