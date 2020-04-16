@@ -76,16 +76,18 @@ export const Renga = objectType({
                         },
                     })) > 0 && !!user?.userId
 
-                const movieTitle = (
+                const movie = (
                     await ctx.prisma.movie.findOne({
                         select: { title: true },
                         // @ts-ignore
                         where: { id: parent.movieId },
                     })
-                ).title
+                )
+
+                if (!movie) throw Error('No movie associated to this renga')
                 
                 // @ts-ignore
-                const maybeTitle = isResolved || isMine ? movieTitle : ''
+                const maybeTitle = isResolved || isMine ? movie.title : ''
 
                 return {
                     isMine,
