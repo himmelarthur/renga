@@ -91,7 +91,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const handleSubmission = React.useCallback(async () => {
         if (movie === undefined) return
 
-        await createSubmission({
+        createSubmission({
             variables: {
                 movieDBId: movie.id,
                 rengaId,

@@ -46,16 +46,14 @@ const Rengas = ({
             .filter(({ id }) => !rengaIds?.includes(id))
             .map(({ id }) => id)
         if (rengaIds?.length && newRengaIds?.length) {
-            newRengasAnimationControl.start((rengaId) => {
-                console.warn(newRengaIds.includes(rengaId))
-
-                return newRengaIds.includes(rengaId)
+            newRengasAnimationControl.start((rengaId) =>
+                newRengaIds.includes(rengaId)
                     ? {
                           scale: [1, 1.3, 1],
                           transition: { delay: 1, duration: 0.5 },
                       }
                     : {}
-            })
+            )
             setRengaIds(data?.rengas.map(({ id }) => id))
         }
     }, [data])

@@ -20,9 +20,12 @@ const Button = ({ loading, children, className, ...props }: Props) => {
         <button
             disabled={disabled}
             className={classNames(
-                `w-full text-white py-2 px-4 rounded text-xl font-medium outline-none transition duration-150 ${
-                    disabled ? 'cursor-default bg-gray-300' : 'hover:opacity-75'
-                } relative flex items-center justify-center`,
+                `w-full text-white py-2 px-4 rounded text-xl font-medium outline-none transition duration-150relative flex items-center justify-center`,
+                {
+                    'cursor-default': disabled,
+                    'bg-gray-300': disabled,
+                    'hover:opacity-75': !disabled,
+                },
                 className
             )}
             style={{
@@ -42,7 +45,7 @@ const Button = ({ loading, children, className, ...props }: Props) => {
                     ></Loader>
                 </div>
             ) : undefined}
-            <div className={`${loading ? 'invisible' : ''}`}>{children}</div>
+            <div className={classNames({ invisible: loading })}>{children}</div>
         </button>
     )
 }
