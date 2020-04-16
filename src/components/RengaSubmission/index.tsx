@@ -79,7 +79,12 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
 
     const [createSubmission] = useCreateSubmissionMutation({
         onCompleted: (data) => {
-            if (data?.createSubmission.valid) onSolved()
+            if (data?.createSubmission.valid) {
+                onSolved()
+                window.heap?.track('Found Renga', {
+                    rengaId,
+                })
+            }
             setMovie(undefined)
         },
     })
@@ -90,7 +95,11 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
 
     const handleSubmission = React.useCallback(async () => {
         if (movie === undefined) return
-
+        window.heap?.track('Tried Submission', {
+            rengaId,
+            movieId: movie.id,
+            movieTitle: movie.title,
+        })
         createSubmission({
             variables: {
                 movieDBId: movie.id,

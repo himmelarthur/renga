@@ -40,6 +40,10 @@ export const useParty = () => {
                 'session:data',
                 [[['partyId', partyId]]],
             ])
+            window.heap?.identify(userId.toString())
+            window.heap?.addUserProperties({
+                partyId,
+            })
         }
     }, [partyId, userId])
 
