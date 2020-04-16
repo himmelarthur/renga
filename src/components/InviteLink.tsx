@@ -22,7 +22,7 @@ export default ({ className }: InviteLinkProps) => {
                 className
             )} text-sm text-gray-600 flex sm:items-center flex-col sm:flex-row items-start`}
         >
-            <div className="text-primary">Party link:</div>
+            <div className="text-primary">Invite friends:</div>
             <div className="flex justify-center items-center py-2">
                 <div
                     className="cursor-pointer sm:mx-4 sm:mt-0 text-primary py-1 px-4 rounded-md border-primary  border"
