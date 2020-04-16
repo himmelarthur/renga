@@ -1,12 +1,13 @@
 import ConfettiGenerator from 'confetti-js'
 import { motion } from 'framer-motion'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
 import NoRengas from './NoRengas'
 import Rengas from './Rengas'
+import { useHistory, useLocation } from 'react-router-dom'
 
 type Props = {
     partyId: string
@@ -17,6 +18,14 @@ const Party = ({ partyId, userId }: Props) => {
     const [confettis, setConfettis] = useState<ConfettiGenerator>()
     const [createRengaOn, setCreateRengaOn] = useState(false)
     const [solvingRenga, setSolvingRenga] = useState<number>()
+    const { hash } = useLocation()
+
+    useEffect(() => {
+        try {
+            const selectedRengaId = Number(hash.replace('#', ''))
+            setSolvingRenga(selectedRengaId)
+        } catch (err) {}
+    }, [hash])
 
     const onSolvedRenga = useCallback(() => {
         const confetti = new ConfettiGenerator({
@@ -103,9 +112,9 @@ const Party = ({ partyId, userId }: Props) => {
                                         onClickRenga={(rengaId) => {
                                             confettis?.clear()
                                             if (rengaId === solvingRenga) {
-                                                setSolvingRenga(undefined)
+                                                window.location.hash = ''
                                             } else {
-                                                setSolvingRenga(rengaId)
+                                                window.location.hash = rengaId.toString()
                                             }
                                         }}
                                     />
