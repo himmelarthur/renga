@@ -38,11 +38,9 @@ export const Submission = objectType({
                             valid: true,
                         },
                     })) > 0
-
-                return hasValidSubmission || !parent.valid
-                    ? // @ts-ignore
-                      parent.movieTitle
-                    : ''
+                // @ts-ignore
+                const maybeTitle = parent.movieTitle
+                return hasValidSubmission || !parent.valid ? maybeTitle : ''
             },
         })
     },

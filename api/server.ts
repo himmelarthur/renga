@@ -20,6 +20,7 @@ const server = new ApolloServer({
     context: ({ req }) => createContext(req),
     engine: {
         apiKey: process.env.ENGINE_API_KEY,
+        schemaTag: process.env.ENGINE_VARIANT
     },
 })
 
