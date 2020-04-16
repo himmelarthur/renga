@@ -70,7 +70,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                 <h3 className="text-gray-800 text-2xl font-bold">
                     Leaderboard
                 </h3>
-                <div className="w-full text-gray-600 text-sm">
+                <div className="w-full text-gray-600 my-2">
                     {users.map((player, index) => {
                         const isMe = userId === player.id
                         return (
@@ -104,6 +104,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                     })}
                 </div>
             </AnimateSharedLayout>
+            <div className="text-xs text-gray-500 text-right w-full">Solving a Renga first gives 2 points, 1 point otherwise</div>
         </div>
     )
 }
