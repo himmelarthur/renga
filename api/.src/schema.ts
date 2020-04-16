@@ -9,7 +9,7 @@ export const schema = makeSchema({
   types: [Objects, Queries, Mutations],
   plugins: [nexusPrismaPlugin()],
   outputs: {
-      typegen: join(__dirname, '../nexus.ts'),
+      typegen: join(__dirname, './nexus.ts'),
       schema: join(__dirname, '../schema.graphql'),
   },
 })
