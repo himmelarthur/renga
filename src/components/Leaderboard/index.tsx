@@ -104,6 +104,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                     })}
                 </div>
             </AnimateSharedLayout>
+            <div className="text-xs text-gray-500 text-right w-full">Solving a Renga first gives 2 points, 1 point otherwise</div>
         </div>
     )
 }
