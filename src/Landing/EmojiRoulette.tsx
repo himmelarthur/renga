@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { motion, useAnimation } from 'framer-motion'
 
 const RENGAS = [
@@ -17,9 +17,12 @@ const EmojiRoulette = () => {
     const [cursor, setCursor] = useState(0)
     const controls = useAnimation()
     const renga = RENGAS[cursor]
-    useEffect(() => {
+    useLayoutEffect(() => {
         let index = cursor
         setInterval(async () => {
+            if (!document.hasFocus()) {
+                return
+            }
             await controls.start((i) => ({
                 y: 100,
                 opacity: 0,
