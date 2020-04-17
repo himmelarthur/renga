@@ -1,12 +1,10 @@
 import ConfettiGenerator from 'confetti-js'
-import { motion } from 'framer-motion'
 import React, { useCallback, useState, useEffect } from 'react'
 import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard/Leaderboard'
 import RengaForm from '../components/RengaForm'
-import RengaSubmission from '../components/RengaSubmission'
 import NoRengas from './NoRengas'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import Rengas from './Rengas/Rengas'
 
 type Props = {
@@ -18,7 +16,12 @@ const Party = ({ partyId, userId }: Props) => {
     const [confettis, setConfettis] = useState<ConfettiGenerator>()
     const [createRengaOn, setCreateRengaOn] = useState(false)
     const [solvingRenga, setSolvingRenga] = useState<number>()
-    const { hash } = useLocation()
+    const { hash, pathname } = useLocation()
+    const history = useHistory()
+
+    const goToHash = (hash?: string) => {
+        history.push(pathname + hash ? `#${hash}` : '', null)
+    }
 
     useEffect(() => {
         switch (hash) {
@@ -80,57 +83,37 @@ const Party = ({ partyId, userId }: Props) => {
                                 <RengaForm
                                     partyId={partyId}
                                     userId={userId}
-                                    onCreated={() =>
-                                        (window.location.hash = '')
-                                    }
-                                    onClose={() => (window.location.hash = '')}
+                                    onCreated={() => goToHash()}
+                                    onClose={() => goToHash()}
                                 ></RengaForm>
                             ) : (
                                 <div className="mt-0">
-                                    {solvingRenga ? (
-                                        <motion.div
-                                            className="mb-8"
-                                            animate="visible"
-                                            initial="hidden"
-                                            variants={{
-                                                hidden: { opacity: 0, y: -100 },
-                                                visible: { opacity: 1, y: 0 },
-                                            }}
-                                        >
-                                            <RengaSubmission
-                                                rengaId={solvingRenga}
-                                                userId={userId}
-                                                onSolved={onSolvedRenga}
-                                                partyId={partyId}
-                                                onClose={() => {
-                                                    confettis?.clear()
-                                                    window.location.hash = ''
-                                                }}
-                                            ></RengaSubmission>
-                                        </motion.div>
-                                    ) : undefined}
                                     <Rengas
                                         displayNewButton
+                                        onClose={() => {
+                                            confettis?.clear()
+                                            goToHash('')
+                                        }}
+                                        onSolvedRenga={onSolvedRenga}
                                         onClickNew={() => {
                                             confettis?.clear()
-                                            window.location.hash = 'new'
+                                            goToHash('new')
                                         }}
                                         highlightedRenga={solvingRenga}
                                         partyId={partyId}
                                         noRengasComponent={
                                             <NoRengas
                                                 onClickNew={() =>
-                                                    (window.location.hash =
-                                                        'new')
+                                                    goToHash('new')
                                                 }
                                             />
                                         }
                                         onClickRenga={(rengaId) => {
                                             confettis?.clear()
                                             if (rengaId === solvingRenga) {
-                                                window.location.hash = ''
+                                                goToHash()
                                             } else {
-                                                window.location.hash = rengaId.toString()
+                                                goToHash(rengaId.toString())
                                             }
                                         }}
                                     />
