@@ -9,6 +9,7 @@ import { permissions } from './.src/security/permissions'
 dotenv.config()
 
 Sentry.init({
+    environment: process.env.SENTRY_ENV,
     dsn:
         'https://f80e05cbcee64135a0c28df600eabe64@o378128.ingest.sentry.io/5201075',
 })
@@ -20,7 +21,7 @@ const server = new ApolloServer({
     context: ({ req }) => createContext(req),
     engine: {
         apiKey: process.env.ENGINE_API_KEY,
-        schemaTag: process.env.ENGINE_VARIANT
+        schemaTag: process.env.ENGINE_VARIANT,
     },
 })
 

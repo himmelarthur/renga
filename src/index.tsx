@@ -1,14 +1,15 @@
+import { ApolloProvider } from '@apollo/react-hooks'
+import * as Sentry from '@sentry/browser'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
-import './tailwind.css'
 import App from './App'
-import * as serviceWorker from './serviceWorker'
-import * as Sentry from '@sentry/browser'
-import { ApolloProvider } from '@apollo/react-hooks'
 import { client } from './client'
+import './index.css'
+import * as serviceWorker from './serviceWorker'
+import './tailwind.css'
 
 Sentry.init({
+    environment: process.env.REACT_APP_SENTRY_ENV,
     dsn:
         'https://f80e05cbcee64135a0c28df600eabe64@o378128.ingest.sentry.io/5201075',
 })
