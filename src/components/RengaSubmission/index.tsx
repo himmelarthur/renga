@@ -73,6 +73,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     onClose,
 }) => {
     const { data, loading } = useGetRengaQuery({
+        fetchPolicy: 'network-only',
         variables: { rengaId },
     })
     const [movie, setMovie] = React.useState<MovieResult | undefined>()
