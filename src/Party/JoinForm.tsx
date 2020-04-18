@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useRef, useEffect } from 'react'
 import gql from 'graphql-tag'
 import { useJoinPartyMutation, GetPlayersDocument } from '../generated/graphql'
 import { useParty } from '../hooks'
@@ -17,6 +17,7 @@ const JoinForm = ({ partyId }: Props) => {
         },
     })
     const [username, setUsername] = React.useState('')
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const handleSubmit = (e: FormEvent) => {
         joinParty({
@@ -33,6 +34,12 @@ const JoinForm = ({ partyId }: Props) => {
         return false
     }
 
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus()
+        }
+    }, [])
+
     return (
         <div>
             <div className="text-gray-700 font-medium mb-4">
@@ -44,6 +51,7 @@ const JoinForm = ({ partyId }: Props) => {
                 onSubmit={handleSubmit}
             >
                 <input
+                    ref={inputRef}
                     type="text"
                     value={username}
                     onChange={(evt) => setUsername(evt.target.value)}
