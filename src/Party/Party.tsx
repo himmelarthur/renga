@@ -122,26 +122,7 @@ const Party = ({ partyId, userId }: Props) => {
                         </div>
                     </div>
                     <div className="sm:w-1/3 mt-6 sm:mt-0 max-w-md">
-                        {/* <div className="bg-gray-100 p-4 px-6 rounded flex flex-row justify-evenly">
-                            <div className="flex flex-col items-center">
-                                <div className="font-medium text-gray-800 text-2xl">
-                                    🎬 3
-                                </div>
-                                <div className="uppercase text-gray-600 text-sm mt-1">
-                                    created
-                                </div>
-                            </div>
-                            <div className="flex flex-col items-center">
-                                <div className="font-medium text-gray-800 text-2xl">
-                                    🔍 2
-                                </div>
-                                <div className="uppercase text-gray-600 text-sm mt-1">
-                                    solved
-                                </div>
-                            </div>
-                        </div> */}
                         <Leaderboard
-                            className="mt-4"
                             partyId={partyId}
                             userId={userId}
                         ></Leaderboard>
