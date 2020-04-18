@@ -60,11 +60,8 @@ const Rengas = ({
                                     hideResolved ? !x.status.isResolved : true
                                 )
                                 .map((renga) => (
-                                    <motion.div
+                                    <div
                                         key={renga.id}
-                                        layoutId={renga.id.toString()}
-                                        custom={renga.id}
-                                        animate={animationControl}
                                         className={
                                             highlightedRenga === renga.id
                                                 ? 'w-full'
@@ -83,7 +80,7 @@ const Rengas = ({
                                             }
                                             onClose={() => onClose()}
                                         />
-                                    </motion.div>
+                                    </div>
                                 ))}
                         </>
                     ) : (
