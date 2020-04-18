@@ -33,7 +33,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
         <div
             className={classNames(
                 className,
-                'max-w-md p-4 px-6 flex flex-col items-start bg-gray-100 rounded-md'
+                'p-4 px-6 flex flex-col items-start bg-gray-100 rounded-md'
             )}
         >
             <AnimateSharedLayout>
