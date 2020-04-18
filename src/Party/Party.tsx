@@ -82,7 +82,7 @@ const Party = ({ partyId, userId }: Props) => {
                             target="_blank"
                             className="border border-primary p-2 text-primary rounded"
                         >
-                            Create a new party
+                            Start new party
                         </a>
                     </div>
                 </div>
