@@ -23,7 +23,7 @@ const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
                 'flex flex-col justify-center items-center mr-4 mb-4 rounded p-2 w-full',
                 {
                     'bg-gray-100': open,
-                    'grayed opacity-75': renga.status.isResolved,
+                    'grayed opacity-75': renga.status.isResolved && !open,
                     'w-full': open,
                     'w-32 sm:w-40 h-24 hover:bg-gray-200  cursor-pointer': !open,
                 }
