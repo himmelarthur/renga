@@ -12,27 +12,32 @@ export default ({ className, partyId }: InviteLinkProps) => {
     const onClickCopy = React.useCallback(() => {
         copy(`${window.location.href}`)
         setIsCopied(true)
+        window.heap?.track('Copy invitation', {
+            partyId,
+        })
         setTimeout(() => {
             setIsCopied(false)
         }, 2000)
     }, [setIsCopied])
     return (
         <div
+            onClick={() => onClickCopy()}
             className={`${classNames(
-                className
-            )} text-sm text-gray-600 flex sm:items-center flex-col sm:flex-row items-start`}
+                className,
+                'text-sm text-gray-700 flex items-center justify-center flex-row items-start py-2 group'
+            )}`}
         >
-            <div className="text-primary">Invite friends:</div>
-            <div className="flex justify-center items-center py-2">
-                <div
-                    className="cursor-pointer sm:mx-4 sm:mt-0 text-primary py-1 px-4 rounded-md border-primary  border"
-                    onClick={() => onClickCopy()}
-                >
-                    {`${window.location.origin}/p/${partyId}`}
-                </div>
-                <span className="text-gray-400 text-sm ml-1">
-                    {isCopied && 'Copied!'}
+            <div className="group-hover:hidden text-center">Invite friends</div>
+            <div className="justify-center items-center hidden group-hover:flex">
+                <span className="text-gray-400 text-sm hidden group-hover:inline mr-2">
+                    {isCopied ? 'Copied!' : 'Click to copy'}
                 </span>
+                <input
+                    readOnly
+                    type="text"
+                    className="appearance-none focus:outline-none focus:shadow-outline w-56 px-2"
+                    value={`${window.location.origin}/p/${partyId}`}
+                />
             </div>
         </div>
     )
