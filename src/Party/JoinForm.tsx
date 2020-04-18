@@ -38,7 +38,7 @@ const JoinForm = ({ partyId }: Props) => {
         if (inputRef.current) {
             inputRef.current.focus()
         }
-    }, [])
+    }, [inputRef])
 
     return (
         <div>

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useRef, useEffect } from 'react'
 import Autosuggest from 'react-autosuggest'
 import classNames from 'classnames'
 import throttle from 'lodash.throttle'
@@ -26,6 +26,7 @@ const MovieAutocomplete: React.FC<Props> = ({
 }) => {
     const [query, setQuery] = useState('')
     const [suggestions, setSuggestions] = useState<MovieResult[]>([])
+    const inputRef = useRef<HTMLInputElement>(null)
     const searchMovies = useCallback(async (query: string) => {
         if (!query) {
             setSuggestions([])
@@ -41,6 +42,12 @@ const MovieAutocomplete: React.FC<Props> = ({
     }, [])
     const debouncedSearch = throttle(searchMovies, 1000)
     const handleChange = useCallback(debouncedSearch, [])
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus()
+        }
+    }, [movie, inputRef])
 
     return (
         <Autosuggest
@@ -66,6 +73,7 @@ const MovieAutocomplete: React.FC<Props> = ({
                     // @ts-ignore
                     <input
                         {...props}
+                        ref={inputRef}
                         className="appearance-none p-6 border-2 rounded h-10 w-full text-xl font-bold"
                     />
                 ) : (
