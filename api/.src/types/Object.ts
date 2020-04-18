@@ -87,7 +87,7 @@ export const Renga = objectType({
             type: 'Status',
             resolve: async (parent, {}, ctx: Context) => {
                 const user = await ctx.user
-                // @ts-ignore'
+                // @ts-ignore
                 const isMine = parent.authorId === user?.userId
                 const isResolved =
                     (await ctx.prisma.submission.count({
