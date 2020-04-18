@@ -2,12 +2,12 @@ import ConfettiGenerator from 'confetti-js'
 import { motion } from 'framer-motion'
 import React, { useCallback, useState, useEffect } from 'react'
 import InviteLink from '../components/InviteLink'
-import Leaderboard from '../components/Leaderboard'
+import Leaderboard from '../components/Leaderboard/Leaderboard'
 import RengaForm from '../components/RengaForm'
 import RengaSubmission from '../components/RengaSubmission'
 import NoRengas from './NoRengas'
-import Rengas from './Rengas'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import Rengas from './Rengas/Rengas'
 
 type Props = {
     partyId: string

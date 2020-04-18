@@ -6,6 +6,7 @@ import pluralize from 'pluralize'
 import { userEmoji } from '../../utils/emojis'
 import { motion, useAnimation, AnimateSharedLayout } from 'framer-motion'
 import { Emoji } from 'emoji-mart'
+import { useFetchLeaderboard } from './hooks'
 
 interface ILeaderboardProps {
     partyId: string
@@ -13,48 +14,15 @@ interface ILeaderboardProps {
     className?: string
 }
 
-gql`
-    query getPlayers($partyId: String!) {
-        party(where: { id: $partyId }) {
-            id
-            users(orderBy: { score: desc }) {
-                id
-                username
-                score
-            }
-        }
-    }
-`
-
 const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     partyId,
     userId,
     className,
 }) => {
-    const [userScore, setUserScore] = useState<number>()
-    const { data } = useGetPlayersQuery({
-        variables: { partyId },
-        pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
-        onCompleted: (data) =>
-            setUserScore(
-                data.party?.users.find(({ id }) => id === userId)?.score
-            ),
-    })
-
-    const myScoreAnimationControl = useAnimation()
-
-    useLayoutEffect(() => {
-        const newUserScore = data?.party?.users.find(({ id }) => id === userId)
-            ?.score
-        if (newUserScore && userScore && newUserScore > userScore) {
-            myScoreAnimationControl.start({
-                scale: [1, 1.3, 1],
-                transition: { delay: 1, duration: 0.5 },
-            })
-        }
-        setUserScore(newUserScore)
-    }, [data, userScore, myScoreAnimationControl, userId])
-
+    const { data, loading, animationControl } = useFetchLeaderboard(
+        partyId,
+        userId
+    )
     if (!data?.party) return <div></div>
 
     const {
@@ -77,9 +45,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                         const isMe = userId === player.id
                         return (
                             <motion.div
-                                animate={
-                                    isMe ? myScoreAnimationControl : undefined
-                                }
+                                animate={isMe ? animationControl : undefined}
                                 key={player.id}
                                 layoutId={player.id.toString()}
                                 className={classNames(
@@ -111,7 +77,9 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                     })}
                 </div>
             </AnimateSharedLayout>
-            <div className="text-xs text-gray-500 text-right w-full">Solving a Renga first gives 2 points, 1 point otherwise</div>
+            <div className="text-xs text-gray-500 text-right w-full">
+                Solving a Renga first gives 2 points, 1 point otherwise
+            </div>
         </div>
     )
 }

@@ -1,29 +1,7 @@
-import React, { useState, useLayoutEffect } from 'react'
-import gql from 'graphql-tag'
-import { useGetRengasQuery } from '../generated/graphql'
-import Renga from '../components/Renga'
-import { motion, AnimateSharedLayout, useAnimation } from 'framer-motion'
-
-gql`
-    query GetRengas($partyId: String!) {
-        rengas(
-            where: { partyId: { equals: $partyId } }
-            orderBy: { createdAt: desc }
-        ) {
-            id
-            emojis
-            author {
-                id
-                username
-            }
-            createdAt
-            status {
-                isResolved
-                isMine
-            }
-        }
-    }
-`
+import React from 'react'
+import Renga from '../../components/Renga'
+import { motion, AnimateSharedLayout } from 'framer-motion'
+import { useFetchRengas } from './hooks'
 
 const Rengas = ({
     partyId,
@@ -33,30 +11,8 @@ const Rengas = ({
     displayNewButton,
     onClickNew,
 }: Props) => {
-    const { data, loading } = useGetRengasQuery({
-        variables: { partyId },
-        pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
-        onCompleted: (data) => setRengaIds(data.rengas.map(({ id }) => id)),
-    })
-    const [rengaIds, setRengaIds] = useState<number[]>()
-    const newRengasAnimationControl = useAnimation()
+    const { animationControl, data, loading } = useFetchRengas(partyId)
 
-    useLayoutEffect(() => {
-        const newRengaIds = data?.rengas
-            .filter(({ id }) => !rengaIds?.includes(id))
-            .map(({ id }) => id)
-        if (rengaIds?.length && newRengaIds?.length) {
-            newRengasAnimationControl.start((rengaId) =>
-                newRengaIds.includes(rengaId)
-                    ? {
-                          scale: [1, 1.3, 1],
-                          transition: { delay: 1, duration: 0.5 },
-                      }
-                    : {}
-            )
-            setRengaIds(data?.rengas.map(({ id }) => id))
-        }
-    }, [data, newRengasAnimationControl, rengaIds])
     if (loading) {
         return <div></div>
     }
@@ -78,7 +34,7 @@ const Rengas = ({
                                 key={renga.id}
                                 layoutId={renga.id.toString()}
                                 custom={renga.id}
-                                animate={newRengasAnimationControl}
+                                animate={animationControl}
                             >
                                 <Renga
                                     key={renga.id}

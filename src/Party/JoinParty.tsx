@@ -1,9 +1,9 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import JoinForm from './JoinForm'
-import Rengas from './Rengas'
+import Rengas from './Rengas/Rengas'
 import NoRengas from './NoRengas'
-import Leaderboard from '../components/Leaderboard'
+import Leaderboard from '../components/Leaderboard/Leaderboard'
 
 type Props = {
     partyId: string
