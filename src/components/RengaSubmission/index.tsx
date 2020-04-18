@@ -113,6 +113,20 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             ],
         })
     }, [movie, rengaId, createSubmission, partyId])
+
+    React.useEffect(() => {
+        const enterListener = (event: KeyboardEvent) => {
+            if (event.code === 'Enter') {
+                if (window.heap) {
+                    window.heap.track('Submit with enter')
+                }
+                handleSubmission()
+            }
+        }
+        document.addEventListener('keydown', enterListener)
+        return () => document.removeEventListener('keydown', enterListener)
+    }, [handleSubmission])
+
     if (loading || !data) return <RengaSubmissionSkeleton />
 
     const { renga } = data
@@ -151,7 +165,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     />
                     <button
                         className={classNames(
-                            'p-4 text-gray-100 rounded mt-4 w-full font-medium outline-none',
+                            'p-4 text-gray-100 rounded w-full mt-4 font-medium outline-none',
                             {
                                 'bg-teal-500 hover:bg-teal-600': !!movie,
                                 'bg-teal-500 opacity-50  cursor-default ': !movie,

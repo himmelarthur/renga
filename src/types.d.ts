@@ -23,7 +23,7 @@ interface Crisp {
 
 interface Heap {
     identify: (userId: string) => void
-    track: (event: string, args: { [key: string]: number | string }) => void
+    track: (event: string, args?: { [key: string]: number | string }) => void
     addUserProperties: (props: { [key: string]: number | string }) => void
 }
 
