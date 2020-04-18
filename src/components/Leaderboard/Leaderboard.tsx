@@ -1,8 +1,8 @@
+import React from 'react'
 import classNames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { AnimateSharedLayout, motion } from 'framer-motion'
 import pluralize from 'pluralize'
-import React from 'react'
 import { userEmoji } from '../../utils/emojis'
 import { useFetchLeaderboard } from './hooks'
 
@@ -72,8 +72,8 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                 )}
                             >
                                 <div className="flex items-center">
-                                    <div className="w-4 text-center text-gray-400">
-                                        {index === 0 ? '🏅' : `#${index + 1}`}
+                                    <div className="text-center text-gray-400 w-8 flex justify-end">
+                                        {index === 0 ? '🏅' : `#1${index + 1}`}
                                     </div>
                                     <div className="ml-3 mr-2">
                                         {player.username}
@@ -84,8 +84,8 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                         emoji={userEmoji(partyId, player.id)}
                                     />
                                 </div>
-                                <div className="text-gray-600">
-                                    {pluralize('point', player.score, true)}
+                                <div className="text-gray-600 text-sm">
+                                    {pluralize('pt', player.score, true)}
                                 </div>
                             </motion.div>
                         )
