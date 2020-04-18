@@ -14,18 +14,14 @@ export type Scalars = {
 
 export type Query = {
     __typename?: 'Query'
-    users: Array<User>
+    user?: Maybe<User>
     renga?: Maybe<Renga>
     rengas: Array<Renga>
     party?: Maybe<Party>
 }
 
-export type QueryUsersArgs = {
-    skip?: Maybe<Scalars['Int']>
-    after?: Maybe<UserWhereUniqueInput>
-    before?: Maybe<UserWhereUniqueInput>
-    first?: Maybe<Scalars['Int']>
-    last?: Maybe<Scalars['Int']>
+export type QueryUserArgs = {
+    where: UserWhereUniqueInput
 }
 
 export type QueryRengaArgs = {
@@ -55,6 +51,8 @@ export type User = {
     id: Scalars['Int']
     username: Scalars['String']
     score: Scalars['Int']
+    solvedCount: Scalars['Int']
+    postedCount: Scalars['Int']
 }
 
 export type RengaWhereUniqueInput = {
@@ -289,15 +287,10 @@ export type PartyUsersOrderByInput = {
 
 export type Mutation = {
     __typename?: 'Mutation'
-    createOneUser: User
     createOneRenga: Renga
     createSubmission: Submission
     createParty: Scalars['String']
     joinParty: Scalars['String']
-}
-
-export type MutationCreateOneUserArgs = {
-    data: UserCreateInput
 }
 
 export type MutationCreateOneRengaArgs = {
@@ -319,40 +312,14 @@ export type MutationJoinPartyArgs = {
     username: Scalars['String']
 }
 
-export type UserCreateInput = {
-    createdAt?: Maybe<Scalars['DateTime']>
-    updatedAt?: Maybe<Scalars['DateTime']>
-    username: Scalars['String']
-    score?: Maybe<Scalars['Int']>
-    party: PartyCreateOneWithoutUsersInput
-    rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
-    submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
-}
-
-export type PartyCreateOneWithoutUsersInput = {
-    create?: Maybe<PartyCreateWithoutUsersInput>
-    connect?: Maybe<PartyWhereUniqueInput>
-}
-
-export type PartyCreateWithoutUsersInput = {
-    id: Scalars['String']
-    createdAt?: Maybe<Scalars['DateTime']>
-    updatedAt?: Maybe<Scalars['DateTime']>
-    rengas?: Maybe<RengaCreateManyWithoutPartyInput>
-}
-
-export type RengaCreateManyWithoutPartyInput = {
-    create?: Maybe<Array<RengaCreateWithoutPartyInput>>
-    connect?: Maybe<Array<RengaWhereUniqueInput>>
-}
-
-export type RengaCreateWithoutPartyInput = {
+export type RengaCreateInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
     author: UserCreateOneWithoutRengasInput
+    party: PartyCreateOneWithoutRengasInput
 }
 
 export type RengaCreateemojisInput = {
@@ -387,18 +354,30 @@ export type UserCreateWithoutSubmissionInput = {
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
 }
 
-export type RengaCreateManyWithoutAuthorInput = {
-    create?: Maybe<Array<RengaCreateWithoutAuthorInput>>
+export type PartyCreateOneWithoutUsersInput = {
+    create?: Maybe<PartyCreateWithoutUsersInput>
+    connect?: Maybe<PartyWhereUniqueInput>
+}
+
+export type PartyCreateWithoutUsersInput = {
+    id: Scalars['String']
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    rengas?: Maybe<RengaCreateManyWithoutPartyInput>
+}
+
+export type RengaCreateManyWithoutPartyInput = {
+    create?: Maybe<Array<RengaCreateWithoutPartyInput>>
     connect?: Maybe<Array<RengaWhereUniqueInput>>
 }
 
-export type RengaCreateWithoutAuthorInput = {
+export type RengaCreateWithoutPartyInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
-    party: PartyCreateOneWithoutRengasInput
+    author: UserCreateOneWithoutRengasInput
 }
 
 export type MovieCreateOneWithoutRengasInput = {
@@ -423,29 +402,17 @@ export type MovieWhereUniqueInput = {
     id?: Maybe<Scalars['Int']>
 }
 
-export type PartyCreateOneWithoutRengasInput = {
-    create?: Maybe<PartyCreateWithoutRengasInput>
-    connect?: Maybe<PartyWhereUniqueInput>
+export type UserCreateOneWithoutRengasInput = {
+    create?: Maybe<UserCreateWithoutRengasInput>
+    connect?: Maybe<UserWhereUniqueInput>
 }
 
-export type PartyCreateWithoutRengasInput = {
-    id: Scalars['String']
-    createdAt?: Maybe<Scalars['DateTime']>
-    updatedAt?: Maybe<Scalars['DateTime']>
-    users?: Maybe<UserCreateManyWithoutPartyInput>
-}
-
-export type UserCreateManyWithoutPartyInput = {
-    create?: Maybe<Array<UserCreateWithoutPartyInput>>
-    connect?: Maybe<Array<UserWhereUniqueInput>>
-}
-
-export type UserCreateWithoutPartyInput = {
+export type UserCreateWithoutRengasInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
     username: Scalars['String']
     score?: Maybe<Scalars['Int']>
-    rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
+    party: PartyCreateOneWithoutUsersInput
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
 
@@ -477,27 +444,43 @@ export type RengaCreateWithoutSubmissionsInput = {
     party: PartyCreateOneWithoutRengasInput
 }
 
-export type UserCreateOneWithoutRengasInput = {
-    create?: Maybe<UserCreateWithoutRengasInput>
-    connect?: Maybe<UserWhereUniqueInput>
+export type PartyCreateOneWithoutRengasInput = {
+    create?: Maybe<PartyCreateWithoutRengasInput>
+    connect?: Maybe<PartyWhereUniqueInput>
 }
 
-export type UserCreateWithoutRengasInput = {
+export type PartyCreateWithoutRengasInput = {
+    id: Scalars['String']
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    users?: Maybe<UserCreateManyWithoutPartyInput>
+}
+
+export type UserCreateManyWithoutPartyInput = {
+    create?: Maybe<Array<UserCreateWithoutPartyInput>>
+    connect?: Maybe<Array<UserWhereUniqueInput>>
+}
+
+export type UserCreateWithoutPartyInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
     username: Scalars['String']
     score?: Maybe<Scalars['Int']>
-    party: PartyCreateOneWithoutUsersInput
+    rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
 
-export type RengaCreateInput = {
+export type RengaCreateManyWithoutAuthorInput = {
+    create?: Maybe<Array<RengaCreateWithoutAuthorInput>>
+    connect?: Maybe<Array<RengaWhereUniqueInput>>
+}
+
+export type RengaCreateWithoutAuthorInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
-    author: UserCreateOneWithoutRengasInput
     party: PartyCreateOneWithoutRengasInput
 }
 
@@ -541,9 +524,16 @@ export type GetRengasQuery = { __typename?: 'Query' } & {
 
 export type GetPlayersQueryVariables = {
     partyId: Scalars['String']
+    userId?: Maybe<Scalars['Int']>
 }
 
 export type GetPlayersQuery = { __typename?: 'Query' } & {
+    user?: Maybe<
+        { __typename?: 'User' } & Pick<
+            User,
+            'id' | 'postedCount' | 'solvedCount'
+        >
+    >
     party?: Maybe<
         { __typename?: 'Party' } & Pick<Party, 'id'> & {
                 users: Array<
@@ -769,7 +759,12 @@ export type GetRengasQueryResult = ApolloReactCommon.QueryResult<
     GetRengasQueryVariables
 >
 export const GetPlayersDocument = gql`
-    query getPlayers($partyId: String!) {
+    query getPlayers($partyId: String!, $userId: Int) {
+        user(where: { id: $userId }) {
+            id
+            postedCount
+            solvedCount
+        }
         party(where: { id: $partyId }) {
             id
             users(orderBy: { score: desc }) {
@@ -794,6 +789,7 @@ export const GetPlayersDocument = gql`
  * const { data, loading, error } = useGetPlayersQuery({
  *   variables: {
  *      partyId: // value for 'partyId'
+ *      userId: // value for 'userId'
  *   },
  * });
  */
