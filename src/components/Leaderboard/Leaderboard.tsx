@@ -37,9 +37,29 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
             )}
         >
             <AnimateSharedLayout>
-                <h3 className="text-gray-800 text-2xl font-bold">
-                    Leaderboard
-                </h3>
+                <div className="flex flex-row justify-between w-full items-baseline">
+                    <h3 className="text-gray-800 text-2xl font-bold">
+                        Leaderboard
+                    </h3>
+                    <div className="flex flex-row">
+                        <div className="flex flex-row items-baseline">
+                            <div className="font-medium text-sm text-gray-800">
+                                🎬 3
+                            </div>
+                            <div className="ml-1 uppercase text-gray-600 text-xs">
+                                created -
+                            </div>
+                        </div>
+                        <div className="flex flex-row items-baseline ml-px">
+                            <div className="font-medium text-sm text-gray-800">
+                                🔍 2
+                            </div>
+                            <div className="ml-1 uppercase text-gray-600 text-xs">
+                                solved
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="w-full text-gray-600 my-2">
                     {users.map((player, index) => {
                         const isMe = userId === player.id
