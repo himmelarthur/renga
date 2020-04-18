@@ -72,8 +72,18 @@ const Party = ({ partyId, userId }: Props) => {
             <div className="sm:p-10 p-4">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center mb-4 justify-between">
                     <h1 className="text-primary font-logo text-3xl">Renga</h1>
-                    <div className="hidden sm:block">
-                        <InviteLink partyId={partyId} />
+                    <div className="flex flex-row items-baseline">
+                        <InviteLink
+                            className="invisible sm:visible mr-4"
+                            partyId={partyId}
+                        />
+                        <a
+                            href="/"
+                            target="_blank"
+                            className="border border-primary p-2 text-primary rounded"
+                        >
+                            Create a new party
+                        </a>
                     </div>
                 </div>
                 <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
