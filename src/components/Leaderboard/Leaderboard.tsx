@@ -1,11 +1,9 @@
-import React, { useState, useLayoutEffect, Component, FC } from 'react'
-import gql from 'graphql-tag'
-import { useGetPlayersQuery } from '../../generated/graphql'
 import classNames from 'classnames'
-import pluralize from 'pluralize'
-import { userEmoji } from '../../utils/emojis'
-import { motion, useAnimation, AnimateSharedLayout } from 'framer-motion'
 import { Emoji } from 'emoji-mart'
+import { AnimateSharedLayout, motion } from 'framer-motion'
+import pluralize from 'pluralize'
+import React from 'react'
+import { userEmoji } from '../../utils/emojis'
 import { useFetchLeaderboard } from './hooks'
 
 interface ILeaderboardProps {
@@ -19,10 +17,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     userId,
     className,
 }) => {
-    const { data, loading, animationControl } = useFetchLeaderboard(
-        partyId,
-        userId
-    )
+    const { data, animationControl } = useFetchLeaderboard(partyId, userId)
     if (!data?.party) return <div></div>
 
     const {
@@ -37,26 +32,26 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
             )}
         >
             <AnimateSharedLayout>
-                <div className="flex flex-row justify-between w-full items-baseline">
+                <div className="flex sm:flex-row flex-col justify-between w-full items-baseline">
                     <h3 className="text-gray-800 text-2xl font-bold">
                         Leaderboard
                     </h3>
-                    <div className="flex flex-row">
+                    <div className="flex flex-row sm:mt-0 mt-2">
                         <div className="flex flex-row items-baseline">
-                            <div className="font-medium text-sm text-gray-800">
-                                🎬 3
-                            </div>
-                            <div className="ml-1 uppercase text-gray-600 text-xs">
-                                created -
-                            </div>
+                            <span className="font-medium text-sm text-gray-800">
+                                🎬{data.user?.postedCount ?? 0}
+                            </span>
+                            <span className="ml-1 uppercase text-gray-600 text-xs">
+                                created
+                            </span>
                         </div>
-                        <div className="flex flex-row items-baseline ml-px">
-                            <div className="font-medium text-sm text-gray-800">
-                                🔍 2
-                            </div>
-                            <div className="ml-1 uppercase text-gray-600 text-xs">
+                        <div className="flex flex-row items-baseline ml-2">
+                            <span className="font-medium text-sm text-gray-800">
+                                🔍{data.user?.solvedCount ?? 0}
+                            </span>
+                            <span className="ml-1 uppercase text-gray-600 text-xs">
                                 solved
-                            </div>
+                            </span>
                         </div>
                     </div>
                 </div>

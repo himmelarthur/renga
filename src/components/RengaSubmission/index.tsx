@@ -109,7 +109,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             },
             refetchQueries: [
                 { query: GetRengaDocument, variables: { rengaId } },
-                { query: GetPlayersDocument, variables: { partyId } },
+                { query: GetPlayersDocument, variables: { partyId, userId } },
             ],
         })
     }, [movie, rengaId, createSubmission, partyId])
