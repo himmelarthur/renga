@@ -10,6 +10,7 @@ import classNames from 'classnames'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 import Button from '../Button'
 import { track } from '../../utils/tracking'
+import DEFAULT_MOVIES from './defaultMovies'
 
 gql`
     mutation createRenga(
@@ -48,6 +49,9 @@ export interface IRengaFormProps {
 }
 
 export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
+    const [suggestion, setSuggestion] = React.useState(
+        DEFAULT_MOVIES[Math.floor(Math.random() * DEFAULT_MOVIES.length)]
+    )
     const [createRenga] = useCreateRengaMutation()
     const [movie, setMovie] = React.useState<MovieResult | undefined>()
     const [emojis, setEmojis] = React.useState<TEmojis>([
@@ -106,6 +110,35 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                     Make people guess a movie...
                 </h3>
                 <MovieAutocomplete movie={movie} onMovieChange={setMovie} />
+                <div className="flex text-sm text-gray-500 mt-2 justify-between items-start">
+                    <div>
+                        How about
+                        <a
+                            className="text-primary underline pl-1 cursor-pointer"
+                            onClick={() => setMovie(suggestion)}
+                        >
+                            {suggestion.title}
+                        </a>
+                        ?
+                    </div>
+                    <div
+                        className="uppercase text-xs cursor-pointer pt-1 font-medium ml-4 text-center"
+                        style={{
+                            minWidth: 100,
+                        }}
+                        onClick={() =>
+                            setSuggestion(
+                                DEFAULT_MOVIES[
+                                    Math.floor(
+                                        Math.random() * DEFAULT_MOVIES.length
+                                    )
+                                ]
+                            )
+                        }
+                    >
+                        Another one!
+                    </div>
+                </div>
                 <div
                     className="absolute top-0 p-4 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"
                     onClick={onClose}
