@@ -102,9 +102,10 @@ const Party = ({ partyId, userId }: Props) => {
                                                 userId={userId}
                                                 onSolved={onSolvedRenga}
                                                 partyId={partyId}
-                                                onClose={() =>
-                                                    (window.location.hash = '')
-                                                }
+                                                onClose={() => {
+                                                    confettis?.clear()
+                                                    window.location.hash = ''
+                                                }}
                                             ></RengaSubmission>
                                         </motion.div>
                                     ) : undefined}
