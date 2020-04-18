@@ -37,7 +37,7 @@ const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
                               if (ref.current) {
                                   ref.current.scrollIntoView({
                                       behavior: 'smooth',
-                                      block: 'nearest',
+                                      block: 'center',
                                   })
                               }
                           }, 0)
