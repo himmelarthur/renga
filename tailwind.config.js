@@ -15,7 +15,7 @@ module.exports = {
     },
     variants: {
         visibility: ['group-hover', 'responsive'],
-        display: ['group-hover', 'responsive'],
+        display: ['responsive'],
     },
     plugins: [],
 }

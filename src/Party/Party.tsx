@@ -70,17 +70,17 @@ const Party = ({ partyId, userId }: Props) => {
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
             <div className="sm:p-10 p-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center mb-4 justify-between">
+                <div className="flex flex-row items-start items-center mb-4 justify-between">
                     <h1 className="text-primary font-logo text-3xl">Renga</h1>
                     <div className="flex flex-row items-baseline">
                         <InviteLink
-                            className="invisible sm:visible mr-4"
+                            className="hidden sm:flex mr-4"
                             partyId={partyId}
                         />
                         <a
                             href="/"
                             target="_blank"
-                            className="border border-primary p-2 text-primary rounded"
+                            className="border border-primary py-2 px-4 text-primary rounded"
                         >
                             Start new party
                         </a>
