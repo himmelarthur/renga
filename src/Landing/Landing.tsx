@@ -1,10 +1,11 @@
 import gql from 'graphql-tag'
-import React, { useCallback, useState, FormEvent } from 'react'
+import React, { useCallback, useState, FormEvent, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useCreatePartyMutation } from '../generated/graphql'
 import { useParty } from '../hooks'
 import EmojiRoulette from './EmojiRoulette'
 import Button from '../components/Button'
+import { track } from '../utils/tracking'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -18,12 +19,17 @@ const Landing = () => {
     const { addParty } = useParty()
     const history = useHistory()
 
+    useEffect(() => {
+        track('View Landing')
+    }, [])
+
     const onCreate = useCallback(
         async (e: FormEvent) => {
             e.stopPropagation()
             e.preventDefault()
             if (!username) return false
             if (loading) return false
+            track('Create Party')
             const res = await create({ variables: { username } })
             try {
                 const partyId = addParty(res.data?.createParty)
@@ -67,7 +73,10 @@ const Landing = () => {
                     className="sm:w-auto mt-4 sm:mt-0"
                 >
                     <>
-                        <span className="mr-2" role="img" aria-label="">🎮</span>Start Party
+                        <span className="mr-2" role="img" aria-label="">
+                            🎮
+                        </span>
+                        Start Party
                     </>
                 </Button>
             </form>

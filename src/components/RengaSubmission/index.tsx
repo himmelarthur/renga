@@ -12,6 +12,7 @@ import moment from 'moment'
 import BlurTitle from './BlurTitle'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 import RengaSubmissionSkeleton from './Skeleton'
+import { track } from '../../utils/tracking'
 
 interface IRengaSubmissionProps {
     rengaId: number
@@ -82,9 +83,6 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
         onCompleted: (data) => {
             if (data?.createSubmission.valid) {
                 onSolved()
-                window.heap?.track('Found Renga', {
-                    rengaId,
-                })
             }
             setMovie(undefined)
         },
@@ -96,7 +94,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
 
     const handleSubmission = React.useCallback(async () => {
         if (movie === undefined) return
-        window.heap?.track('Tried Submission', {
+        track('Tried Submission', {
             rengaId,
             movieId: movie.id,
             movieTitle: movie.title,
@@ -117,9 +115,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     React.useEffect(() => {
         const enterListener = (event: KeyboardEvent) => {
             if (event.code === 'Enter') {
-                if (window.heap) {
-                    window.heap.track('Submit with enter')
-                }
+                track('Submit with enter')
                 handleSubmission()
             }
         }
