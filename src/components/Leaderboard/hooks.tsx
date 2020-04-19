@@ -5,14 +5,14 @@ import { useAnimation } from 'framer-motion'
 export const useFetchLeaderboard = (partyId: string, userId?: number) => {
     const [userScore, setUserScore] = useState<number>()
     const { data, loading } = useGetPlayersQuery({
-        variables: { partyId },
+        errorPolicy: 'all', // not fan but when because userId can be null ...
+        variables: { partyId, userId },
         pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
         onCompleted: (data) =>
             setUserScore(
                 data.party?.users.find(({ id }) => id === userId)?.score
             ),
     })
-
     const animationControl = useAnimation()
 
     useLayoutEffect(() => {

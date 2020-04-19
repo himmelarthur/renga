@@ -13,7 +13,7 @@ const RengaItem = ({ renga }: Props) => {
                     </div>
                 ))}
             </div>
-            <div className="flex flex-col items-center justify-center  text-gray-700 text-xs">
+            <div className="flex flex-col items-center justify-center text-gray-700 text-xs">
                 <div className="flex">
                     <span>Posted by </span>
                     <span className="font-semibold ml-1">

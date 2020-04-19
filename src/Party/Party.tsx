@@ -121,7 +121,7 @@ const Party = ({ partyId, userId }: Props) => {
                             )}
                         </div>
                     </div>
-                    <div className="sm:w-1/3 mt-6 sm:mt-0">
+                    <div className="sm:w-1/3 mt-6 sm:mt-0 max-w-md">
                         <Leaderboard
                             partyId={partyId}
                             userId={userId}

@@ -7,6 +7,31 @@ export const User = objectType({
         t.model.id()
         t.model.username()
         t.model.score()
+        t.int('solvedCount', {
+            async resolve(parent, args, ctx: Context) {
+                const auth = await ctx.user
+                if (!auth) return 0
+                return ctx.prisma.submission.count({
+                    where: {
+                        authorId: parent.id,
+                        renga: { partyId: { equals: auth.partyId } },
+                        valid: true,
+                    },
+                })
+            },
+        })
+        t.int('postedCount', {
+            async resolve(parent, args, ctx: Context) {
+                const auth = await ctx.user
+                if (!auth) return 0
+                return ctx.prisma.renga.count({
+                    where: {
+                        authorId: parent.id,
+                        partyId: auth.partyId,
+                    },
+                })
+            },
+        })
     },
 })
 
@@ -74,16 +99,14 @@ export const Renga = objectType({
                         },
                     })) > 0 && !!user?.userId
 
-                const movie = (
-                    await ctx.prisma.movie.findOne({
-                        select: { title: true },
-                        // @ts-ignore
-                        where: { id: parent.movieId },
-                    })
-                )
+                const movie = await ctx.prisma.movie.findOne({
+                    select: { title: true },
+                    // @ts-ignore
+                    where: { id: parent.movieId },
+                })
 
                 if (!movie) throw Error('No movie associated to this renga')
-                
+
                 // @ts-ignore
                 const maybeTitle = isResolved || isMine ? movie.title : ''
 
