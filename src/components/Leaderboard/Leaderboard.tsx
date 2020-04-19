@@ -73,7 +73,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                             >
                                 <div className="flex items-center">
                                     <div className="text-center text-gray-400 w-8 flex justify-end">
-                                        {index === 0 ? '🏅' : `#1${index + 1}`}
+                                        {index === 0 ? '🏅' : `#${index + 1}`}
                                     </div>
                                     <div className="ml-3 mr-2">
                                         {player.username}
