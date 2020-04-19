@@ -13,6 +13,9 @@ module.exports = {
             logo: ['Chivo'],
         },
     },
-    variants: { visibility: ['group-hover'] },
+    variants: {
+        visibility: ['group-hover', 'responsive'],
+        display: ['responsive'],
+    },
     plugins: [],
 }

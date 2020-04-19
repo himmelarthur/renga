@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { motion, useAnimation } from 'framer-motion'
+import React, { useLayoutEffect, useState } from 'react'
 
 const RENGAS = [
     ['👽', '📞', '🏠'],

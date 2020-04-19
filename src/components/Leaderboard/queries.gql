@@ -1,4 +1,9 @@
-query getPlayers($partyId: String!) {
+query getPlayers($partyId: String!, $userId: Int) {
+    user(where: { id: $userId }) {
+        id
+        postedCount
+        solvedCount
+    }
     party(where: { id: $partyId }) {
         id
         users(orderBy: { score: desc }) {

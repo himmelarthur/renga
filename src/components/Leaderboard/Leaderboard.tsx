@@ -1,11 +1,9 @@
-import React, { useState, useLayoutEffect, Component, FC } from 'react'
-import gql from 'graphql-tag'
-import { useGetPlayersQuery } from '../../generated/graphql'
+import React from 'react'
 import classNames from 'classnames'
+import { Emoji } from 'emoji-mart'
+import { AnimateSharedLayout, motion } from 'framer-motion'
 import pluralize from 'pluralize'
 import { userEmoji } from '../../utils/emojis'
-import { motion, useAnimation, AnimateSharedLayout } from 'framer-motion'
-import { Emoji } from 'emoji-mart'
 import { useFetchLeaderboard } from './hooks'
 
 interface ILeaderboardProps {
@@ -19,10 +17,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
     userId,
     className,
 }) => {
-    const { data, loading, animationControl } = useFetchLeaderboard(
-        partyId,
-        userId
-    )
+    const { data, animationControl } = useFetchLeaderboard(partyId, userId)
     if (!data?.party) return <div></div>
 
     const {
@@ -33,13 +28,33 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
         <div
             className={classNames(
                 className,
-                'max-w-md p-4 px-6 flex flex-col items-start bg-gray-100 rounded-md'
+                'p-4 px-6 flex flex-col items-start bg-gray-100 rounded-md'
             )}
         >
             <AnimateSharedLayout>
-                <h3 className="text-gray-800 text-2xl font-bold">
-                    Leaderboard
-                </h3>
+                <div className="flex sm:flex-row flex-col justify-between w-full items-baseline">
+                    <h3 className="text-gray-800 text-2xl font-bold">
+                        Leaderboard
+                    </h3>
+                    <div className="flex flex-row sm:mt-0 mt-2">
+                        <div className="flex flex-row items-baseline">
+                            <span className="font-medium text-sm text-gray-800">
+                                🎬{data.user?.postedCount ?? 0}
+                            </span>
+                            <span className="ml-1 uppercase text-gray-600 text-xs">
+                                created
+                            </span>
+                        </div>
+                        <div className="flex flex-row items-baseline ml-2">
+                            <span className="font-medium text-sm text-gray-800">
+                                🔍{data.user?.solvedCount ?? 0}
+                            </span>
+                            <span className="ml-1 uppercase text-gray-600 text-xs">
+                                solved
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <div className="w-full text-gray-600 my-2">
                     {users.map((player, index) => {
                         const isMe = userId === player.id
@@ -57,7 +72,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                 )}
                             >
                                 <div className="flex items-center">
-                                    <div className="w-4 text-center text-gray-400">
+                                    <div className="text-center text-gray-400 w-8 flex justify-end">
                                         {index === 0 ? '🏅' : `#${index + 1}`}
                                     </div>
                                     <div className="ml-3 mr-2">
@@ -69,8 +84,8 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                         emoji={userEmoji(partyId, player.id)}
                                     />
                                 </div>
-                                <div className="text-gray-600">
-                                    {pluralize('point', player.score, true)}
+                                <div className="text-gray-600 text-sm">
+                                    {pluralize('pt', player.score, true)}
                                 </div>
                             </motion.div>
                         )

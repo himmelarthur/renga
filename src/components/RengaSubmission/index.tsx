@@ -109,10 +109,10 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             },
             refetchQueries: [
                 { query: GetRengaDocument, variables: { rengaId } },
-                { query: GetPlayersDocument, variables: { partyId } },
+                { query: GetPlayersDocument, variables: { partyId, userId } },
             ],
         })
-    }, [movie, rengaId, createSubmission, partyId])
+    }, [movie, rengaId, createSubmission, partyId, userId])
 
     React.useEffect(() => {
         const enterListener = (event: KeyboardEvent) => {
@@ -132,12 +132,12 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const { renga } = data
 
     return (
-        <div className="rounded p-4 bg-gray-100 flex flex-col relative">
+        <div className="rounded p-4 bg-gray-100 flex flex-col relative w-full">
             {(renga?.status.isResolved || renga?.status.isMine) && (
                 <BlurTitle title={renga.status.maybeTitle} rengaId={rengaId} />
             )}
             <div
-                className="absolute top-0 p-4 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"
+                className="absolute top-0 pr-4 pt-3 text-gray-600 hover:text-gray-700 cursor-pointer text-xl right-0"
                 onClick={onClose}
             >
                 ✕

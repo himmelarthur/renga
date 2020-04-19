@@ -47,6 +47,8 @@ const JoinParty = ({ partyId }: Props) => {
                                         <NoRengas onClickNew={() => {}} />
                                     }
                                     onClickRenga={() => {}}
+                                    onClose={() => {}}
+                                    onSolvedRenga={() => {}}
                                 />
                             </div>
                         </div>

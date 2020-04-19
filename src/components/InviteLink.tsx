@@ -12,20 +12,23 @@ export default ({ className, partyId }: InviteLinkProps) => {
     const onClickCopy = React.useCallback(() => {
         copy(`${window.location.href}`)
         setIsCopied(true)
+        window.heap?.track('Copy invitation', {
+            partyId,
+        })
         setTimeout(() => {
             setIsCopied(false)
         }, 2000)
-    }, [setIsCopied])
+    }, [setIsCopied, partyId])
     return (
         <div
             className={`${classNames(
                 className
             )} text-sm text-gray-600 flex sm:items-center flex-col sm:flex-row items-start`}
         >
-            <div className="text-primary">Invite friends:</div>
+            <div className="">Invite friends:</div>
             <div className="flex justify-center items-center py-2">
                 <div
-                    className="cursor-pointer sm:mx-4 sm:mt-0 text-primary py-1 px-4 rounded-md border-primary  border"
+                    className="cursor-pointer sm:mx-4 sm:mt-0  py-1 px-4 rounded border"
                     onClick={() => onClickCopy()}
                 >
                     {`${window.location.origin}/p/${partyId}`}

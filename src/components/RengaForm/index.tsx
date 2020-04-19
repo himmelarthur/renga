@@ -62,7 +62,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
     const handleSubmit = (e: React.FormEvent) => {
         const emojiIds: string[] = emojis
             .filter((x) => x)
-            .map((x) => x?.id ?? '')
+            .map((x) => x?.colons ?? '')
 
         if (emojiIds.length < 3) {
             throw Error('Need 3 emojis')

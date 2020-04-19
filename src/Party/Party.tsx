@@ -1,12 +1,10 @@
 import ConfettiGenerator from 'confetti-js'
-import { motion } from 'framer-motion'
 import React, { useCallback, useState, useEffect } from 'react'
 import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard/Leaderboard'
 import RengaForm from '../components/RengaForm'
-import RengaSubmission from '../components/RengaSubmission'
 import NoRengas from './NoRengas'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 import Rengas from './Rengas/Rengas'
 
 type Props = {
@@ -18,7 +16,12 @@ const Party = ({ partyId, userId }: Props) => {
     const [confettis, setConfettis] = useState<ConfettiGenerator>()
     const [createRengaOn, setCreateRengaOn] = useState(false)
     const [solvingRenga, setSolvingRenga] = useState<number>()
-    const { hash } = useLocation()
+    const { hash, pathname } = useLocation()
+    const history = useHistory()
+
+    const goToHash = (hash?: string) => {
+        history.push(pathname + hash ? `#${hash}` : '', null)
+    }
 
     useEffect(() => {
         switch (hash) {
@@ -67,10 +70,20 @@ const Party = ({ partyId, userId }: Props) => {
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
             <div className="sm:p-10 p-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center mb-4 justify-between">
+                <div className="flex flex-row items-start items-center mb-4 justify-between">
                     <h1 className="text-primary font-logo text-3xl">Renga</h1>
-                    <div className="hidden sm:block">
-                        <InviteLink partyId={partyId} />
+                    <div className="flex flex-row items-baseline">
+                        <InviteLink
+                            className="hidden sm:flex mr-4"
+                            partyId={partyId}
+                        />
+                        <a
+                            href="/"
+                            target="_blank"
+                            className="border border-primary py-2 px-4 text-primary rounded"
+                        >
+                            Start new party
+                        </a>
                     </div>
                 </div>
                 <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
@@ -80,57 +93,37 @@ const Party = ({ partyId, userId }: Props) => {
                                 <RengaForm
                                     partyId={partyId}
                                     userId={userId}
-                                    onCreated={() =>
-                                        (window.location.hash = '')
-                                    }
-                                    onClose={() => (window.location.hash = '')}
+                                    onCreated={() => goToHash()}
+                                    onClose={() => goToHash()}
                                 ></RengaForm>
                             ) : (
                                 <div className="mt-0">
-                                    {solvingRenga ? (
-                                        <motion.div
-                                            className="mb-8"
-                                            animate="visible"
-                                            initial="hidden"
-                                            variants={{
-                                                hidden: { opacity: 0, y: -100 },
-                                                visible: { opacity: 1, y: 0 },
-                                            }}
-                                        >
-                                            <RengaSubmission
-                                                rengaId={solvingRenga}
-                                                userId={userId}
-                                                onSolved={onSolvedRenga}
-                                                partyId={partyId}
-                                                onClose={() => {
-                                                    confettis?.clear()
-                                                    window.location.hash = ''
-                                                }}
-                                            ></RengaSubmission>
-                                        </motion.div>
-                                    ) : undefined}
                                     <Rengas
                                         displayNewButton
+                                        onClose={() => {
+                                            confettis?.clear()
+                                            goToHash('')
+                                        }}
+                                        onSolvedRenga={onSolvedRenga}
                                         onClickNew={() => {
                                             confettis?.clear()
-                                            window.location.hash = 'new'
+                                            goToHash('new')
                                         }}
                                         highlightedRenga={solvingRenga}
                                         partyId={partyId}
                                         noRengasComponent={
                                             <NoRengas
                                                 onClickNew={() =>
-                                                    (window.location.hash =
-                                                        'new')
+                                                    goToHash('new')
                                                 }
                                             />
                                         }
                                         onClickRenga={(rengaId) => {
                                             confettis?.clear()
                                             if (rengaId === solvingRenga) {
-                                                window.location.hash = ''
+                                                goToHash()
                                             } else {
-                                                window.location.hash = rengaId.toString()
+                                                goToHash(rengaId.toString())
                                             }
                                         }}
                                     />
@@ -138,7 +131,7 @@ const Party = ({ partyId, userId }: Props) => {
                             )}
                         </div>
                     </div>
-                    <div className="sm:w-1/3 mt-6 sm:mt-0">
+                    <div className="sm:w-1/3 mt-6 sm:mt-0 max-w-md">
                         <Leaderboard
                             partyId={partyId}
                             userId={userId}

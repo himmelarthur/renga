@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Renga from '../../components/Renga'
+import Renga from '../../components/Renga/Renga'
 import { motion, AnimateSharedLayout } from 'framer-motion'
 import { useFetchRengas } from './hooks'
 
@@ -10,8 +10,10 @@ const Rengas = ({
     onClickRenga,
     displayNewButton,
     onClickNew,
+    onClose,
+    onSolvedRenga,
 }: Props) => {
-    const { animationControl, data, loading } = useFetchRengas(partyId)
+    const { data, loading } = useFetchRengas(partyId)
 
     const [hideMe, setHideMe] = useState(false)
     const [hideResolved, setHideResolved] = useState(false)
@@ -19,8 +21,8 @@ const Rengas = ({
         return <div></div>
     }
     return (
-        <div className="flex flex-col py-4">
-            <div className="flex items-end h-10 px-6 text-sm">
+        <div className="flex flex-col">
+            <div className="flex items-end py-2 text-xs font-medium">
                 <label className="block text-gray-600">
                     <input
                         className="leading-tight"
@@ -58,23 +60,27 @@ const Rengas = ({
                                     hideResolved ? !x.status.isResolved : true
                                 )
                                 .map((renga) => (
-                                    <motion.div
+                                    <div
                                         key={renga.id}
-                                        layoutId={renga.id.toString()}
-                                        custom={renga.id}
-                                        animate={animationControl}
+                                        className={
+                                            highlightedRenga === renga.id
+                                                ? 'w-full'
+                                                : ''
+                                        }
                                     >
                                         <Renga
                                             key={renga.id}
                                             renga={renga}
-                                            highlighted={
-                                                highlightedRenga === renga.id
-                                            }
+                                            open={highlightedRenga === renga.id}
                                             onClick={() =>
                                                 onClickRenga(renga.id)
                                             }
+                                            onSolved={() =>
+                                                onSolvedRenga(renga.id)
+                                            }
+                                            onClose={() => onClose()}
                                         />
-                                    </motion.div>
+                                    </div>
                                 ))}
                         </>
                     ) : (
@@ -93,6 +99,8 @@ type Props = {
     highlightedRenga?: number
     displayNewButton?: boolean
     onClickNew?: () => void
+    onClose: () => void
+    onSolvedRenga: (rengaId: number) => void
 }
 
 export default Rengas
