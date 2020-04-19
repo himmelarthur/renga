@@ -13,7 +13,7 @@ const Rengas = ({
     onClose,
     onSolvedRenga,
 }: Props) => {
-    const { animationControl, data, loading } = useFetchRengas(partyId)
+    const { data, loading } = useFetchRengas(partyId)
 
     const [hideMe, setHideMe] = useState(false)
     const [hideResolved, setHideResolved] = useState(false)

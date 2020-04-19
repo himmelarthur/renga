@@ -15,7 +15,7 @@ const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
                 block: 'center',
             })
         }
-    }, [])
+    }, [open])
     return (
         <div
             ref={ref}

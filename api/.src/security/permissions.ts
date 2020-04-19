@@ -20,8 +20,8 @@ const canSolveRenga = rule({ cache: 'contextual' })(
                 select: { partyId: true },
                 where: { id: args.rengaId },
             })
-        ).partyId
-        return user.partyId === partyId
+        )?.partyId
+        return user?.partyId === partyId
     }
 )
 
@@ -33,7 +33,7 @@ const isParticipant = rule({ cache: 'contextual' })(
         info
     ) => {
         const user = await ctx.user
-        return user.partyId === args.data.party.connect.id
+        return user?.partyId === args.data.party.connect.id
     }
 )
 
@@ -56,6 +56,7 @@ export const permissions = shield(
         },
         Query: {
             rengas: shouldBePartyOnly,
+            user: isAuthenticated,
         },
     },
     { fallbackRule: allow }
