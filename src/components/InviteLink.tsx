@@ -18,7 +18,7 @@ export default ({ className, partyId }: InviteLinkProps) => {
         setTimeout(() => {
             setIsCopied(false)
         }, 2000)
-    }, [setIsCopied])
+    }, [setIsCopied, partyId])
     return (
         <div
             className={`${classNames(
