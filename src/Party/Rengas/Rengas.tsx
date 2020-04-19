@@ -10,6 +10,7 @@ const Rengas = ({
     noRengasComponent,
     onClickRenga,
     displayNewButton,
+    showControls,
     onClickNew,
     onClose,
     onSolvedRenga,
@@ -23,32 +24,34 @@ const Rengas = ({
     }
     return (
         <div className="flex flex-col">
-            <div className="flex items-end py-2 text-xs font-medium">
-                <label className="block text-gray-600">
-                    <input
-                        className="leading-tight"
-                        type="checkbox"
-                        onClick={() => {
-                            track('Change Hide Resolved', {
-                                hide: !hideResolved,
-                            })
-                            setHideResolved(!hideResolved)
-                        }}
-                    />
-                    <span className="uppercase ml-2">Hide solved</span>
-                </label>
-                <label className="block text-gray-600 ml-6">
-                    <input
-                        className="leading-tight"
-                        type="checkbox"
-                        onClick={() => {
-                            track('Change Hide Mine', { hide: !hideMe })
-                            setHideMe(!hideMe)
-                        }}
-                    />
-                    <span className="uppercase ml-2">Hide mine</span>
-                </label>
-            </div>
+            {showControls ? (
+                <div className="flex items-end py-2 text-xs font-medium">
+                    <label className="block text-gray-600">
+                        <input
+                            className="leading-tight"
+                            type="checkbox"
+                            onClick={() => {
+                                track('Change Hide Resolved', {
+                                    hide: !hideResolved,
+                                })
+                                setHideResolved(!hideResolved)
+                            }}
+                        />
+                        <span className="uppercase ml-2">Hide solved</span>
+                    </label>
+                    <label className="block text-gray-600 ml-6">
+                        <input
+                            className="leading-tight"
+                            type="checkbox"
+                            onClick={() => {
+                                track('Change Hide Mine', { hide: !hideMe })
+                                setHideMe(!hideMe)
+                            }}
+                        />
+                        <span className="uppercase ml-2">Hide mine</span>
+                    </label>
+                </div>
+            ) : undefined}
             <div className="flex flex-row flex-wrap justify-center sm:justify-start mt-4">
                 <AnimateSharedLayout type="switch">
                     {data?.rengas.length ? (
@@ -107,6 +110,7 @@ type Props = {
     noRengasComponent?: JSX.Element
     highlightedRenga?: number
     displayNewButton?: boolean
+    showControls: boolean
     onClickNew?: () => void
     onClose: () => void
     onSolvedRenga: (rengaId: number) => void

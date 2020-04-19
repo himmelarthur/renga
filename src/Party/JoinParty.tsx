@@ -42,6 +42,7 @@ const JoinParty = ({ partyId }: Props) => {
 
                             <div className="pointer-events-none">
                                 <Rengas
+                                    showControls={false}
                                     partyId={partyId}
                                     noRengasComponent={
                                         <NoRengas onClickNew={() => {}} />
