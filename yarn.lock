@@ -6877,6 +6877,11 @@ is-glob@^3.1.0:
   dependencies:
     is-extglob "^2.1.0"
 
+is-mobile@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/is-mobile/-/is-mobile-2.2.1.tgz#10f2320012c410cc285feecb13406bd586f1b2f8"
+  integrity sha512-6zELsfVFr326eq2CI53yvqq6YBanOxKBybwDT+MbMS2laBnK6Ez8m5XHSuTQQbnKRfpDzCod1CMWW5q3wZYMvA==
+
 is-number@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-3.0.0.tgz#24fd6201a4782cf50561c810276afc7d12d71195"

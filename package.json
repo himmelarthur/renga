@@ -28,6 +28,7 @@
         "framer-motion": "^2.0.0-beta.45",
         "graphql": "^15.0.0",
         "graphql-tag": "^2.10.3",
+        "is-mobile": "^2.2.1",
         "jwt-decode": "^2.2.0",
         "lodash.throttle": "^4.1.1",
         "moment": "^2.24.0",
