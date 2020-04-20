@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/react-hooks'
+import { BrowserRouter as Router } from 'react-router-dom'
 import * as Sentry from '@sentry/browser'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -17,7 +18,9 @@ Sentry.init({
 ReactDOM.render(
     <React.StrictMode>
         <ApolloProvider client={client}>
-            <App />
+            <Router>
+                <App />
+            </Router>
         </ApolloProvider>
     </React.StrictMode>,
     document.getElementById('root')

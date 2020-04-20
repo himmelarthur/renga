@@ -6,6 +6,7 @@ import RengaForm from '../components/RengaForm'
 import NoRengas from './NoRengas'
 import { useLocation, useHistory } from 'react-router-dom'
 import Rengas from './Rengas/Rengas'
+import { track } from '../utils/tracking'
 
 type Props = {
     partyId: string
@@ -18,6 +19,12 @@ const Party = ({ partyId, userId }: Props) => {
     const [solvingRenga, setSolvingRenga] = useState<number>()
     const { hash, pathname } = useLocation()
     const history = useHistory()
+
+    useEffect(() => {
+        track('View Party Page', {
+            partyId,
+        })
+    }, [])
 
     const goToHash = (hash?: string) => {
         history.push(pathname + hash ? `#${hash}` : '', null)
@@ -44,6 +51,9 @@ const Party = ({ partyId, userId }: Props) => {
     }, [hash])
 
     const onSolvedRenga = useCallback(() => {
+        track('Solved Renga', {
+            partyId,
+        })
         const confetti = new ConfettiGenerator({
             target: 'confetti',
             max: '200',
@@ -101,11 +111,17 @@ const Party = ({ partyId, userId }: Props) => {
                                     <Rengas
                                         displayNewButton
                                         onClose={() => {
+                                            track('Closed Open Renga', {
+                                                partyId,
+                                            })
                                             confettis?.clear()
                                             goToHash('')
                                         }}
                                         onSolvedRenga={onSolvedRenga}
                                         onClickNew={() => {
+                                            track('Clicked New Renga', {
+                                                partyId,
+                                            })
                                             confettis?.clear()
                                             goToHash('new')
                                         }}
@@ -119,6 +135,10 @@ const Party = ({ partyId, userId }: Props) => {
                                             />
                                         }
                                         onClickRenga={(rengaId) => {
+                                            track('Clicked Renga', {
+                                                partyId,
+                                                rengaId,
+                                            })
                                             confettis?.clear()
                                             if (rengaId === solvingRenga) {
                                                 goToHash()

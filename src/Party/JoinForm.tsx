@@ -1,8 +1,9 @@
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useEffect } from 'react'
 import gql from 'graphql-tag'
 import { useJoinPartyMutation, GetPlayersDocument } from '../generated/graphql'
 import { useParty } from '../hooks'
 import Button from '../components/Button'
+import { track } from '../utils/tracking'
 
 gql`
     mutation joinParty($partyId: String!, $username: String!) {
@@ -18,7 +19,12 @@ const JoinForm = ({ partyId }: Props) => {
     })
     const [username, setUsername] = React.useState('')
 
+    useEffect(() => {
+        track('View Join Form', { partyId })
+    })
+
     const handleSubmit = (e: FormEvent) => {
+        track('Joined Party', { partyId })
         joinParty({
             variables: {
                 partyId,

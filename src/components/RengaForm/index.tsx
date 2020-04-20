@@ -9,6 +9,7 @@ import EmojiSelector, { TBricks as TEmojis } from './EmojiSelector'
 import classNames from 'classnames'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 import Button from '../Button'
+import { track } from '../../utils/tracking'
 
 gql`
     mutation createRenga(
@@ -85,7 +86,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 { query: GetRengasDocument, variables: { partyId } },
             ],
         })
-        window.heap?.track('Created Renga', {
+        track('Created Renga', {
             movieId: movie.id,
             movieTitle: movie.title,
             emojis: emojiIds.join(''),
