@@ -13,6 +13,7 @@ import BlurTitle from './BlurTitle'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 import RengaSubmissionSkeleton from './Skeleton'
 import { track } from '../../utils/tracking'
+import isMobile from 'is-mobile'
 
 interface IRengaSubmissionProps {
     rengaId: number
@@ -142,13 +143,18 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 {data.renga?.emojis.map((e, index) => {
                     return (
                         <span className="mx-2" key={index}>
-                            <Emoji native emoji={e} size={48} />
+                            <Emoji native={isMobile()} emoji={e} size={42} />
                         </span>
                     )
                 })}
             </div>
             <div className="text-gray-600 text-sm my-4">
-                <Emoji size={16} native emoji={'male-artist'}></Emoji> Posted by{' '}
+                <Emoji
+                    size={16}
+                    native={isMobile()}
+                    emoji={'male-artist'}
+                ></Emoji>{' '}
+                Posted by{' '}
                 <span className="font-medium">{renga?.author.username}</span>{' '}
                 {moment(renga?.createdAt).fromNow()}
             </div>

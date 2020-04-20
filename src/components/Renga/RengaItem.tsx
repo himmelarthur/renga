@@ -2,6 +2,7 @@ import React from 'react'
 import { Renga as RengaType, User, Status } from '../../generated/graphql'
 import { Emoji } from 'emoji-mart'
 import moment from 'moment'
+import isMobile from 'is-mobile'
 
 const RengaItem = ({ renga }: Props) => {
     return (
@@ -9,7 +10,12 @@ const RengaItem = ({ renga }: Props) => {
             <div className="flex flex-row justify-around">
                 {renga.emojis.map((emoji, index) => (
                     <div className="pr-1 last:pr-0" key={index.toString()}>
-                        <Emoji size={32} native emoji={emoji} key={index} />
+                        <Emoji
+                            size={32}
+                            native={isMobile()}
+                            emoji={emoji}
+                            key={index}
+                        />
                     </div>
                 ))}
             </div>

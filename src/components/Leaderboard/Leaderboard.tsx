@@ -5,6 +5,7 @@ import { AnimateSharedLayout, motion } from 'framer-motion'
 import pluralize from 'pluralize'
 import { userEmoji } from '../../utils/emojis'
 import { useFetchLeaderboard } from './hooks'
+import isMobile from 'is-mobile'
 
 interface ILeaderboardProps {
     partyId: string
@@ -80,7 +81,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                     </div>
                                     <Emoji
                                         size={16}
-                                        native
+                                        native={isMobile()}
                                         emoji={userEmoji(partyId, player.id)}
                                     />
                                 </div>

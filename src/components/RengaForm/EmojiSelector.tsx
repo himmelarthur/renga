@@ -1,8 +1,9 @@
 import React from 'react'
-import { BaseEmoji, Picker } from 'emoji-mart'
+import { BaseEmoji, Picker, Emoji } from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
 import { track } from '../../utils/tracking'
 
+import isMobile from 'is-mobile'
 type OptionalBaseEmoji = BaseEmoji | undefined
 export type TBricks = [OptionalBaseEmoji, OptionalBaseEmoji, OptionalBaseEmoji]
 
@@ -33,7 +34,13 @@ const EmojiSelector: React.FC<Props> = ({ emojis, onEmojisChange }) => {
                                     track('Removed emoji')
                                 }}
                             >
-                                {emoji && emoji.native}
+                                {emoji && (
+                                    <Emoji
+                                        size={42}
+                                        native={isMobile()}
+                                        emoji={emoji.colons}
+                                    ></Emoji>
+                                )}
                             </div>
                         ))}
                         {!!emojis.filter((emoji) => emoji).length && (
