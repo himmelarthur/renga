@@ -71,11 +71,11 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                     }
                                 )}
                             >
-                                <div className="flex items-center">
-                                    <div className="text-center text-gray-400 w-8 flex justify-end">
+                                <div className="flex items-center w-4/5">
+                                    <div className="text-center text-gray-400 w-8 flex justify-end flex-shrink-0">
                                         {index === 0 ? '🏅' : `#${index + 1}`}
                                     </div>
-                                    <div className="ml-3 mr-2">
+                                    <div className="ml-3 truncate mr-2 flex-grow-0">
                                         {player.username}
                                     </div>
                                     <Emoji
