@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Renga from '../../components/Renga/Renga'
 import { motion, AnimateSharedLayout } from 'framer-motion'
 import { useFetchRengas } from './hooks'
+import { track } from '../../utils/tracking'
 
 const Rengas = ({
     partyId,
@@ -27,7 +28,12 @@ const Rengas = ({
                     <input
                         className="leading-tight"
                         type="checkbox"
-                        onClick={() => setHideResolved(!hideResolved)}
+                        onClick={() => {
+                            track('Change Hide Resolved', {
+                                hide: !hideResolved,
+                            })
+                            setHideResolved(!hideResolved)
+                        }}
                     />
                     <span className="uppercase ml-2">Hide solved</span>
                 </label>
@@ -35,7 +41,10 @@ const Rengas = ({
                     <input
                         className="leading-tight"
                         type="checkbox"
-                        onClick={() => setHideMe(!hideMe)}
+                        onClick={() => {
+                            track('Change Hide Mine', { hide: !hideMe })
+                            setHideMe(!hideMe)
+                        }}
                     />
                     <span className="uppercase ml-2">Hide mine</span>
                 </label>
