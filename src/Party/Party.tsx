@@ -109,6 +109,7 @@ const Party = ({ partyId, userId }: Props) => {
                             ) : (
                                 <div className="mt-0">
                                     <Rengas
+                                        showControls
                                         displayNewButton
                                         onClose={() => {
                                             track('Closed Open Renga', {
