@@ -25,6 +25,17 @@ const canSolveRenga = rule({ cache: 'contextual' })(
     }
 )
 
+const ownRenga = rule({ cache: 'contextual' })(
+    async (_, args: { where: { id: number } }, ctx: Context, info) => {
+        const rengaId = args.where.id
+        const user = await ctx.user
+        return (
+            (await ctx.prisma.renga.count({
+                where: { id: rengaId, authorId: user?.userId },
+            })) > 0
+        )
+    }
+)
 const isParticipant = rule({ cache: 'contextual' })(
     async (
         _,
@@ -53,6 +64,7 @@ export const permissions = shield(
         Mutation: {
             createSubmission: and(isAuthenticated, canSolveRenga),
             createOneRenga: and(isAuthenticated, isParticipant),
+            updateOneRenga: and(isAuthenticated, ownRenga),
         },
         Query: {
             rengas: shouldBePartyOnly,
