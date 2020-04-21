@@ -10,6 +10,7 @@ query GetRengas($partyId: String!) {
             username
         }
         createdAt
+        deletedAt
         status {
             isResolved
             isMine

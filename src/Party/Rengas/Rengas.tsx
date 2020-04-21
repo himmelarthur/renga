@@ -69,6 +69,7 @@ const Rengas = ({
                                 .filter((x) =>
                                     hideMe ? !x.status.isMine : true
                                 )
+                                .filter((x) => !x.deletedAt)
                                 .filter((x) =>
                                     hideResolved ? !x.status.isResolved : true
                                 )
