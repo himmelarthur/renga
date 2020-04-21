@@ -4,11 +4,10 @@
 
 @tailwind utilities;
 
-
 .grayed {
-    filter: grayscale(1)
+    filter: grayscale(1);
 }
 
 .blur-1 {
-    filter: blur(0.4rem)
+    filter: blur(0.5rem);
 }
