@@ -6,7 +6,7 @@ import RengaItem from './RengaItem'
 import { useParty } from '../../hooks'
 
 const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
-    const { partyId, userId } = useParty()
+    const { partyId, user } = useParty()
     const ref = useRef<HTMLDivElement>(null)
     useLayoutEffect(() => {
         if (open && ref.current) {
@@ -48,7 +48,7 @@ const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
                 <RengaSubmission
                     rengaId={renga.id}
                     partyId={partyId!}
-                    userId={userId!}
+                    userId={user!.userId}
                     onClose={onClose}
                     onSolved={onSolved}
                 />

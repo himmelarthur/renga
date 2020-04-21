@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
 import Landing from './Landing/Landing'
 import Party from './Party'
-import { AuthContext } from './AuthContext'
+import { AuthContext, User } from './AuthContext'
 
 export default () => {
-    const [userId, setUserId] = useState<number>()
+    const [user, setUser] = useState<User>()
     const location = useLocation()
     useEffect(() => {
         window.heap?.track('View Page', {
@@ -13,7 +13,7 @@ export default () => {
         })
     }, [location])
     return (
-        <AuthContext.Provider value={{ userId, setUserId }}>
+        <AuthContext.Provider value={{ user, setUser }}>
             <Switch>
                 <Route path="/p/:partyId">
                     <Party></Party>

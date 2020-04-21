@@ -1,11 +1,17 @@
 import { createContext } from 'react'
 
+export type User = {
+    userId: number
+    // TODO: Remove ? when ubiquitous
+    username?: string
+}
+
 type Context = {
-    userId?: number
-    setUserId: (userId?: number) => void
+    user?: User
+    setUser: (user?: User) => void
 }
 
 export const AuthContext = createContext<Context>({
-    userId: undefined,
-    setUserId: () => {},
+    user: undefined,
+    setUser: () => {},
 })
