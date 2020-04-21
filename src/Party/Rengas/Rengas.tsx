@@ -24,9 +24,9 @@ const Rengas = ({
         return <div></div>
     }
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center sm:items-start">
             {showControls ? (
-                <div className="flex items-end py-2 text-xs font-medium">
+                <div className="flex items-end py-2 text-xs font-medium w-64 mr-8">
                     <label className="block text-gray-600">
                         <input
                             className="leading-tight"
