@@ -49,8 +49,8 @@ export interface IRengaFormProps {
 }
 
 export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
-    const [suggestion, setSuggestion] = React.useState(
-        DEFAULT_MOVIES[Math.floor(Math.random() * DEFAULT_MOVIES.length)]
+    const [movieIsFromSuggestion, setMovieIsFromSuggestion] = React.useState(
+        false
     )
     const [createRenga] = useCreateRengaMutation()
     const [movie, setMovie] = React.useState<MovieResult | undefined>()
@@ -94,6 +94,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
             movieId: movie.id,
             movieTitle: movie.title,
             emojis: emojiIds.join(''),
+            fromSuggestion: movieIsFromSuggestion,
         })
         e.stopPropagation()
         e.preventDefault()
@@ -109,35 +110,29 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 <h3 className="text-xl text-gray-800 font-bold mb-2">
                     Make people guess a movie...
                 </h3>
-                <MovieAutocomplete movie={movie} onMovieChange={setMovie} />
-                <div className="flex text-sm text-gray-500 mt-2 justify-between items-start">
-                    <div>
-                        How about
-                        <a
-                            className="text-primary underline pl-1 cursor-pointer"
-                            onClick={() => setMovie(suggestion)}
-                        >
-                            {suggestion.title}
-                        </a>
-                        ?
-                    </div>
-                    <div
-                        className="uppercase text-xs cursor-pointer pt-1 font-medium ml-4 text-center"
-                        style={{
-                            minWidth: 100,
-                        }}
-                        onClick={() =>
-                            setSuggestion(
+                <MovieAutocomplete
+                    movie={movie}
+                    onMovieChange={(movie) => {
+                        setMovie(movie)
+                        setMovieIsFromSuggestion(false)
+                    }}
+                />
+                <div className="flex text-sm text-gray-500 mt-2 justify-end">
+                    <a
+                        className="text-primary underline pl-1 cursor-pointer"
+                        onClick={() => {
+                            setMovie(
                                 DEFAULT_MOVIES[
                                     Math.floor(
                                         Math.random() * DEFAULT_MOVIES.length
                                     )
                                 ]
                             )
-                        }
+                            setMovieIsFromSuggestion(true)
+                        }}
                     >
-                        Another one!
-                    </div>
+                        Pick one for me!
+                    </a>
                 </div>
                 <div
                     className="absolute top-0 p-4 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"
