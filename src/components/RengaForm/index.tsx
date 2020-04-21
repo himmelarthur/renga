@@ -121,6 +121,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                     <a
                         className="text-primary underline pl-1 cursor-pointer"
                         onClick={() => {
+                            track('Picked Suggestion')
                             setMovie(
                                 DEFAULT_MOVIES[
                                     Math.floor(
