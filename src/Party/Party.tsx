@@ -7,13 +7,14 @@ import NoRengas from './NoRengas'
 import { useLocation, useHistory } from 'react-router-dom'
 import Rengas from './Rengas/Rengas'
 import { track } from '../utils/tracking'
+import { User } from '../AuthContext'
 
 type Props = {
     partyId: string
-    userId: number
+    user: User
 }
 
-const Party = ({ partyId, userId }: Props) => {
+const Party = ({ partyId, user }: Props) => {
     const [confettis, setConfettis] = useState<ConfettiGenerator>()
     const [createRengaOn, setCreateRengaOn] = useState(false)
     const [solvingRenga, setSolvingRenga] = useState<number>()
@@ -99,10 +100,10 @@ const Party = ({ partyId, userId }: Props) => {
                 <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
                     <div className="sm:w-2/3">
                         <div className="sm:mx-4">
-                            {createRengaOn && userId ? (
+                            {createRengaOn && user ? (
                                 <RengaForm
                                     partyId={partyId}
-                                    userId={userId}
+                                    userId={user.userId}
                                     onCreated={() => goToHash()}
                                     onClose={() => goToHash()}
                                 ></RengaForm>
@@ -155,7 +156,7 @@ const Party = ({ partyId, userId }: Props) => {
                     <div className="sm:w-1/3 mt-6 sm:mt-0 max-w-md">
                         <Leaderboard
                             partyId={partyId}
-                            userId={userId}
+                            userId={user.userId}
                         ></Leaderboard>
                     </div>
                 </div>

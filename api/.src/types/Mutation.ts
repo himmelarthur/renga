@@ -67,7 +67,6 @@ export const Mutation = mutationType({
             },
             resolve: async (_, { username }, context: Context) => {
                 const user = await context.prisma.user.create({
-                    select: { partyId: true, id: true },
                     data: {
                         party: {
                             create: {
@@ -78,7 +77,11 @@ export const Mutation = mutationType({
                     },
                 })
                 return sign(
-                    { userId: user.id, partyId: user.partyId },
+                    {
+                        userId: user.id,
+                        username: user.username,
+                        partyId: user.partyId,
+                    },
                     appSecret()
                 )
             },
@@ -97,7 +100,11 @@ export const Mutation = mutationType({
                     },
                 })
                 return sign(
-                    { userId: user.id, partyId: user.partyId },
+                    {
+                        userId: user.id,
+                        username: user.username,
+                        partyId: user.partyId,
+                    },
                     appSecret()
                 )
             },

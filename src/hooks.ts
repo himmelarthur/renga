@@ -3,24 +3,27 @@ import { AuthContext } from './AuthContext'
 import JwtDecode from 'jwt-decode'
 import { useParams } from 'react-router-dom'
 
+// TODO: Remove ? when ubiquitous
+type TokenBody = { userId: number; partyId: string; username?: string }
+
 export const useParty = () => {
     const [ready, setReady] = useState(false)
-    const { userId, setUserId } = useContext(AuthContext)
+    const { user, setUser } = useContext(AuthContext)
     const { partyId } = useParams()
 
     useEffect(() => {
         if (!partyId) {
-            setUserId(undefined)
+            setUser(undefined)
         }
         const token = localStorage.getItem(`token:${partyId}`)
         if (token) {
-            const { userId } = JwtDecode(token)
-            setUserId(userId)
+            const user: TokenBody = JwtDecode(token)
+            setUser(user)
         } else {
-            setUserId(undefined)
+            setUser(undefined)
         }
         setReady(true)
-    }, [partyId, setUserId])
+    }, [partyId, setUser])
 
     useEffect(() => {
         if (partyId) {
@@ -29,31 +32,34 @@ export const useParty = () => {
     }, [partyId])
 
     useEffect(() => {
-        if (partyId && window.$crisp && userId) {
+        if (partyId && window.$crisp && user) {
             window.$crisp.push([
                 'set',
                 'user:nickname',
-                [`user:${userId.toString()}`],
+                [`user:${user.username || user.userId.toString()}`],
             ])
             window.$crisp.push([
                 'set',
                 'session:data',
                 [[['partyId', partyId]]],
             ])
-            window.heap?.identify(userId.toString())
+            window.heap?.identify(user.userId.toString())
             window.heap?.addUserProperties({
                 partyId,
+                ...(user.username ? { username: user.username } : {}),
             })
         }
-    }, [partyId, userId])
+    }, [partyId, user])
 
     const addParty = (token?: string) => {
         if (!token) return
-        const { partyId, userId } = JwtDecode(token)
-        localStorage.setItem(`token:${partyId}`, token)
-        setUserId(userId)
+        const user: TokenBody = JwtDecode(token)
+        if (user.partyId) {
+            localStorage.setItem(`token:${user.partyId}`, token)
+        }
+        setUser(user)
         return partyId
     }
 
-    return { addParty, userId, partyId, ready }
+    return { addParty, user, partyId, ready }
 }

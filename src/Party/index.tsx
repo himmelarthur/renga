@@ -5,18 +5,18 @@ import JoinParty from './JoinParty'
 import Party from './Party'
 
 const PartyPage = () => {
-    const { userId, partyId, ready } = useParty()
+    const { user, partyId, ready } = useParty()
 
     if (!ready) return <div></div>
 
     if (!partyId) {
         return <Redirect to="/"></Redirect>
     }
-    if (!userId) {
+    if (!user) {
         return <JoinParty partyId={partyId} />
     }
 
-    return <Party userId={userId} partyId={partyId} />
+    return <Party user={user} partyId={partyId} />
 }
 
 export default PartyPage
