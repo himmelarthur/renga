@@ -206,7 +206,10 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     {/* TODO LIKE */}
                 </div>
                 <div className="text-gray-600 font-light">
-                    🙌 Resolved by{' '}
+                    <span aria-label="" role="img">
+                        🙌
+                    </span>{' '}
+                    Resolved by{' '}
                     {renga?.submissions.filter((x) => x.valid).length} people
                 </div>
             </div>

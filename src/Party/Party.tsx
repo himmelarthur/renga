@@ -25,7 +25,7 @@ const Party = ({ partyId, user }: Props) => {
         track('View Party Page', {
             partyId,
         })
-    }, [])
+    }, [partyId])
 
     const goToHash = (hash?: string) => {
         history.push(pathname + (hash ? `#${hash}` : '#'), null)
@@ -73,7 +73,7 @@ const Party = ({ partyId, user }: Props) => {
         confetti.render()
         setConfettis(confetti)
         return () => confetti.clear()
-    }, [])
+    }, [partyId])
     return (
         <>
             <canvas
