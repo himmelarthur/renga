@@ -58,7 +58,7 @@ export const useParty = () => {
             localStorage.setItem(`token:${user.partyId}`, token)
         }
         setUser(user)
-        return partyId
+        return user.partyId
     }
 
     return { addParty, user, partyId, ready }
