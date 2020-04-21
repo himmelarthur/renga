@@ -24,8 +24,6 @@ const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
                 {
                     'bg-gray-100': open,
                     'grayed opacity-75': renga.status.isResolved && !open,
-                    'w-full': open,
-                    'w-32 sm:w-40 h-24 hover:bg-gray-200  cursor-pointer': !open,
                 }
             )}
             onClick={

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import Renga from '../../components/Renga/Renga'
-import { motion, AnimateSharedLayout } from 'framer-motion'
+import { AnimateSharedLayout } from 'framer-motion'
 import { useFetchRengas } from './hooks'
+import classNames from 'classnames'
 import { track } from '../../utils/tracking'
 
 const Rengas = ({
@@ -74,11 +75,12 @@ const Rengas = ({
                                 .map((renga) => (
                                     <div
                                         key={renga.id}
-                                        className={
-                                            highlightedRenga === renga.id
-                                                ? 'w-full'
-                                                : ''
-                                        }
+                                        className={classNames({
+                                            'w-full':
+                                                highlightedRenga === renga.id,
+                                            'w-32':
+                                                highlightedRenga !== renga.id,
+                                        })}
                                     >
                                         <Renga
                                             key={renga.id}
