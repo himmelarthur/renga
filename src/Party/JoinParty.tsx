@@ -14,6 +14,13 @@ const JoinParty = ({ partyId }: Props) => {
         <div className="sm:p-10 p-4">
             <div className="flex items-center  mb-4 justify-between">
                 <h1 className="text-primary font-logo text-3xl">Renga</h1>
+                <a
+                    href="/"
+                    target="_blank"
+                    className="border border-primary py-2 px-4 text-primary rounded"
+                >
+                    Start new party
+                </a>
             </div>
             <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
                 <div className="sm:w-2/3">
