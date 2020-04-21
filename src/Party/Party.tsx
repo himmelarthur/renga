@@ -81,21 +81,29 @@ const Party = ({ partyId, user }: Props) => {
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
             <div className="sm:p-10 p-4">
-                <div className="flex flex-row items-start items-center mb-4 justify-between">
-                    <h1 className="text-primary font-logo text-3xl">Renga</h1>
-                    <div className="flex flex-row items-baseline">
-                        <InviteLink
-                            className="hidden sm:flex mr-4"
-                            partyId={partyId}
-                        />
-                        <a
-                            href="/"
-                            target="_blank"
-                            className="border border-primary py-2 px-4 text-primary rounded"
-                        >
-                            Start new party
-                        </a>
+                <div className="mb-4">
+                    <div className="flex flex-row items-start items-center justify-between">
+                        <h1 className="text-primary font-logo text-3xl">
+                            Renga
+                        </h1>
+                        <div className="flex flex-row items-baseline">
+                            <InviteLink
+                                className="hidden sm:flex mr-4"
+                                partyId={partyId}
+                            />
+                            <a
+                                href="/"
+                                target="_blank"
+                                className="border border-primary py-2 px-4 text-primary rounded"
+                            >
+                                Start new party
+                            </a>
+                        </div>
                     </div>
+                    <InviteLink
+                        className="sm:hidden text-xs max-w-full mt-3"
+                        partyId={partyId}
+                    />
                 </div>
                 <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
                     <div className="sm:w-2/3">
