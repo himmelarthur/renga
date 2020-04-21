@@ -27,7 +27,7 @@ const Party = ({ partyId, userId }: Props) => {
     }, [])
 
     const goToHash = (hash?: string) => {
-        history.push(pathname + hash ? `#${hash}` : '', null)
+        history.push(pathname + (hash ? `#${hash}` : '#'), null)
     }
 
     useEffect(() => {
