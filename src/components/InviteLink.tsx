@@ -23,12 +23,12 @@ export default ({ className, partyId }: InviteLinkProps) => {
         <div
             className={`${classNames(
                 className
-            )} text-sm text-gray-600 flex sm:items-center flex-col sm:flex-row items-start`}
+            )} text-xs sm:text-sm text-gray-600 flex items-center flex-row`}
         >
             <div className="">Invite friends:</div>
-            <div className="flex justify-center items-center py-2">
+            <div className="flex justify-center items-center py-2 ml-1">
                 <div
-                    className="cursor-pointer sm:mx-4 sm:mt-0  py-1 px-4 rounded border"
+                    className="cursor-pointer sm:mx-4 sm:mt-0 py-1 px-2 sm:px-4 rounded border truncate"
                     onClick={() => onClickCopy()}
                 >
                     {`${window.location.origin}/p/${partyId}`}
