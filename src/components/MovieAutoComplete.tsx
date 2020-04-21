@@ -67,7 +67,7 @@ const MovieAutocomplete: React.FC<Props> = ({
                     <input
                         {...props}
                         style={{ height: 54 }}
-                        className="appearance-none p-6 border-2 rounded h-10 w-full text-xl font-bold"
+                        className="appearance-none p-6 border-2 rounded w-full text-xl font-bold"
                     />
                 ) : (
                     <div
