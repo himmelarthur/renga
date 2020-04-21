@@ -63,6 +63,7 @@ export type Renga = {
     __typename?: 'Renga'
     id: Scalars['Int']
     createdAt: Scalars['DateTime']
+    deletedAt?: Maybe<Scalars['DateTime']>
     author: User
     movie: Movie
     submissions: Array<Submission>
@@ -140,6 +141,7 @@ export type RengaWhereInput = {
     id?: Maybe<IntFilter>
     createdAt?: Maybe<DateTimeFilter>
     updatedAt?: Maybe<DateTimeFilter>
+    deletedAt?: Maybe<NullableDateTimeFilter>
     submissions?: Maybe<SubmissionFilter>
     movieId?: Maybe<IntFilter>
     authorId?: Maybe<IntFilter>
@@ -153,6 +155,17 @@ export type RengaWhereInput = {
 }
 
 export type DateTimeFilter = {
+    equals?: Maybe<Scalars['DateTime']>
+    not?: Maybe<Scalars['DateTime']>
+    in?: Maybe<Array<Scalars['DateTime']>>
+    notIn?: Maybe<Array<Scalars['DateTime']>>
+    lt?: Maybe<Scalars['DateTime']>
+    lte?: Maybe<Scalars['DateTime']>
+    gt?: Maybe<Scalars['DateTime']>
+    gte?: Maybe<Scalars['DateTime']>
+}
+
+export type NullableDateTimeFilter = {
     equals?: Maybe<Scalars['DateTime']>
     not?: Maybe<Scalars['DateTime']>
     in?: Maybe<Array<Scalars['DateTime']>>
@@ -254,6 +267,7 @@ export type RengaOrderByInput = {
     id?: Maybe<OrderByArg>
     createdAt?: Maybe<OrderByArg>
     updatedAt?: Maybe<OrderByArg>
+    deletedAt?: Maybe<OrderByArg>
     movie?: Maybe<OrderByArg>
     movieId?: Maybe<OrderByArg>
     author?: Maybe<OrderByArg>
@@ -288,6 +302,7 @@ export type PartyUsersOrderByInput = {
 export type Mutation = {
     __typename?: 'Mutation'
     createOneRenga: Renga
+    updateOneRenga?: Maybe<Renga>
     createSubmission: Submission
     createParty: Scalars['String']
     joinParty: Scalars['String']
@@ -295,6 +310,11 @@ export type Mutation = {
 
 export type MutationCreateOneRengaArgs = {
     data: RengaCreateInput
+}
+
+export type MutationUpdateOneRengaArgs = {
+    data: RengaUpdateInput
+    where: RengaWhereUniqueInput
 }
 
 export type MutationCreateSubmissionArgs = {
@@ -315,6 +335,7 @@ export type MutationJoinPartyArgs = {
 export type RengaCreateInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
@@ -374,6 +395,7 @@ export type RengaCreateManyWithoutPartyInput = {
 export type RengaCreateWithoutPartyInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
@@ -438,6 +460,7 @@ export type RengaCreateOneWithoutSubmissionsInput = {
 export type RengaCreateWithoutSubmissionsInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
     emojis?: Maybe<RengaCreateemojisInput>
     movie: MovieCreateOneWithoutRengasInput
     author: UserCreateOneWithoutRengasInput
@@ -478,10 +501,407 @@ export type RengaCreateManyWithoutAuthorInput = {
 export type RengaCreateWithoutAuthorInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
     party: PartyCreateOneWithoutRengasInput
+}
+
+export type RengaUpdateInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    emojis?: Maybe<RengaUpdateemojisInput>
+    submissions?: Maybe<SubmissionUpdateManyWithoutRengaInput>
+    movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
+    author?: Maybe<UserUpdateOneRequiredWithoutRengasInput>
+    party?: Maybe<PartyUpdateOneRequiredWithoutRengasInput>
+}
+
+export type RengaUpdateemojisInput = {
+    set?: Maybe<Array<Scalars['String']>>
+}
+
+export type SubmissionUpdateManyWithoutRengaInput = {
+    create?: Maybe<Array<SubmissionCreateWithoutRengaInput>>
+    connect?: Maybe<Array<SubmissionWhereUniqueInput>>
+    set?: Maybe<Array<SubmissionWhereUniqueInput>>
+    disconnect?: Maybe<Array<SubmissionWhereUniqueInput>>
+    delete?: Maybe<Array<SubmissionWhereUniqueInput>>
+    update?: Maybe<Array<SubmissionUpdateWithWhereUniqueWithoutRengaInput>>
+    updateMany?: Maybe<Array<SubmissionUpdateManyWithWhereNestedInput>>
+    deleteMany?: Maybe<Array<SubmissionScalarWhereInput>>
+    upsert?: Maybe<Array<SubmissionUpsertWithWhereUniqueWithoutRengaInput>>
+}
+
+export type SubmissionUpdateWithWhereUniqueWithoutRengaInput = {
+    where: SubmissionWhereUniqueInput
+    data: SubmissionUpdateWithoutRengaDataInput
+}
+
+export type SubmissionUpdateWithoutRengaDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    valid?: Maybe<Scalars['Boolean']>
+    movieTitle?: Maybe<Scalars['String']>
+    movieDBId?: Maybe<Scalars['Int']>
+    author?: Maybe<UserUpdateOneRequiredWithoutSubmissionInput>
+}
+
+export type UserUpdateOneRequiredWithoutSubmissionInput = {
+    create?: Maybe<UserCreateWithoutSubmissionInput>
+    connect?: Maybe<UserWhereUniqueInput>
+    update?: Maybe<UserUpdateWithoutSubmissionDataInput>
+    upsert?: Maybe<UserUpsertWithoutSubmissionInput>
+}
+
+export type UserUpdateWithoutSubmissionDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    username?: Maybe<Scalars['String']>
+    score?: Maybe<Scalars['Int']>
+    party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
+    rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
+}
+
+export type PartyUpdateOneRequiredWithoutUsersInput = {
+    create?: Maybe<PartyCreateWithoutUsersInput>
+    connect?: Maybe<PartyWhereUniqueInput>
+    update?: Maybe<PartyUpdateWithoutUsersDataInput>
+    upsert?: Maybe<PartyUpsertWithoutUsersInput>
+}
+
+export type PartyUpdateWithoutUsersDataInput = {
+    id?: Maybe<Scalars['String']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    rengas?: Maybe<RengaUpdateManyWithoutPartyInput>
+}
+
+export type RengaUpdateManyWithoutPartyInput = {
+    create?: Maybe<Array<RengaCreateWithoutPartyInput>>
+    connect?: Maybe<Array<RengaWhereUniqueInput>>
+    set?: Maybe<Array<RengaWhereUniqueInput>>
+    disconnect?: Maybe<Array<RengaWhereUniqueInput>>
+    delete?: Maybe<Array<RengaWhereUniqueInput>>
+    update?: Maybe<Array<RengaUpdateWithWhereUniqueWithoutPartyInput>>
+    updateMany?: Maybe<Array<RengaUpdateManyWithWhereNestedInput>>
+    deleteMany?: Maybe<Array<RengaScalarWhereInput>>
+    upsert?: Maybe<Array<RengaUpsertWithWhereUniqueWithoutPartyInput>>
+}
+
+export type RengaUpdateWithWhereUniqueWithoutPartyInput = {
+    where: RengaWhereUniqueInput
+    data: RengaUpdateWithoutPartyDataInput
+}
+
+export type RengaUpdateWithoutPartyDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    emojis?: Maybe<RengaUpdateemojisInput>
+    submissions?: Maybe<SubmissionUpdateManyWithoutRengaInput>
+    movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
+    author?: Maybe<UserUpdateOneRequiredWithoutRengasInput>
+}
+
+export type MovieUpdateOneRequiredWithoutRengasInput = {
+    create?: Maybe<MovieCreateWithoutRengasInput>
+    connect?: Maybe<MovieWhereUniqueInput>
+    update?: Maybe<MovieUpdateWithoutRengasDataInput>
+    upsert?: Maybe<MovieUpsertWithoutRengasInput>
+}
+
+export type MovieUpdateWithoutRengasDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    movieDBId?: Maybe<Scalars['Int']>
+    title?: Maybe<Scalars['String']>
+    year?: Maybe<Scalars['Int']>
+    genres?: Maybe<MovieUpdategenresInput>
+}
+
+export type MovieUpdategenresInput = {
+    set?: Maybe<Array<Scalars['String']>>
+}
+
+export type MovieUpsertWithoutRengasInput = {
+    update: MovieUpdateWithoutRengasDataInput
+    create: MovieCreateWithoutRengasInput
+}
+
+export type UserUpdateOneRequiredWithoutRengasInput = {
+    create?: Maybe<UserCreateWithoutRengasInput>
+    connect?: Maybe<UserWhereUniqueInput>
+    update?: Maybe<UserUpdateWithoutRengasDataInput>
+    upsert?: Maybe<UserUpsertWithoutRengasInput>
+}
+
+export type UserUpdateWithoutRengasDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    username?: Maybe<Scalars['String']>
+    score?: Maybe<Scalars['Int']>
+    party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
+    submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
+}
+
+export type SubmissionUpdateManyWithoutAuthorInput = {
+    create?: Maybe<Array<SubmissionCreateWithoutAuthorInput>>
+    connect?: Maybe<Array<SubmissionWhereUniqueInput>>
+    set?: Maybe<Array<SubmissionWhereUniqueInput>>
+    disconnect?: Maybe<Array<SubmissionWhereUniqueInput>>
+    delete?: Maybe<Array<SubmissionWhereUniqueInput>>
+    update?: Maybe<Array<SubmissionUpdateWithWhereUniqueWithoutAuthorInput>>
+    updateMany?: Maybe<Array<SubmissionUpdateManyWithWhereNestedInput>>
+    deleteMany?: Maybe<Array<SubmissionScalarWhereInput>>
+    upsert?: Maybe<Array<SubmissionUpsertWithWhereUniqueWithoutAuthorInput>>
+}
+
+export type SubmissionUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: SubmissionWhereUniqueInput
+    data: SubmissionUpdateWithoutAuthorDataInput
+}
+
+export type SubmissionUpdateWithoutAuthorDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    valid?: Maybe<Scalars['Boolean']>
+    movieTitle?: Maybe<Scalars['String']>
+    movieDBId?: Maybe<Scalars['Int']>
+    renga?: Maybe<RengaUpdateOneRequiredWithoutSubmissionsInput>
+}
+
+export type RengaUpdateOneRequiredWithoutSubmissionsInput = {
+    create?: Maybe<RengaCreateWithoutSubmissionsInput>
+    connect?: Maybe<RengaWhereUniqueInput>
+    update?: Maybe<RengaUpdateWithoutSubmissionsDataInput>
+    upsert?: Maybe<RengaUpsertWithoutSubmissionsInput>
+}
+
+export type RengaUpdateWithoutSubmissionsDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    emojis?: Maybe<RengaUpdateemojisInput>
+    movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
+    author?: Maybe<UserUpdateOneRequiredWithoutRengasInput>
+    party?: Maybe<PartyUpdateOneRequiredWithoutRengasInput>
+}
+
+export type PartyUpdateOneRequiredWithoutRengasInput = {
+    create?: Maybe<PartyCreateWithoutRengasInput>
+    connect?: Maybe<PartyWhereUniqueInput>
+    update?: Maybe<PartyUpdateWithoutRengasDataInput>
+    upsert?: Maybe<PartyUpsertWithoutRengasInput>
+}
+
+export type PartyUpdateWithoutRengasDataInput = {
+    id?: Maybe<Scalars['String']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    users?: Maybe<UserUpdateManyWithoutPartyInput>
+}
+
+export type UserUpdateManyWithoutPartyInput = {
+    create?: Maybe<Array<UserCreateWithoutPartyInput>>
+    connect?: Maybe<Array<UserWhereUniqueInput>>
+    set?: Maybe<Array<UserWhereUniqueInput>>
+    disconnect?: Maybe<Array<UserWhereUniqueInput>>
+    delete?: Maybe<Array<UserWhereUniqueInput>>
+    update?: Maybe<Array<UserUpdateWithWhereUniqueWithoutPartyInput>>
+    updateMany?: Maybe<Array<UserUpdateManyWithWhereNestedInput>>
+    deleteMany?: Maybe<Array<UserScalarWhereInput>>
+    upsert?: Maybe<Array<UserUpsertWithWhereUniqueWithoutPartyInput>>
+}
+
+export type UserUpdateWithWhereUniqueWithoutPartyInput = {
+    where: UserWhereUniqueInput
+    data: UserUpdateWithoutPartyDataInput
+}
+
+export type UserUpdateWithoutPartyDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    username?: Maybe<Scalars['String']>
+    score?: Maybe<Scalars['Int']>
+    rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
+    submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
+}
+
+export type RengaUpdateManyWithoutAuthorInput = {
+    create?: Maybe<Array<RengaCreateWithoutAuthorInput>>
+    connect?: Maybe<Array<RengaWhereUniqueInput>>
+    set?: Maybe<Array<RengaWhereUniqueInput>>
+    disconnect?: Maybe<Array<RengaWhereUniqueInput>>
+    delete?: Maybe<Array<RengaWhereUniqueInput>>
+    update?: Maybe<Array<RengaUpdateWithWhereUniqueWithoutAuthorInput>>
+    updateMany?: Maybe<Array<RengaUpdateManyWithWhereNestedInput>>
+    deleteMany?: Maybe<Array<RengaScalarWhereInput>>
+    upsert?: Maybe<Array<RengaUpsertWithWhereUniqueWithoutAuthorInput>>
+}
+
+export type RengaUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: RengaWhereUniqueInput
+    data: RengaUpdateWithoutAuthorDataInput
+}
+
+export type RengaUpdateWithoutAuthorDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    emojis?: Maybe<RengaUpdateemojisInput>
+    submissions?: Maybe<SubmissionUpdateManyWithoutRengaInput>
+    movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
+    party?: Maybe<PartyUpdateOneRequiredWithoutRengasInput>
+}
+
+export type RengaUpdateManyWithWhereNestedInput = {
+    where: RengaScalarWhereInput
+    data: RengaUpdateManyDataInput
+}
+
+export type RengaScalarWhereInput = {
+    id?: Maybe<IntFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    deletedAt?: Maybe<NullableDateTimeFilter>
+    submissions?: Maybe<SubmissionFilter>
+    movieId?: Maybe<IntFilter>
+    authorId?: Maybe<IntFilter>
+    partyId?: Maybe<StringFilter>
+    AND?: Maybe<Array<RengaScalarWhereInput>>
+    OR?: Maybe<Array<RengaScalarWhereInput>>
+    NOT?: Maybe<Array<RengaScalarWhereInput>>
+}
+
+export type RengaUpdateManyDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    emojis?: Maybe<RengaUpdateemojisInput>
+}
+
+export type RengaUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: RengaWhereUniqueInput
+    update: RengaUpdateWithoutAuthorDataInput
+    create: RengaCreateWithoutAuthorInput
+}
+
+export type UserUpdateManyWithWhereNestedInput = {
+    where: UserScalarWhereInput
+    data: UserUpdateManyDataInput
+}
+
+export type UserScalarWhereInput = {
+    id?: Maybe<IntFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    username?: Maybe<StringFilter>
+    partyId?: Maybe<StringFilter>
+    score?: Maybe<IntFilter>
+    rengas?: Maybe<RengaFilter>
+    submission?: Maybe<SubmissionFilter>
+    AND?: Maybe<Array<UserScalarWhereInput>>
+    OR?: Maybe<Array<UserScalarWhereInput>>
+    NOT?: Maybe<Array<UserScalarWhereInput>>
+}
+
+export type UserUpdateManyDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    username?: Maybe<Scalars['String']>
+    score?: Maybe<Scalars['Int']>
+}
+
+export type UserUpsertWithWhereUniqueWithoutPartyInput = {
+    where: UserWhereUniqueInput
+    update: UserUpdateWithoutPartyDataInput
+    create: UserCreateWithoutPartyInput
+}
+
+export type PartyUpsertWithoutRengasInput = {
+    update: PartyUpdateWithoutRengasDataInput
+    create: PartyCreateWithoutRengasInput
+}
+
+export type RengaUpsertWithoutSubmissionsInput = {
+    update: RengaUpdateWithoutSubmissionsDataInput
+    create: RengaCreateWithoutSubmissionsInput
+}
+
+export type SubmissionUpdateManyWithWhereNestedInput = {
+    where: SubmissionScalarWhereInput
+    data: SubmissionUpdateManyDataInput
+}
+
+export type SubmissionScalarWhereInput = {
+    id?: Maybe<IntFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    authorId?: Maybe<IntFilter>
+    rengaId?: Maybe<IntFilter>
+    valid?: Maybe<BooleanFilter>
+    movieTitle?: Maybe<StringFilter>
+    movieDBId?: Maybe<IntFilter>
+    AND?: Maybe<Array<SubmissionScalarWhereInput>>
+    OR?: Maybe<Array<SubmissionScalarWhereInput>>
+    NOT?: Maybe<Array<SubmissionScalarWhereInput>>
+}
+
+export type SubmissionUpdateManyDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    valid?: Maybe<Scalars['Boolean']>
+    movieTitle?: Maybe<Scalars['String']>
+    movieDBId?: Maybe<Scalars['Int']>
+}
+
+export type SubmissionUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: SubmissionWhereUniqueInput
+    update: SubmissionUpdateWithoutAuthorDataInput
+    create: SubmissionCreateWithoutAuthorInput
+}
+
+export type UserUpsertWithoutRengasInput = {
+    update: UserUpdateWithoutRengasDataInput
+    create: UserCreateWithoutRengasInput
+}
+
+export type RengaUpsertWithWhereUniqueWithoutPartyInput = {
+    where: RengaWhereUniqueInput
+    update: RengaUpdateWithoutPartyDataInput
+    create: RengaCreateWithoutPartyInput
+}
+
+export type PartyUpsertWithoutUsersInput = {
+    update: PartyUpdateWithoutUsersDataInput
+    create: PartyCreateWithoutUsersInput
+}
+
+export type UserUpsertWithoutSubmissionInput = {
+    update: UserUpdateWithoutSubmissionDataInput
+    create: UserCreateWithoutSubmissionInput
+}
+
+export type SubmissionUpsertWithWhereUniqueWithoutRengaInput = {
+    where: SubmissionWhereUniqueInput
+    update: SubmissionUpdateWithoutRengaDataInput
+    create: SubmissionCreateWithoutRengaInput
 }
 
 export type CreatePartyMutationVariables = {
@@ -511,7 +931,7 @@ export type GetRengasQuery = { __typename?: 'Query' } & {
     rengas: Array<
         { __typename?: 'Renga' } & Pick<
             Renga,
-            'id' | 'emojis' | 'createdAt'
+            'id' | 'emojis' | 'createdAt' | 'deletedAt'
         > & {
                 author: { __typename?: 'User' } & Pick<User, 'id' | 'username'>
                 status: { __typename?: 'Status' } & Pick<
@@ -559,6 +979,17 @@ export type CreateRengaMutation = { __typename?: 'Mutation' } & {
     createOneRenga: { __typename?: 'Renga' } & Pick<Renga, 'id' | 'emojis'>
 }
 
+export type DeleteRengaMutationVariables = {
+    rengaId: Scalars['Int']
+    date: Scalars['DateTime']
+}
+
+export type DeleteRengaMutation = { __typename?: 'Mutation' } & {
+    updateOneRenga?: Maybe<
+        { __typename?: 'Renga' } & Pick<Renga, 'id' | 'deletedAt'>
+    >
+}
+
 export type GetRengaQueryVariables = {
     rengaId: Scalars['Int']
 }
@@ -567,7 +998,7 @@ export type GetRengaQuery = { __typename?: 'Query' } & {
     renga?: Maybe<
         { __typename?: 'Renga' } & Pick<
             Renga,
-            'id' | 'emojis' | 'createdAt'
+            'id' | 'emojis' | 'createdAt' | 'deletedAt'
         > & {
                 status: { __typename?: 'Status' } & Pick<
                     Status,
@@ -704,6 +1135,7 @@ export const GetRengasDocument = gql`
                 username
             }
             createdAt
+            deletedAt
             status {
                 isResolved
                 isMine
@@ -895,12 +1327,61 @@ export type CreateRengaMutationOptions = ApolloReactCommon.BaseMutationOptions<
     CreateRengaMutation,
     CreateRengaMutationVariables
 >
+export const DeleteRengaDocument = gql`
+    mutation deleteRenga($rengaId: Int!, $date: DateTime!) {
+        updateOneRenga(data: { deletedAt: $date }, where: { id: $rengaId }) {
+            id
+            deletedAt
+        }
+    }
+`
+
+/**
+ * __useDeleteRengaMutation__
+ *
+ * To run a mutation, you first call `useDeleteRengaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteRengaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteRengaMutation, { data, loading, error }] = useDeleteRengaMutation({
+ *   variables: {
+ *      rengaId: // value for 'rengaId'
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useDeleteRengaMutation(
+    baseOptions?: ApolloReactHooks.MutationHookOptions<
+        DeleteRengaMutation,
+        DeleteRengaMutationVariables
+    >
+) {
+    return ApolloReactHooks.useMutation<
+        DeleteRengaMutation,
+        DeleteRengaMutationVariables
+    >(DeleteRengaDocument, baseOptions)
+}
+export type DeleteRengaMutationHookResult = ReturnType<
+    typeof useDeleteRengaMutation
+>
+export type DeleteRengaMutationResult = ApolloReactCommon.MutationResult<
+    DeleteRengaMutation
+>
+export type DeleteRengaMutationOptions = ApolloReactCommon.BaseMutationOptions<
+    DeleteRengaMutation,
+    DeleteRengaMutationVariables
+>
 export const GetRengaDocument = gql`
     query getRenga($rengaId: Int!) {
         renga(where: { id: $rengaId }) {
             id
             emojis
             createdAt
+            deletedAt
             status {
                 isResolved
                 isMine

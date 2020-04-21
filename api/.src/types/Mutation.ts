@@ -6,6 +6,7 @@ import { appSecret } from '../security/authentication'
 export const Mutation = mutationType({
     definition(t) {
         t.crud.createOneRenga()
+        t.crud.updateOneRenga()
         t.field('createSubmission', {
             type: 'Submission',
             args: {
