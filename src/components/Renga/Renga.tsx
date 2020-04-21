@@ -20,10 +20,11 @@ const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
         <div
             ref={ref}
             className={classNames(
-                'flex flex-col justify-center items-center mr-4 mb-4 rounded p-2 w-full',
+                'flex flex-col justify-center items-center rounded p-2',
                 {
-                    'bg-gray-100': open,
+                    'bg-gray-100 w-full': open,
                     'grayed opacity-75': renga.status.isResolved && !open,
+                    'w-32 sm:w-40 h-24 hover:bg-gray-200  cursor-pointer': !open,
                 }
             )}
             onClick={

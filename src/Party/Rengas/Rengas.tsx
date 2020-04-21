@@ -75,10 +75,10 @@ const Rengas = ({
                                 .map((renga) => (
                                     <div
                                         key={renga.id}
-                                        className={classNames({
+                                        className={classNames(' mr-4 mb-4', {
                                             'w-full':
                                                 highlightedRenga === renga.id,
-                                            'w-32':
+                                            'w-32 sm:w-40':
                                                 highlightedRenga !== renga.id,
                                         })}
                                     >
