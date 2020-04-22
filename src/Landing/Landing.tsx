@@ -53,7 +53,8 @@ const Landing = () => {
         >
             <h1 className="mb-4 text-primary font-logo text-6xl">Renga</h1>
             <h2 className="text-primary text-center text-2xl font-medium my-8 sm:mt-32">
-                Make your friends guess movies with only three emojis
+                Make your friends guess movies with only three{' '}
+                {navigator.platform}
             </h2>
             <EmojiRoulette />
             <form

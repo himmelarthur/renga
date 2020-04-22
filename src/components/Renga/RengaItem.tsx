@@ -9,18 +9,32 @@ const RengaItem = ({ renga }: Props) => {
         <>
             <div className="flex flex-row justify-around">
                 {renga.emojis.map((emoji, index) => (
-                    <div className="pr-1 last:pr-0" key={index.toString()}>
+                    <div
+                        className="pr-1 last:pr-0 self-center"
+                        key={index.toString()}
+                    >
                         <Emoji
                             size={32}
                             native={false}
                             emoji={emoji}
                             key={index}
+                            // @ts-ignore
+                            fallback={(e, props) => {
+                                return (
+                                    <Emoji
+                                        size={32}
+                                        native={false}
+                                        emoji={emoji}
+                                        key={index}
+                                    />
+                                )
+                            }}
                         />
                     </div>
                 ))}
             </div>
             <div className="flex flex-col items-center justify-center text-gray-700 text-xs w-full">
-                <div className="flex w-4/5 justify-center">
+                <div className="flex w-full justify-center">
                     <span className="flex-shrink-0">Posted by </span>
                     <span className="font-semibold ml-1 truncate">
                         {renga.status.isMine ? ' You' : renga.author.username}
