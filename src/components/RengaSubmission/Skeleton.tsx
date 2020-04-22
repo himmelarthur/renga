@@ -9,14 +9,14 @@ const RengaSubmissionSkeleton = memo(() => (
             {['santa', 'santa', 'santa'].map((e, index) => {
                 return (
                     <span className="mx-2" key={index}>
-                        <Emoji native={isMobile()} emoji={e} size={42} />
+                        <Emoji native={false} emoji={e} size={42} />
                     </span>
                 )
             })}
         </div>
         <div className="text-gray-00 my-4 invisible">
-            <Emoji size={16} native={isMobile()} emoji={'painter'}></Emoji>{' '}
-            Posted by <span className="font-semibold invisible"></span>
+            <Emoji size={16} native={false} emoji={'painter'}></Emoji> Posted by{' '}
+            <span className="font-semibold invisible"></span>
         </div>
     </div>
 ))

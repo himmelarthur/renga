@@ -81,7 +81,7 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                                     </div>
                                     <Emoji
                                         size={16}
-                                        native={isMobile()}
+                                        native={false}
                                         emoji={userEmoji(partyId, player.id)}
                                     />
                                 </div>

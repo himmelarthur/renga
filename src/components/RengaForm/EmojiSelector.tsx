@@ -37,7 +37,7 @@ const EmojiSelector: React.FC<Props> = ({ emojis, onEmojisChange }) => {
                                 {emoji && (
                                     <Emoji
                                         size={42}
-                                        native={isMobile()}
+                                        native={false}
                                         emoji={emoji.colons}
                                     ></Emoji>
                                 )}
