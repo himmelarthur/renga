@@ -20,7 +20,7 @@ const RengaItem = ({ renga }: Props) => {
                 ))}
             </div>
             <div className="flex flex-col items-center justify-center text-gray-700 text-xs w-full">
-                <div className="flex w-4/5 justify-center">
+                <div className="flex w-full justify-center">
                     <span className="flex-shrink-0">Posted by </span>
                     <span className="font-semibold ml-1 truncate">
                         {renga.status.isMine ? ' You' : renga.author.username}
