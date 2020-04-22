@@ -15,7 +15,7 @@ const RengaItem = ({ renga }: Props) => {
                     >
                         <Emoji
                             size={32}
-                            native={false}
+                            native={true}
                             emoji={emoji}
                             key={index}
                             // @ts-ignore
