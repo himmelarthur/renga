@@ -143,17 +143,13 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 {data.renga?.emojis.map((e, index) => {
                     return (
                         <span className="mx-2" key={index}>
-                            <Emoji native={isMobile()} emoji={e} size={42} />
+                            <Emoji native={false} emoji={e} size={42} />
                         </span>
                     )
                 })}
             </div>
             <div className="text-gray-600 text-sm my-4">
-                <Emoji
-                    size={16}
-                    native={isMobile()}
-                    emoji={'male-artist'}
-                ></Emoji>{' '}
+                <Emoji size={16} native={false} emoji={'male-artist'}></Emoji>{' '}
                 Posted by{' '}
                 <span className="font-medium">{renga?.author.username}</span>{' '}
                 {moment(renga?.createdAt).fromNow()}

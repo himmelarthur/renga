@@ -12,7 +12,7 @@ const RengaItem = ({ renga }: Props) => {
                     <div className="pr-1 last:pr-0" key={index.toString()}>
                         <Emoji
                             size={32}
-                            native={isMobile()}
+                            native={false}
                             emoji={emoji}
                             key={index}
                         />
