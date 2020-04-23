@@ -11,3 +11,11 @@
 .blur-1 {
     filter: blur(0.5rem);
 }
+
+.line-left {
+    content: ' ';
+    height: 54px;
+    width: 2px;
+    top: 28px;
+    left: 7px;
+}
