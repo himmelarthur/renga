@@ -18,6 +18,7 @@ import RengaSubmissionSkeleton from './Skeleton'
 import Timeline from './Timeline'
 import Hints from './Hints'
 import TextButton from '../TextButton'
+import Like from './Like'
 
 interface IRengaSubmissionProps {
     rengaId: number
@@ -40,6 +41,8 @@ gql`
                 maybeTitle
                 maybeYear
                 maybeGenres
+                isLiked
+                solversCount
             }
             author {
                 id
@@ -222,6 +225,14 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                         Submit
                     </button>
                 </div>
+            )}
+            {renga?.status.isResolved && (
+                <Like
+                    className="w-full"
+                    rengaId={rengaId}
+                    userId={userId}
+                    isLiked={renga.status.isLiked}
+                />
             )}
 
             <div className="flex flex-row items-center w-full justify-between py-3 px-4 sm:px-6">
