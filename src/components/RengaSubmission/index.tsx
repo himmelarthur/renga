@@ -223,7 +223,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     const isMe = s.author.id === userId
                     return (
                         <div
-                            className="flex my-4 items-center relative"
+                            className="flex my-4 items-center relative w-full"
                             key={s.id}
                         >
                             <div
@@ -233,10 +233,13 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                                 })}
                             ></div>
                             <div
-                                className={classNames('w-4 h-4 rounded-full', {
-                                    'bg-gray-400': !s.valid,
-                                    'bg-teal-600': s.valid,
-                                })}
+                                className={classNames(
+                                    'flex-shrink-0 w-4 h-4 rounded-full',
+                                    {
+                                        'bg-gray-400': !s.valid,
+                                        'bg-teal-600': s.valid,
+                                    }
+                                )}
                             ></div>
                             <div className="text-gray-600 flex flex-col ml-4">
                                 <div className="w-full flex flex-row no-wrap space-x-1">
