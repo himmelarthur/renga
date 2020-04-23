@@ -133,8 +133,18 @@ export const Renga = objectType({
             type: 'Status',
             resolve: async (parent, {}, ctx: Context) => {
                 const user = await ctx.user
+                if (!user) {
+                    return {
+                        isMine: false,
+                        isResolved: false,
+                        isLiked: false,
+                        maybeTitle: '',
+                        solversCount: 0,
+                    }
+                }
+
                 // @ts-ignore
-                const isMine = parent.authorId === user?.userId
+                const isMine = parent.authorId === user.userId
                 const solvers = (
                     await ctx.prisma.submission.findMany({
                         select: { authorId: true },
@@ -146,9 +156,7 @@ export const Renga = objectType({
                     })
                 ).map((x) => x.authorId)
 
-                const isResolved = user?.userId
-                    ? solvers.includes(user.userId)
-                    : false
+                const isResolved = solvers.includes(user.userId)
                 const solversCount = solvers.length
 
                 const hints = (
@@ -161,11 +169,24 @@ export const Renga = objectType({
                     })
                 ).map((x) => x.type)
 
+                // Maybe title should be stored on renga...
                 const movie = await ctx.prisma.movie.findOne({
                     select: { title: true, year: true, genres: true },
                     // @ts-ignore
                     where: { id: parent.movieId },
                 })
+
+                const isLiked =
+                    (
+                        await ctx.prisma.renga.findOne({
+                            where: { id: parent.id },
+                            select: {
+                                likedBy: { where: { id: user?.userId } },
+                            },
+                        })
+                    )?.likedBy
+                        .map((x) => x.id)
+                        .includes(user.userId) ?? false
 
                 if (!movie) throw Error('No movie associated to this renga')
 
@@ -183,6 +204,7 @@ export const Renga = objectType({
                 return {
                     isMine,
                     isResolved,
+                    isLiked,
                     maybeTitle,
                     maybeYear,
                     maybeGenres,
@@ -198,6 +220,7 @@ export const status = objectType({
     definition(t) {
         t.string('maybeTitle')
         t.boolean('isMine')
+        t.boolean('isLiked')
         t.boolean('isResolved')
         t.int('maybeYear', { nullable: true })
         t.string('maybeGenres', { list: true, nullable: true })
