@@ -218,7 +218,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 </div>
             </div>
             <div className="h-px w-full bg-white"></div>
-            <div className="w-full text-base sm:text-base overflow-scroll">
+            <div className="w-full text-sm sm:text-base overflow-scroll">
                 {renga?.submissions?.map((s, index) => {
                     const isMe = s.author.id === userId
                     return (
@@ -234,7 +234,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                             ></div>
                             <div
                                 className={classNames(
-                                    'flex-shrink-0 w-4 h-4 rounded-full',
+                                    'flex-shrink-0 w-4 h-4 rounded-full z-10',
                                     {
                                         'bg-gray-400': !s.valid,
                                         'bg-teal-600': s.valid,
