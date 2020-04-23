@@ -1,11 +1,10 @@
-import React from 'react'
 import classNames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import { AnimateSharedLayout, motion } from 'framer-motion'
 import pluralize from 'pluralize'
+import React from 'react'
 import { userEmoji } from '../../utils/emojis'
 import { useFetchLeaderboard } from './hooks'
-import isMobile from 'is-mobile'
 
 interface ILeaderboardProps {
     partyId: string

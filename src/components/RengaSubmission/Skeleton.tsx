@@ -1,6 +1,5 @@
-import React, { memo } from 'react'
 import { Emoji } from 'emoji-mart'
-import isMobile from 'is-mobile'
+import React, { memo } from 'react'
 
 const RengaSubmissionSkeleton = memo(() => (
     <div className="rounded p-4 bg-gray-100 flex flex-col">

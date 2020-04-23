@@ -1,9 +1,8 @@
+import { AnimateSharedLayout } from 'framer-motion'
 import React, { useState } from 'react'
 import Renga from '../../components/Renga/Renga'
-import { AnimateSharedLayout } from 'framer-motion'
-import { useFetchRengas } from './hooks'
-import classNames from 'classnames'
 import { track } from '../../utils/tracking'
+import { useFetchRengas } from './hooks'
 
 const Rengas = ({
     partyId,

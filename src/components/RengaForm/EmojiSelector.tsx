@@ -1,9 +1,8 @@
-import React from 'react'
-import { BaseEmoji, Picker, Emoji } from 'emoji-mart'
+import { BaseEmoji, Emoji, Picker } from 'emoji-mart'
 import 'emoji-mart/css/emoji-mart.css'
+import React from 'react'
 import { track } from '../../utils/tracking'
 
-import isMobile from 'is-mobile'
 type OptionalBaseEmoji = BaseEmoji | undefined
 export type TBricks = [OptionalBaseEmoji, OptionalBaseEmoji, OptionalBaseEmoji]
 
