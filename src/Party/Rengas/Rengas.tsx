@@ -65,13 +65,14 @@ const Rengas = ({
                                 </div>
                             ) : undefined}
                             {data.rengas
-                                .filter((x) =>
-                                    hideMe ? !x.status.isMine : true
-                                )
+                                .filter((x) => {
+                                    if (highlightedRenga === x.id) return true
+                                    if (hideMe && x.status.isMine) return false
+                                    if (hideResolved && x.status.isResolved)
+                                        return false
+                                    return true
+                                })
                                 .filter((x) => !x.deletedAt)
-                                .filter((x) =>
-                                    hideResolved ? !x.status.isResolved : true
-                                )
                                 .map((renga) => (
                                     <Renga
                                         key={renga.id}
