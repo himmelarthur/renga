@@ -76,6 +76,7 @@ export const Renga = objectType({
     definition(t) {
         t.model.id()
         t.model.createdAt()
+        t.model.deletedAt()
         t.model.author()
         t.model.movie()
         t.model.submissions({

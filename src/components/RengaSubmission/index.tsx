@@ -1,19 +1,20 @@
-import * as React from 'react'
 import classNames from 'classnames'
-import gql from 'graphql-tag'
-import {
-    useGetRengaQuery,
-    useCreateSubmissionMutation,
-    GetRengaDocument,
-    GetPlayersDocument,
-} from '../../generated/graphql'
 import { Emoji } from 'emoji-mart'
-import moment from 'moment'
-import BlurTitle from './BlurTitle'
-import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
-import RengaSubmissionSkeleton from './Skeleton'
-import { track } from '../../utils/tracking'
+import gql from 'graphql-tag'
 import isMobile from 'is-mobile'
+import moment from 'moment'
+import { useDeleteRenga } from './hooks'
+import * as React from 'react'
+import {
+    GetPlayersDocument,
+    GetRengaDocument,
+    useCreateSubmissionMutation,
+    useGetRengaQuery,
+} from '../../generated/graphql'
+import { track } from '../../utils/tracking'
+import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
+import BlurTitle from './BlurTitle'
+import RengaSubmissionSkeleton from './Skeleton'
 
 interface IRengaSubmissionProps {
     rengaId: number
@@ -29,6 +30,7 @@ gql`
             id
             emojis
             createdAt
+            deletedAt
             status {
                 isResolved
                 isMine
@@ -89,6 +91,8 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
         },
     })
 
+    const { handleDelete } = useDeleteRenga()
+
     React.useEffect(() => {
         setMovie(undefined)
     }, [rengaId])
@@ -129,33 +133,57 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const { renga } = data
 
     return (
-        <div className="rounded p-4 bg-gray-100 flex flex-col relative w-full">
-            {(renga?.status.isResolved || renga?.status.isMine) && (
-                <BlurTitle title={renga.status.maybeTitle} rengaId={rengaId} />
-            )}
-            <div
-                className="absolute top-0 pr-4 pt-3 text-gray-600 hover:text-gray-700 cursor-pointer text-xl right-0"
-                onClick={onClose}
-            >
-                ✕
+        <div className="rounded p-4 sm:p-6 bg-gray-100 flex flex-col w-full">
+            <div className="text-gray-600 text-sm relative flex flex-row space-x-1 items-baseline">
+                <Emoji
+                    size={16}
+                    native={isMobile()}
+                    emoji={'male-artist'}
+                ></Emoji>{' '}
+                <span className="flex-shrink-0">Posted by </span>
+                <span className="font-medium truncate">
+                    {renga?.author.username}
+                </span>{' '}
+                <span className="flex-shrink-0">
+                    {moment(renga?.createdAt).fromNow()}
+                </span>
+                <div
+                    className="absolute top-0 -mt-2 text-gray-600 hover:text-gray-700 cursor-pointer text-xl right-0"
+                    onClick={onClose}
+                >
+                    ✕
+                </div>
             </div>
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center my-8">
                 {data.renga?.emojis.map((e, index) => {
                     return (
-                        <span className="mx-2" key={index}>
+                        <div
+                            className="mx-2 bg-white rounded-lg mx-2 sm:h-16 sm:w-16 h-12 w-12 text-3xl sm:text-5xl text-center"
+                            key={index}
+                        >
                             <Emoji native={false} emoji={e} size={42} />
-                        </span>
+                        </div>
                     )
                 })}
             </div>
-            <div className="text-gray-600 text-sm my-4">
-                <Emoji size={16} native={false} emoji={'male-artist'}></Emoji>{' '}
-                Posted by{' '}
-                <span className="font-medium">{renga?.author.username}</span>{' '}
-                {moment(renga?.createdAt).fromNow()}
-            </div>
+            {(renga?.status.isResolved || renga?.status.isMine) && (
+                <div className="pb-8 mb-2 flex flex-row justify-center items-end w-full relative">
+                    <BlurTitle
+                        title={renga.status.maybeTitle}
+                        rengaId={rengaId}
+                    />
+                    {renga?.status.isMine && (
+                        <div
+                            className="text-sm uppercase text-red-700 cursor-pointer absolute bottom-0 right-0"
+                            onClick={() => handleDelete(rengaId)}
+                        >
+                            DELETE
+                        </div>
+                    )}
+                </div>
+            )}
             {!renga?.status.isResolved && !renga?.status.isMine && (
-                <>
+                <div className="my-4">
                     <MovieAutocomplete
                         movie={movie}
                         onMovieChange={setMovie}
@@ -174,27 +202,52 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     >
                         Submit
                     </button>
-                    <div className="h-px bg-gray-300"></div>
-                </>
+                </div>
             )}
-            <div className="w-full">
-                {renga?.submissions?.map((s) => {
+            <div className="h-px w-full bg-white"></div>
+            <div className="flex flex-row items-center w-full justify-between py-3">
+                <div className="invisibe flex flex-row text-gray-600 font-light leading-none items-baseline">
+                    {/* TODO LIKE */}
+                </div>
+                <div className="text-gray-600 font-light">
+                    <span aria-label="" role="img">
+                        🙌
+                    </span>{' '}
+                    Resolved by{' '}
+                    {renga?.submissions.filter((x) => x.valid).length} people
+                </div>
+            </div>
+            <div className="h-px w-full bg-white"></div>
+            <div className="w-full text-sm sm:text-base overflow-scroll">
+                {renga?.submissions?.map((s, index) => {
                     const isMe = s.author.id === userId
                     return (
-                        <div className="flex my-4 items-center" key={s.id}>
+                        <div
+                            className="flex my-4 items-center relative w-full"
+                            key={s.id}
+                        >
                             <div
-                                className={classNames('w-4 h-4 rounded-full', {
-                                    'bg-gray-400': !s.valid,
-                                    'bg-teal-600': s.valid,
+                                className={classNames('absolute bg-gray-400', {
+                                    'line-left':
+                                        renga?.submissions.length - 1 !== index,
                                 })}
                             ></div>
+                            <div
+                                className={classNames(
+                                    'flex-shrink-0 w-4 h-4 rounded-full z-10',
+                                    {
+                                        'bg-gray-400': !s.valid,
+                                        'bg-teal-600': s.valid,
+                                    }
+                                )}
+                            ></div>
                             <div className="text-gray-600 flex flex-col ml-4">
-                                <div>
-                                    <span className="font-semibold text-gray-800">
+                                <div className="w-full flex flex-row no-wrap space-x-1">
+                                    <span className="font-semibold text-gray-800 flex-shrink-0 truncate max-w-xs">
                                         {isMe ? 'You' : s.author.username}
                                     </span>{' '}
-                                    {s.valid ? 'found' : 'tried'}
-                                    <span className="font-semibold text-gray-800">
+                                    <span>{s.valid ? 'found' : 'tried'}</span>
+                                    <span className="font-semibold text-gray-800 truncate w-3/5">
                                         {' '}
                                         {isMe ||
                                         renga.status.isResolved ||

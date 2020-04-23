@@ -13,17 +13,23 @@ export default ({ className, title, rengaId }: BlurTitleProps) => {
         setIsShown(false)
     }, [rengaId])
     return (
-        <div className={classNames("flex flex-col items-center p-4", className)}>
+        <div className={classNames('flex flex-col items-center', className)}>
             <div
+                onClick={() => setIsShown(!isShown)}
                 className={classNames(
-                    ' transition-all duration-200',
-                    'text-3xl font-bold text-center text-gray-900',
+                    'transition-all duration-200',
+                    'text-xl sm:text-3xl font-bold text-center text-gray-900 cursor-pointer',
                     { 'blur-1': !isShown }
                 )}
             >
                 {title}
             </div>
-            <div className="text-sm uppercase text-teal-800 mt-2 cursor-pointer " onClick={() => setIsShown(!isShown)}>{isShown ? 'hide' : 'show'}</div>
+            <div
+                className="text-xs uppercase text-teal-700 cursor-pointer "
+                onClick={() => setIsShown(!isShown)}
+            >
+                {isShown ? 'hide' : 'show'}
+            </div>
         </div>
     )
 }

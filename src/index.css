@@ -4,11 +4,19 @@
 
 @tailwind utilities;
 
-
 .grayed {
-    filter: grayscale(1)
+    filter: grayscale(1);
 }
 
 .blur-1 {
-    filter: blur(1rem)
+    filter: blur(0.5rem);
+}
+
+.line-left {
+    content: ' ';
+    height: 54px;
+    width: 2px;
+    top: 28px;
+    left: 7px;
+    z-index: 0;
 }

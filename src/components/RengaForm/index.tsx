@@ -104,7 +104,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
     return (
         <form
             onSubmit={handleSubmit}
-            className="flex sm:flex-row flex-col items-start"
+            className="flex sm:flex-row flex-col items-start w-full"
         >
             <div className="bg-gray-100 p-4 rounded-lg mb-3 relative w-full sm:w-5/6">
                 <h3 className="text-xl text-gray-800 font-bold mb-2">
