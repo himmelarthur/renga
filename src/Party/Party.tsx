@@ -105,7 +105,7 @@ const Party = ({ partyId, user }: Props) => {
                         partyId={partyId}
                     />
                 </div>
-                <div className="flex sm:flex-row sm:justify-center flex-col sm:px-20 sm:mt-20">
+                <div className="flex sm:flex-row sm:justify-center flex-col sm:px-20 sm:mt-20 sm:items-start">
                     <div className="sm:mx-4 sm:max-w-screen-md sm:w-full">
                         {createRengaOn ? (
                             <RengaForm
@@ -155,12 +155,11 @@ const Party = ({ partyId, user }: Props) => {
                             />
                         )}
                     </div>
-                    <div className="mt-6 sm:mt-0 max-w-md">
-                        <Leaderboard
-                            partyId={partyId}
-                            userId={user.userId}
-                        ></Leaderboard>
-                    </div>
+                    <Leaderboard
+                        className="mt-6 sm:mt-0 max-w-md w-full"
+                        partyId={partyId}
+                        userId={user.userId}
+                    ></Leaderboard>
                 </div>
             </div>
         </>
