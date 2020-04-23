@@ -59,7 +59,7 @@ const Rengas = ({
                         <>
                             {displayNewButton ? (
                                 <div
-                                    className="flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer text-primary font-medium uppercase bg-gray-100"
+                                    className="flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 px-2 py-10 cursor-pointer text-primary font-medium uppercase bg-gray-100"
                                     onClick={onClickNew}
                                 >
                                     + New renga
