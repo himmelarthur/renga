@@ -1,0 +1,136 @@
+{
+    "version": "0.3.14-fixed",
+    "steps": [
+        {
+            "tag": "CreateField",
+            "model": "Renga",
+            "field": "likedBy",
+            "type": "User",
+            "arity": "List"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "likedBy"
+                },
+                "directive": "relation"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "likedBy"
+                },
+                "directive": "relation"
+            },
+            "argument": "",
+            "value": "\"likes\""
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "likedBy"
+                },
+                "directive": "relation"
+            },
+            "argument": "references",
+            "value": "[id]"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Renga",
+            "field": "likeCount",
+            "type": "Int",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "likeCount"
+                },
+                "directive": "default"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "likeCount"
+                },
+                "directive": "default"
+            },
+            "argument": "",
+            "value": "0"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Renga",
+            "field": "userId",
+            "type": "Int",
+            "arity": "Optional"
+        },
+        {
+            "tag": "CreateField",
+            "model": "User",
+            "field": "likes",
+            "type": "Renga",
+            "arity": "List"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "User",
+                    "field": "likes"
+                },
+                "directive": "relation"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "User",
+                    "field": "likes"
+                },
+                "directive": "relation"
+            },
+            "argument": "",
+            "value": "\"likes\""
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "User",
+                    "field": "likes"
+                },
+                "directive": "relation"
+            },
+            "argument": "references",
+            "value": "[id]"
+        }
+    ]
+}

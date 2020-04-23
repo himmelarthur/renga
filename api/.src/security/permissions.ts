@@ -62,6 +62,7 @@ const shouldBePartyOnly = rule({ cache: 'contextual' })(
 export const permissions = shield(
     {
         Mutation: {
+            likeRenga: and(isAuthenticated, canSolveRenga),
             createSubmission: and(isAuthenticated, canSolveRenga),
             createOneRenga: and(isAuthenticated, isParticipant),
             updateOneRenga: and(isAuthenticated, ownRenga),

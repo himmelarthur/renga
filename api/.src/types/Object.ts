@@ -2,7 +2,6 @@ import { objectType } from '@nexus/schema'
 import { HintType } from '@prisma/client'
 import { Context } from '../context'
 import { getMovieGenre } from '../services/Movie'
-import logger from '../logging'
 
 export const User = objectType({
     name: 'User',
@@ -11,6 +10,18 @@ export const User = objectType({
         t.model.username()
         t.model.score()
         t.model.hintCount()
+        t.int('likedRengaCount', {
+            async resolve(parent, args, ctx: Context) {
+                return (
+                    await ctx.prisma.renga.findMany({
+                        where: { authorId: parent.id },
+                        select: { likeCount: true },
+                    })
+                )
+                    .map((x) => x.likeCount)
+                    .reduce((a, b) => a + b, 0)
+            },
+        })
         t.int('solvedCount', {
             async resolve(parent, args, ctx: Context) {
                 const auth = await ctx.user
@@ -112,6 +123,7 @@ export const Renga = objectType({
         t.model.deletedAt()
         t.model.author()
         t.model.movie()
+        t.model.likeCount()
         t.model.submissions({
             ordering: { createdAt: true },
             filtering: { authorId: true, valid: true },
