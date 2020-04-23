@@ -1,15 +1,22 @@
-import React from 'react'
-import { Renga as RengaType, User, Status } from '../../generated/graphql'
 import { Emoji } from 'emoji-mart'
 import moment from 'moment'
-import isMobile from 'is-mobile'
+import React from 'react'
+import { Renga as RengaType, Status, User } from '../../generated/graphql'
+import classNames from 'classnames'
 
 const RengaItem = ({ renga }: Props) => {
     return (
-        <>
-            <div className="flex flex-row justify-around">
+        <div
+            className={classNames(
+                'sm:w-40 w-32 hover:bg-gray-200 cursor-pointer px-2 py-4 mr-4 mb-4 rounded ',
+                {
+                    'grayed opacity-75': renga.status.isResolved,
+                }
+            )}
+        >
+            <div className="flex flex-row justify-center space-x-2">
                 {renga.emojis.map((emoji, index) => (
-                    <div className="pr-1 last:pr-0" key={index.toString()}>
+                    <div key={index.toString()}>
                         <Emoji
                             size={32}
                             native={false}
@@ -31,7 +38,7 @@ const RengaItem = ({ renga }: Props) => {
                     {moment(renga.createdAt).fromNow()}
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

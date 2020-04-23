@@ -53,13 +53,13 @@ const Rengas = ({
                     </label>
                 </div>
             ) : undefined}
-            <div className="flex flex-row flex-wrap justify-center sm:justify-start mt-4">
+            <div className="flex flex-row flex-wrap justify-center sm:justify-start mt-4 max-w-full">
                 <AnimateSharedLayout type="switch">
                     {data?.rengas.length ? (
                         <>
                             {displayNewButton ? (
                                 <div
-                                    className="flex flex-col justify-center items-center sm:w-40 h-24 w-32 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer text-primary font-medium uppercase bg-gray-100"
+                                    className="flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 p-2 cursor-pointer text-primary font-medium uppercase bg-gray-100"
                                     onClick={onClickNew}
                                 >
                                     + New renga
@@ -74,28 +74,14 @@ const Rengas = ({
                                     hideResolved ? !x.status.isResolved : true
                                 )
                                 .map((renga) => (
-                                    <div
+                                    <Renga
                                         key={renga.id}
-                                        className={classNames(' mr-4 mb-4', {
-                                            'w-full':
-                                                highlightedRenga === renga.id,
-                                            'w-32 sm:w-40':
-                                                highlightedRenga !== renga.id,
-                                        })}
-                                    >
-                                        <Renga
-                                            key={renga.id}
-                                            renga={renga}
-                                            open={highlightedRenga === renga.id}
-                                            onClick={() =>
-                                                onClickRenga(renga.id)
-                                            }
-                                            onSolved={() =>
-                                                onSolvedRenga(renga.id)
-                                            }
-                                            onClose={() => onClose()}
-                                        />
-                                    </div>
+                                        renga={renga}
+                                        open={highlightedRenga === renga.id}
+                                        onClick={() => onClickRenga(renga.id)}
+                                        onSolved={() => onSolvedRenga(renga.id)}
+                                        onClose={() => onClose()}
+                                    />
                                 ))}
                         </>
                     ) : (

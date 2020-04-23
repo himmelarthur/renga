@@ -133,22 +133,26 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const { renga } = data
 
     return (
-        <div className="rounded p-4 bg-gray-100 flex flex-col relative w-full">
-            <div className="text-gray-600 text-sm">
+        <div className="rounded p-4 sm:p-6 bg-gray-100 flex flex-col w-full">
+            <div className="text-gray-600 text-sm relative flex flex-row space-x-1">
                 <Emoji
                     size={16}
                     native={isMobile()}
                     emoji={'male-artist'}
                 ></Emoji>{' '}
-                Posted by{' '}
-                <span className="font-medium">{renga?.author.username}</span>{' '}
-                {moment(renga?.createdAt).fromNow()}
-            </div>
-            <div
-                className="absolute top-0 pr-4 pt-3 text-gray-600 hover:text-gray-700 cursor-pointer text-xl right-0"
-                onClick={onClose}
-            >
-                ✕
+                <span className="flex-shrink-0">Posted by </span>
+                <span className="font-medium truncate">
+                    {renga?.author.username}
+                </span>{' '}
+                <span className="flex-shrink-0">
+                    {moment(renga?.createdAt).fromNow()}
+                </span>
+                <div
+                    className="absolute top-0 -mt-2 text-gray-600 hover:text-gray-700 cursor-pointer text-xl right-0"
+                    onClick={onClose}
+                >
+                    ✕
+                </div>
             </div>
             <div className="w-full flex justify-center my-8">
                 {data.renga?.emojis.map((e, index) => {
@@ -214,11 +218,20 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 </div>
             </div>
             <div className="h-px w-full bg-white"></div>
-            <div className="w-full">
-                {renga?.submissions?.map((s) => {
+            <div className="w-full text-base sm:text-base overflow-scroll">
+                {renga?.submissions?.map((s, index) => {
                     const isMe = s.author.id === userId
                     return (
-                        <div className="flex my-4 items-center" key={s.id}>
+                        <div
+                            className="flex my-4 items-center relative"
+                            key={s.id}
+                        >
+                            <div
+                                className={classNames('absolute bg-gray-400', {
+                                    'line-left':
+                                        renga?.submissions.length - 1 !== index,
+                                })}
+                            ></div>
                             <div
                                 className={classNames('w-4 h-4 rounded-full', {
                                     'bg-gray-400': !s.valid,
@@ -226,12 +239,12 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                                 })}
                             ></div>
                             <div className="text-gray-600 flex flex-col ml-4">
-                                <div>
-                                    <span className="font-semibold text-gray-800">
+                                <div className="w-full flex flex-row no-wrap space-x-1">
+                                    <span className="font-semibold text-gray-800 flex-shrink-0 truncate max-w-xs">
                                         {isMe ? 'You' : s.author.username}
                                     </span>{' '}
-                                    {s.valid ? 'found' : 'tried'}
-                                    <span className="font-semibold text-gray-800">
+                                    <span>{s.valid ? 'found' : 'tried'}</span>
+                                    <span className="font-semibold text-gray-800 truncate w-3/5">
                                         {' '}
                                         {isMe ||
                                         renga.status.isResolved ||

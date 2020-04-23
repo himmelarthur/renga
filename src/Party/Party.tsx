@@ -105,63 +105,57 @@ const Party = ({ partyId, user }: Props) => {
                         partyId={partyId}
                     />
                 </div>
-                <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
-                    <div className="sm:w-2/3">
-                        <div className="sm:mx-4">
-                            {createRengaOn && user ? (
-                                <RengaForm
-                                    partyId={partyId}
-                                    userId={user.userId}
-                                    onCreated={() => goToHash()}
-                                    onClose={() => goToHash()}
-                                ></RengaForm>
-                            ) : (
-                                <div className="mt-0">
-                                    <Rengas
-                                        showControls
-                                        displayNewButton
-                                        onClose={() => {
-                                            track('Closed Open Renga', {
-                                                partyId,
-                                            })
-                                            confettis?.clear()
-                                            goToHash('')
-                                        }}
-                                        onSolvedRenga={onSolvedRenga}
-                                        onClickNew={() => {
-                                            track('Clicked New Renga', {
-                                                partyId,
-                                            })
-                                            confettis?.clear()
-                                            goToHash('new')
-                                        }}
-                                        highlightedRenga={solvingRenga}
-                                        partyId={partyId}
-                                        noRengasComponent={
-                                            <NoRengas
-                                                onClickNew={() =>
-                                                    goToHash('new')
-                                                }
-                                            />
-                                        }
-                                        onClickRenga={(rengaId) => {
-                                            track('Clicked Renga', {
-                                                partyId,
-                                                rengaId,
-                                            })
-                                            confettis?.clear()
-                                            if (rengaId === solvingRenga) {
-                                                goToHash()
-                                            } else {
-                                                goToHash(rengaId.toString())
-                                            }
-                                        }}
+                <div className="flex sm:flex-row sm:justify-center flex-col sm:px-20 sm:mt-20">
+                    <div className="sm:mx-4 sm:max-w-screen-md sm:w-full">
+                        {createRengaOn ? (
+                            <RengaForm
+                                partyId={partyId}
+                                userId={user.userId}
+                                onCreated={() => goToHash()}
+                                onClose={() => goToHash()}
+                            ></RengaForm>
+                        ) : (
+                            <Rengas
+                                showControls
+                                displayNewButton
+                                onClose={() => {
+                                    track('Closed Open Renga', {
+                                        partyId,
+                                    })
+                                    confettis?.clear()
+                                    goToHash('')
+                                }}
+                                onSolvedRenga={onSolvedRenga}
+                                onClickNew={() => {
+                                    track('Clicked New Renga', {
+                                        partyId,
+                                    })
+                                    confettis?.clear()
+                                    goToHash('new')
+                                }}
+                                highlightedRenga={solvingRenga}
+                                partyId={partyId}
+                                noRengasComponent={
+                                    <NoRengas
+                                        onClickNew={() => goToHash('new')}
                                     />
-                                </div>
-                            )}
-                        </div>
+                                }
+                                onClickRenga={(rengaId) => {
+                                    track('Clicked Renga', {
+                                        partyId,
+                                        rengaId,
+                                    })
+                                    confettis?.clear()
+                                    if (rengaId === solvingRenga) {
+                                        goToHash()
+                                    } else {
+                                        goToHash(rengaId.toString())
+                                    }
+                                }}
+                            />
+                        )}
                     </div>
-                    <div className="sm:w-1/3 mt-6 sm:mt-0 max-w-md">
+                    <div className="mt-6 sm:mt-0 max-w-md">
                         <Leaderboard
                             partyId={partyId}
                             userId={user.userId}
