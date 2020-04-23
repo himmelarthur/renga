@@ -134,7 +134,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
 
     return (
         <div className="rounded p-4 sm:p-6 bg-gray-100 flex flex-col w-full">
-            <div className="text-gray-600 text-sm relative flex flex-row space-x-1">
+            <div className="text-gray-600 text-sm relative flex flex-row space-x-1 items-baseline">
                 <Emoji
                     size={16}
                     native={isMobile()}
