@@ -3,7 +3,6 @@ import { Emoji } from 'emoji-mart'
 import gql from 'graphql-tag'
 import isMobile from 'is-mobile'
 import moment from 'moment'
-import { useDeleteRenga } from './hooks'
 import * as React from 'react'
 import {
     GetPlayersDocument,
@@ -14,7 +13,9 @@ import {
 import { track } from '../../utils/tracking'
 import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 import BlurTitle from './BlurTitle'
+import { useDeleteRenga } from './hooks'
 import RengaSubmissionSkeleton from './Skeleton'
+import Timeline from './Timeline'
 
 interface IRengaSubmissionProps {
     rengaId: number
@@ -133,7 +134,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const { renga } = data
 
     return (
-        <div className="rounded p-4 sm:p-6 bg-gray-100 flex flex-col w-full">
+        <div className="rounded p-4 sm:p-6 bg-gray-100 flex flex-col w-full mb-4">
             <div className="text-gray-600 text-sm relative flex flex-row space-x-1 items-baseline">
                 <Emoji
                     size={16}
@@ -218,52 +219,11 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 </div>
             </div>
             <div className="h-px w-full bg-white"></div>
-            <div className="w-full text-sm sm:text-base overflow-scroll">
-                {renga?.submissions?.map((s, index) => {
-                    const isMe = s.author.id === userId
-                    return (
-                        <div
-                            className="flex my-4 items-center relative w-full"
-                            key={s.id}
-                        >
-                            <div
-                                className={classNames('absolute bg-gray-400', {
-                                    'line-left':
-                                        renga?.submissions.length - 1 !== index,
-                                })}
-                            ></div>
-                            <div
-                                className={classNames(
-                                    'flex-shrink-0 w-4 h-4 rounded-full z-10',
-                                    {
-                                        'bg-gray-400': !s.valid,
-                                        'bg-teal-600': s.valid,
-                                    }
-                                )}
-                            ></div>
-                            <div className="text-gray-600 flex flex-col ml-4">
-                                <div className="w-full flex flex-row no-wrap space-x-1">
-                                    <span className="font-semibold text-gray-800 flex-shrink-0 truncate max-w-xs">
-                                        {isMe ? 'You' : s.author.username}
-                                    </span>{' '}
-                                    <span>{s.valid ? 'found' : 'tried'}</span>
-                                    <span className="font-semibold text-gray-800 truncate w-3/5">
-                                        {' '}
-                                        {isMe ||
-                                        renga.status.isResolved ||
-                                        !s.valid
-                                            ? s.maybeTitle
-                                            : 'the movie'}
-                                    </span>
-                                </div>
-                                <div className="text-sm">
-                                    {moment(s.createdAt).fromNow()}
-                                </div>
-                            </div>
-                        </div>
-                    )
-                })}
-            </div>
+            <Timeline
+                className="w-full text-sm sm:text-base overflow-auto"
+                renga={renga}
+                userId={userId}
+            />
         </div>
     )
 }
