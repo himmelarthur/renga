@@ -15,6 +15,7 @@ gql`
     mutation likeRenga($like: Boolean!, $rengaId: Int!) {
         likeRenga(liked: $like, rengaId: $rengaId) {
             id
+            likeCount
             status {
                 isLiked
             }
@@ -46,7 +47,7 @@ export default ({ className, userId, rengaId, isLiked }: LikeProps) => {
                     width={24}
                 ></Loader>
             ) : (
-                'Awesome! I like it'
+                '❤ Awesome! I like it'
             )}
         </button>
     )

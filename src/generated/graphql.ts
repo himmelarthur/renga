@@ -1294,7 +1294,7 @@ export type LikeRengaMutation = (
   { __typename?: 'Mutation' }
   & { likeRenga: (
     { __typename?: 'Renga' }
-    & Pick<Renga, 'id'>
+    & Pick<Renga, 'id' | 'likeCount'>
     & { status: (
       { __typename?: 'Status' }
       & Pick<Status, 'isLiked'>
@@ -1325,7 +1325,7 @@ export type GetRengaQuery = (
   { __typename?: 'Query' }
   & { renga?: Maybe<(
     { __typename?: 'Renga' }
-    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'deletedAt'>
+    & Pick<Renga, 'id' | 'emojis' | 'createdAt' | 'deletedAt' | 'likeCount'>
     & { status: (
       { __typename?: 'Status' }
       & Pick<Status, 'isResolved' | 'isMine' | 'maybeTitle' | 'maybeYear' | 'maybeGenres' | 'isLiked' | 'solversCount'>
@@ -1608,6 +1608,7 @@ export const LikeRengaDocument = gql`
     mutation likeRenga($like: Boolean!, $rengaId: Int!) {
   likeRenga(liked: $like, rengaId: $rengaId) {
     id
+    likeCount
     status {
       isLiked
     }
@@ -1679,6 +1680,7 @@ export const GetRengaDocument = gql`
     emojis
     createdAt
     deletedAt
+    likeCount
     status {
       isResolved
       isMine
