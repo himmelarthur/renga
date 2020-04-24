@@ -3,23 +3,23 @@ import logger from '../logging'
 // TODO ENGLISH
 const MOVIEDB_GENRES: { [i: number]: string } = {
     28: 'Action',
-    12: 'Aventure',
+    12: 'Adventure',
     16: 'Animation',
-    35: 'Comédie',
+    35: 'Comedy',
     80: 'Crime',
-    99: 'Documentaire',
-    18: 'Drame',
-    10751: 'Familial',
-    14: 'Fantastique',
-    36: 'Histoire',
-    27: 'Horreur',
-    10402: 'Musique',
-    9648: 'Mystère',
+    99: 'Documentary',
+    18: 'Drama',
+    10751: 'Family',
+    14: 'Fantasy',
+    36: 'History',
+    27: 'Horror',
+    10402: 'Music',
+    9648: 'Mystery',
     10749: 'Romance',
-    878: 'Science-Fiction',
-    10770: 'Téléfilm',
+    878: 'Science Fiction',
+    10770: 'TV Movie',
     53: 'Thriller',
-    10752: 'Guerre',
+    10752: 'War',
     37: 'Western',
 }
 
@@ -30,6 +30,6 @@ export const getMovieGenre = (id: number | string) => {
         return MOVIEDB_GENRES[iid]
     } catch {
         logger.warn(`${id} genre not found`)
-        return ''
+        return '🤷‍♂️'
     }
 }
