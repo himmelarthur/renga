@@ -51,8 +51,8 @@ export type User = {
     id: Scalars['Int']
     username: Scalars['String']
     score: Scalars['Int']
+    hintCount: Scalars['Int']
     solvedCount: Scalars['Int']
-    usedHintCount: Scalars['Int']
     postedCount: Scalars['Int']
 }
 
@@ -224,6 +224,7 @@ export type UserWhereInput = {
     partyId?: Maybe<StringFilter>
     score?: Maybe<IntFilter>
     rengas?: Maybe<RengaFilter>
+    hintCount?: Maybe<IntFilter>
     hint?: Maybe<HintFilter>
     submission?: Maybe<SubmissionFilter>
     AND?: Maybe<Array<UserWhereInput>>
@@ -407,6 +408,7 @@ export type UserCreateWithoutSubmissionInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username: Scalars['String']
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
     party: PartyCreateOneWithoutUsersInput
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     hint?: Maybe<HintCreateManyWithoutUserInput>
@@ -472,6 +474,7 @@ export type UserCreateWithoutRengasInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username: Scalars['String']
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
     party: PartyCreateOneWithoutUsersInput
     hint?: Maybe<HintCreateManyWithoutUserInput>
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
@@ -525,6 +528,7 @@ export type UserCreateWithoutPartyInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username: Scalars['String']
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     hint?: Maybe<HintCreateManyWithoutUserInput>
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
@@ -566,6 +570,7 @@ export type UserCreateWithoutHintInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username: Scalars['String']
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
     party: PartyCreateOneWithoutUsersInput
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
@@ -662,6 +667,7 @@ export type UserUpdateWithoutSubmissionDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username?: Maybe<Scalars['String']>
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     hint?: Maybe<HintUpdateManyWithoutUserInput>
@@ -749,6 +755,7 @@ export type UserUpdateWithoutRengasDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username?: Maybe<Scalars['String']>
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     hint?: Maybe<HintUpdateManyWithoutUserInput>
     submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
@@ -833,6 +840,7 @@ export type UserUpdateWithoutPartyDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username?: Maybe<Scalars['String']>
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     hint?: Maybe<HintUpdateManyWithoutUserInput>
     submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
@@ -903,6 +911,7 @@ export type UserUpdateWithoutHintDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username?: Maybe<Scalars['String']>
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
@@ -1071,6 +1080,7 @@ export type UserScalarWhereInput = {
     partyId?: Maybe<StringFilter>
     score?: Maybe<IntFilter>
     rengas?: Maybe<RengaFilter>
+    hintCount?: Maybe<IntFilter>
     hint?: Maybe<HintFilter>
     submission?: Maybe<SubmissionFilter>
     AND?: Maybe<Array<UserScalarWhereInput>>
@@ -1084,6 +1094,7 @@ export type UserUpdateManyDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     username?: Maybe<Scalars['String']>
     score?: Maybe<Scalars['Int']>
+    hintCount?: Maybe<Scalars['Int']>
 }
 
 export type UserUpsertWithWhereUniqueWithoutPartyInput = {
@@ -1198,7 +1209,7 @@ export type GetUserQuery = { __typename?: 'Query' } & {
     user?: Maybe<
         { __typename?: 'User' } & Pick<
             User,
-            'id' | 'postedCount' | 'solvedCount' | 'usedHintCount'
+            'id' | 'postedCount' | 'solvedCount' | 'hintCount'
         >
     >
 }
@@ -1507,7 +1518,7 @@ export const GetUserDocument = gql`
             id
             postedCount
             solvedCount
-            usedHintCount
+            hintCount
         }
     }
 `

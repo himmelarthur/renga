@@ -2,6 +2,7 @@ import * as React from 'react'
 import classNames from 'classnames'
 import gql from 'graphql-tag'
 import { useGetUserQuery } from '../generated/graphql'
+import ReactTooltip from 'react-tooltip'
 
 gql`
     query getUser($userId: Int!) {
@@ -9,7 +10,7 @@ gql`
             id
             postedCount
             solvedCount
-            usedHintCount
+            hintCount
         }
     }
 `
@@ -20,17 +21,22 @@ export interface PlayerStatsProps {
 }
 
 export default ({ className, userId }: PlayerStatsProps) => {
-    const { data } = useGetUserQuery({ variables: { userId } })
+    const { data } = useGetUserQuery({
+        pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
+        variables: { userId },
+    })
     return (
         <div
+            data-tip="You get 💡when one of your Rengas is solved"
             className={classNames(
                 className,
-                'flex flex-none flex-row space-x-2 px-4 py-2 bg-gray-100 rounded-full'
+                'flex flex-none flex-row space-x-2 px-4 py-2 bg-gray-100 rounded-full cursor-default'
             )}
         >
+            <ReactTooltip effect="solid" />
             <div className="flex flex-row items-baseline">
                 <span className="font-medium text-sm text-gray-800">
-                    🎬{data?.user?.postedCount ?? 0}
+                    🎬{data?.user?.postedCount ?? '•'}
                 </span>
                 <span className="ml-1 uppercase text-gray-600 text-xs">
                     created
@@ -38,7 +44,7 @@ export default ({ className, userId }: PlayerStatsProps) => {
             </div>
             <div className="flex flex-row items-baseline">
                 <span className="font-medium text-sm text-gray-800">
-                    🔍{data?.user?.solvedCount ?? 0}
+                    🔍{data?.user?.solvedCount ?? '•'}
                 </span>
                 <span className="ml-1 uppercase text-gray-600 text-xs">
                     solved
@@ -47,8 +53,7 @@ export default ({ className, userId }: PlayerStatsProps) => {
             <div className="flex flex-row items-baseline">
                 <span className="font-medium text-sm text-gray-800">
                     💡
-                    {(data?.user?.postedCount ?? 0) -
-                        (data?.user?.usedHintCount ?? 0)}
+                    {data?.user?.hintCount ?? '•'}
                 </span>
                 <span className="ml-1 uppercase text-gray-600 text-xs">
                     hints

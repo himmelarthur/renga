@@ -4,6 +4,7 @@ import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
 import { incrementHintCount, incrementScore } from '../services/User'
+import logger from '../logging'
 
 export const Mutation = mutationType({
     definition(t) {
@@ -22,11 +23,11 @@ export const Mutation = mutationType({
                 context: Context
             ) => {
                 const renga = await context.prisma.renga.findOne({
+                    select: { authorId: true, movie: true },
                     where: { id: rengaId },
                 })
                 if (!renga) throw Error('Renga not found')
-
-                const isValid = renga.movieId === movieDBId
+                const isValid = renga.movie.movieDBId === movieDBId
 
                 const auth = await context.user
                 if (!auth?.userId) throw Error('User should be authenticated')

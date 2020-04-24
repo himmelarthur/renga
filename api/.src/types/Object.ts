@@ -9,6 +9,7 @@ export const User = objectType({
         t.model.id()
         t.model.username()
         t.model.score()
+        t.model.hintCount()
         t.int('solvedCount', {
             async resolve(parent, args, ctx: Context) {
                 const auth = await ctx.user
@@ -18,17 +19,6 @@ export const User = objectType({
                         authorId: parent.id,
                         renga: { partyId: { equals: auth.partyId } },
                         valid: true,
-                    },
-                })
-            },
-        })
-        t.int('usedHintCount', {
-            async resolve(parent, args, ctx: Context) {
-                const auth = await ctx.user
-                if (!auth?.userId) return 0
-                return ctx.prisma.hint.count({
-                    where: {
-                        userId: auth.userId,
                     },
                 })
             },
@@ -69,7 +59,6 @@ export const Submission = objectType({
                 const user = await ctx.user
                 if (!user) throw new Error('User shoud be auth')
 
-                // TO FINISH
                 const usedHintTimeline =
                     (await ctx.prisma.hint.count({
                         where: {

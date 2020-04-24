@@ -106,7 +106,7 @@ const Party = ({ partyId, user }: Props) => {
                         partyId={partyId}
                     />
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center my-4 sm:my-0">
                     <PlayerStats userId={user.userId} />
                 </div>
                 <div className="flex sm:flex-row sm:justify-center flex-col sm:px-20 sm:mt-20 sm:items-start">
