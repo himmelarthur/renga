@@ -365,7 +365,6 @@ export type MutationUpdateOneRengaArgs = {
 
 
 export type MutationLikeRengaArgs = {
-  liked: Scalars['Boolean'];
   rengaId: Scalars['Int'];
 };
 
@@ -1285,7 +1284,6 @@ export type UseHintMutation = (
 );
 
 export type LikeRengaMutationVariables = {
-  like: Scalars['Boolean'];
   rengaId: Scalars['Int'];
 };
 
@@ -1605,8 +1603,8 @@ export type UseHintMutationHookResult = ReturnType<typeof useUseHintMutation>;
 export type UseHintMutationResult = ApolloReactCommon.MutationResult<UseHintMutation>;
 export type UseHintMutationOptions = ApolloReactCommon.BaseMutationOptions<UseHintMutation, UseHintMutationVariables>;
 export const LikeRengaDocument = gql`
-    mutation likeRenga($like: Boolean!, $rengaId: Int!) {
-  likeRenga(liked: $like, rengaId: $rengaId) {
+    mutation likeRenga($rengaId: Int!) {
+  likeRenga(rengaId: $rengaId) {
     id
     likeCount
     status {
@@ -1629,7 +1627,6 @@ export const LikeRengaDocument = gql`
  * @example
  * const [likeRengaMutation, { data, loading, error }] = useLikeRengaMutation({
  *   variables: {
- *      like: // value for 'like'
  *      rengaId: // value for 'rengaId'
  *   },
  * });
