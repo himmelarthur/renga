@@ -2,6 +2,7 @@ import { objectType } from '@nexus/schema'
 import { HintType } from '@prisma/client'
 import { Context } from '../context'
 import { getMovieGenre } from '../services/Movie'
+import logger from '../logging'
 
 export const User = objectType({
     name: 'User',
@@ -127,7 +128,6 @@ export const Renga = objectType({
                         where: {
                             rengaId: parent.id,
                             userId: user?.userId,
-                            type: 'YEAR',
                         },
                     })
                 ).map((x) => x.type)

@@ -23,11 +23,9 @@ const MOVIEDB_GENRES: { [i: number]: string } = {
     37: 'Western',
 }
 
-export const getMovieGenre = (id: number | string) => {
+export const getMovieGenre = (id: number) => {
     try {
-        // TODO CHANGE
-        const iid = Number(id)
-        return MOVIEDB_GENRES[iid]
+        return MOVIEDB_GENRES[id]
     } catch {
         logger.warn(`${id} genre not found`)
         return '🤷‍♂️'
