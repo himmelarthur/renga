@@ -128,7 +128,7 @@ export type Submission = {
     valid: Scalars['Boolean']
     author: User
     createdAt: Scalars['DateTime']
-    maybeTitle: Scalars['String']
+    maybeTitle?: Maybe<Scalars['String']>
 }
 
 export type Status = {
@@ -1133,14 +1133,6 @@ export type SubmissionUpsertWithWhereUniqueWithoutRengaInput = {
     where: SubmissionWhereUniqueInput
     update: SubmissionUpdateWithoutRengaDataInput
     create: SubmissionCreateWithoutRengaInput
-}
-
-export type Hint = {
-    __typename?: 'Hint'
-    id: Scalars['Int']
-    rengaId: Scalars['Int']
-    userId: Scalars['Int']
-    type: HintType
 }
 
 export type CreatePartyMutationVariables = {

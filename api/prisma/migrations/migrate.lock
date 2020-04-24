@@ -5,5 +5,6 @@
 
 20200412194056-initial-migration
 20200421191856-add-deletion-field
-20200424160746-change-genre
 20200424105630-addhint
+20200424160746-change-genre
+20200424180937-enum-genres-hint
