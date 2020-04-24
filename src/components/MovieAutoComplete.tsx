@@ -9,6 +9,7 @@ export interface MovieResult {
     title: string
     release_date: string
     popularity: number
+    genre_ids: number[]
 }
 
 interface Props {

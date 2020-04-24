@@ -20,6 +20,7 @@ gql`
         $movieId: Int!
         $movieTitle: String!
         $movieYear: Int!
+        $movieGenres: [Int!]
     ) {
         createOneRenga(
             data: {
@@ -31,6 +32,7 @@ gql`
                         movieDBId: $movieId
                         title: $movieTitle
                         year: $movieYear
+                        genres: { set: $movieGenres }
                     }
                 }
             }
@@ -84,6 +86,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 movieId: movie.id,
                 movieTitle: movie.title,
                 movieYear: parseInt(moment(movie.release_date).format('YYYY')),
+                movieGenres: movie.genre_ids,
                 partyId,
             },
             refetchQueries: [
