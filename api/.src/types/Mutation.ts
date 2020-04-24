@@ -3,6 +3,7 @@ import { HintType } from '@prisma/client'
 import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
+import { incrementHintCount, incrementScore } from '../services/User'
 
 export const Mutation = mutationType({
     definition(t) {
@@ -20,34 +21,27 @@ export const Mutation = mutationType({
                 { rengaId, movieDBId, movieTitle },
                 context: Context
             ) => {
-                const isValid =
-                    (await context.prisma.renga.count({
-                        where: {
-                            AND: [{ id: rengaId }, { movie: { movieDBId } }],
-                        },
-                    })) > 0
+                const renga = await context.prisma.renga.findOne({
+                    where: { id: rengaId },
+                })
+                if (!renga) throw Error('Renga not found')
+
+                const isValid = renga.movieId === movieDBId
 
                 const auth = await context.user
                 if (!auth?.userId) throw Error('User should be authenticated')
 
                 if (isValid) {
-                    const user = await context.prisma.user.findOne({
-                        where: { id: auth.userId },
-                    })
-                    if (!user) throw Error('User not found')
-
-                    const isFirstSolved =
-                        (await context.prisma.submission.count({
-                            where: { rengaId, valid: true },
-                        })) === 0
-
-                    const points = isFirstSolved ? 2 : 1
-
                     // FIXME should be transaction when available
                     // https://github.com/prisma/prisma-client-js/issues/349
-                    await context.prisma.user.update({
-                        where: { id: user.id },
-                        data: { score: user.score + points },
+
+                    await incrementScore(context.prisma, {
+                        userId: auth.userId,
+                        rengaId,
+                    })
+
+                    await incrementHintCount(context.prisma, {
+                        userId: renga.authorId,
                     })
                 }
 
@@ -98,22 +92,17 @@ export const Mutation = mutationType({
                 const auth = await ctx.user
                 if (!auth) throw new Error('No user')
 
-                // Problably want to change it to unlazy way
-                const hintCount = await ctx.prisma.renga.count({
-                    where: {
-                        authorId: auth.userId,
-                        deletedAt: null,
-                        partyId: auth.partyId,
-                    },
-                })
+                const hintCount =
+                    (
+                        await ctx.prisma.user.findOne({
+                            select: { id: true, hintCount: true },
+                            where: {
+                                id: auth.userId,
+                            },
+                        })
+                    )?.hintCount || 0
 
-                const usedHintCount = await ctx.prisma.hint.count({
-                    where: { userId: auth.userId },
-                })
-
-                const leftHintCount = hintCount - usedHintCount
-
-                if (leftHintCount > 0) {
+                if (hintCount > 0) {
                     await ctx.prisma.hint.create({
                         data: {
                             type: type as HintType,
