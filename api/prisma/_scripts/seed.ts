@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import logging from '../.src/logging'
+import logging from '../../.src/logging'
 import { truncate } from 'fs'
 const client = new PrismaClient()
 
@@ -51,7 +51,7 @@ async function main() {
         })
 
         await Promise.all(userPromises)
-        
+
         const submissionPromises = [1, 2, 3].map(async (index) => {
             const user = await userPromises[index]
             return client.submission.create({
