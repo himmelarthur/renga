@@ -1,5 +1,7 @@
 import { objectType } from '@nexus/schema'
+import { HintType } from '@prisma/client'
 import { Context } from '../context'
+import { getMovieGenre } from '../services/Movie'
 
 export const User = objectType({
     name: 'User',
@@ -16,6 +18,17 @@ export const User = objectType({
                         authorId: parent.id,
                         renga: { partyId: { equals: auth.partyId } },
                         valid: true,
+                    },
+                })
+            },
+        })
+        t.int('usedHintCount', {
+            async resolve(parent, args, ctx: Context) {
+                const auth = await ctx.user
+                if (!auth?.userId) return 0
+                return ctx.prisma.hint.count({
+                    where: {
+                        userId: auth.userId,
                     },
                 })
             },
@@ -54,6 +67,18 @@ export const Submission = objectType({
             async resolve(parent, args, ctx: Context) {
                 const user = await ctx.user
                 if (!user) return ''
+
+                // TO FINISH
+                // const usedHintTimeline =
+                //     (await ctx.prisma.hint.count({
+                //         where: {
+                //             userId: user.userId,
+                //             // @ts-ignore
+                //             rengaId: parent.rengaId,
+                //             type: HintType.TIMELINE,
+                //         },
+                //     })) > 0
+
                 const hasValidSubmission =
                     (await ctx.prisma.submission.count({
                         where: {
@@ -100,8 +125,19 @@ export const Renga = objectType({
                         },
                     })) > 0 && !!user?.userId
 
+                const hints = (
+                    await ctx.prisma.hint.findMany({
+                        select: { type: true },
+                        where: {
+                            rengaId: parent.id,
+                            userId: user?.userId,
+                            type: 'YEAR',
+                        },
+                    })
+                ).map((x) => x.type)
+
                 const movie = await ctx.prisma.movie.findOne({
-                    select: { title: true },
+                    select: { title: true, year: true, genres: true },
                     // @ts-ignore
                     where: { id: parent.movieId },
                 })
@@ -110,11 +146,21 @@ export const Renga = objectType({
 
                 // @ts-ignore
                 const maybeTitle = isResolved || isMine ? movie.title : ''
+                const maybeYear =
+                    isResolved || isMine || hints.includes('YEAR')
+                        ? movie.year
+                        : null
+                const maybeGenres =
+                    isResolved || isMine || hints.includes('GENRES')
+                        ? movie.genres.map((x) => getMovieGenre(x))
+                        : null
 
                 return {
                     isMine,
                     isResolved,
                     maybeTitle,
+                    maybeYear,
+                    maybeGenres,
                 }
             },
         })
@@ -127,6 +173,8 @@ export const status = objectType({
         t.string('maybeTitle')
         t.boolean('isMine')
         t.boolean('isResolved')
+        t.int('maybeYear', { nullable: true })
+        t.string('maybeGenres', { list: true, nullable: true })
     },
 })
 

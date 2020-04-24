@@ -1,4 +1,5 @@
 import { intArg, mutationType, stringArg } from '@nexus/schema'
+import { HintType } from '@prisma/client'
 import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
@@ -85,6 +86,45 @@ export const Mutation = mutationType({
                     },
                     appSecret()
                 )
+            },
+        })
+        t.field('useHint', {
+            type: 'Boolean',
+            args: {
+                rengaId: intArg({ required: true }),
+                type: stringArg({ required: true }),
+            },
+            resolve: async (_, { rengaId, type }, ctx: Context) => {
+                const auth = await ctx.user
+                if (!auth) throw new Error('No user')
+
+                // Problably want to change it to unlazy way
+                const hintCount = await ctx.prisma.renga.count({
+                    where: {
+                        authorId: auth.userId,
+                        deletedAt: null,
+                        partyId: auth.partyId,
+                    },
+                })
+
+                const usedHintCount = await ctx.prisma.hint.count({
+                    where: { userId: auth.userId },
+                })
+
+                const leftHintCount = hintCount - usedHintCount
+
+                if (leftHintCount > 0) {
+                    await ctx.prisma.hint.create({
+                        data: {
+                            type: type as HintType,
+                            user: { connect: { id: auth.userId } },
+                            renga: { connect: { id: rengaId } },
+                        },
+                    })
+                    return true
+                } else {
+                    return false
+                }
             },
         })
         t.field('joinParty', {

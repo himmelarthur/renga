@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -20,7 +20,7 @@ model Movie {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   movieDBId Int
-  genres    Int[]
+  genres    String[]
   title     String
   year      Int
   rengas    Renga[]
@@ -44,7 +44,6 @@ model Renga {
 enum HintType {
   TIMELINE
   YEAR
-  GENRES
 }
 
 model Hint {
