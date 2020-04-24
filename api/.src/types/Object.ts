@@ -64,22 +64,23 @@ export const Submission = objectType({
         t.model.author()
         t.model.createdAt()
         t.string('maybeTitle', {
+            nullable: true,
             async resolve(parent, args, ctx: Context) {
                 const user = await ctx.user
-                if (!user) return ''
+                if (!user) throw new Error('User shoud be auth')
 
                 // TO FINISH
-                // const usedHintTimeline =
-                //     (await ctx.prisma.hint.count({
-                //         where: {
-                //             userId: user.userId,
-                //             // @ts-ignore
-                //             rengaId: parent.rengaId,
-                //             type: HintType.TIMELINE,
-                //         },
-                //     })) > 0
+                const usedHintTimeline =
+                    (await ctx.prisma.hint.count({
+                        where: {
+                            userId: user.userId,
+                            // @ts-ignore
+                            rengaId: parent.rengaId,
+                            type: HintType.TIMELINE,
+                        },
+                    })) > 0
 
-                const hasValidSubmission =
+                const isResolved =
                     (await ctx.prisma.submission.count({
                         where: {
                             authorId: user?.userId,
@@ -90,7 +91,13 @@ export const Submission = objectType({
                     })) > 0
                 // @ts-ignore
                 const maybeTitle = parent.movieTitle
-                return hasValidSubmission || !parent.valid ? maybeTitle : ''
+                // @ts-ignore
+                const isMine = parent.authorId === user.userId
+                return isResolved ||
+                    (!parent.valid && usedHintTimeline) ||
+                    isMine
+                    ? maybeTitle
+                    : null
             },
         })
     },

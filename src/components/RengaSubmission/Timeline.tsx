@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import moment from 'moment'
 import * as React from 'react'
 import { GetRengaQuery } from '../../generated/graphql'
+import { useHint } from './Hints'
 
 export interface TimelineProps extends Pick<GetRengaQuery, 'renga'> {
     className?: string
@@ -19,9 +20,33 @@ export default ({ className, renga, userId }: TimelineProps) => {
         0,
         isCut ? 5 : submissions.length + 1
     )
+    const hasHiddenAttemptsTitle = submissions.some(
+        (x) => x.maybeTitle === null && !x.valid
+    )
+    const [spendHint] = useHint(userId, renga.id)
 
     return (
         <div className={classNames(className)}>
+            {hasHiddenAttemptsTitle && (
+                <div className="flex flex-row  mt-4 items-baseline space-x-2 text-sm ">
+                    <span className="text-gray-600">
+                        👀 All failed attempts
+                    </span>
+                    <button
+                        onClick={() =>
+                            spendHint({
+                                variables: {
+                                    rengaId: renga.id,
+                                    type: 'TIMELINE',
+                                },
+                            })
+                        }
+                        className="font-semibold uppercase rounded text-primary focus:outline-nonetext-sm"
+                    >
+                        see for 1 💡
+                    </button>
+                </div>
+            )}
             {submissionsCut?.map((s, index) => {
                 const isMe = s.author.id === userId
                 return (
@@ -47,7 +72,7 @@ export default ({ className, renga, userId }: TimelineProps) => {
                                 }
                             )}
                         ></div>
-                        <div className="text-gray-600 flex flex-col ml-4">
+                        <div className="text-gray-600 flex flex-col ml-4 w-full">
                             <div className="w-full flex flex-row no-wrap space-x-1">
                                 <span className="font-semibold text-gray-800 flex-shrink-0 truncate max-w-xs">
                                     {isMe ? 'You' : s.author.username}
@@ -55,9 +80,15 @@ export default ({ className, renga, userId }: TimelineProps) => {
                                 <span>{s.valid ? 'found' : 'tried'}</span>
                                 <span className="font-semibold text-gray-800 truncate w-3/5">
                                     {' '}
-                                    {isMe || status.isResolved || !s.valid
-                                        ? s.maybeTitle
-                                        : 'the movie'}
+                                    {s.valid && !status.isMine ? (
+                                        'the movie'
+                                    ) : s.maybeTitle ? (
+                                        s.maybeTitle
+                                    ) : (
+                                        <span className="blur-1 rounded-full">
+                                            'the movie'
+                                        </span>
+                                    )}
                                 </span>
                             </div>
                             <div className="text-sm">

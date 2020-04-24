@@ -13,15 +13,7 @@ gql`
     }
 `
 
-export interface HintsProps {
-    className?: string
-    rengaId: number
-    userId: number
-    year?: number | null
-    genres?: string[] | null
-}
-
-export default ({ className, year, genres, rengaId, userId }: HintsProps) => {
+export const useHint = (userId: number, rengaId: number) => {
     const [useHint] = useUseHintMutation({
         onCompleted: (data) => {
             if (!data.useHint) alert('No hint left')
@@ -31,40 +23,55 @@ export default ({ className, year, genres, rengaId, userId }: HintsProps) => {
             { query: GetRengaDocument, variables: { rengaId } },
         ],
     })
+    return [useHint]
+}
+
+export interface HintsProps {
+    className?: string
+    rengaId: number
+    userId: number
+    year?: number | null
+    genres?: string[] | null
+}
+
+export default ({ className, year, genres, rengaId, userId }: HintsProps) => {
+    const [spendHint] = useHint(userId, rengaId)
     return (
         <div
             className={classNames(
                 className,
-                'flex flex-col space-y-2 justify-between text-sm text-gray-700'
+                'flex flex-col space-y-2 justify-between text-sm text-gray-600'
             )}
         >
-            <div className="space-x-1">
-                <span>📅</span>
-                <span>Release date</span>
+            <div className="space-x-2">
+                <span>📅Release date</span>
                 {year ? (
-                    <span className="font-semibold">{year}</span>
+                    <span className="font-semibold text-gray-700">{year}</span>
                 ) : (
                     <button
                         onClick={() =>
-                            useHint({ variables: { rengaId, type: 'YEAR' } })
+                            spendHint({ variables: { rengaId, type: 'YEAR' } })
                         }
-                        className="px-4 py-2 focus:outline-none bg-primary rounded text-white"
+                        className="font-semibold uppercase rounded text-primary focus:outline-none"
                     >
                         See for 1 💡
                     </button>
                 )}
             </div>
-            <div className="space-x-1">
-                <span>🎫</span>
-                <span>Genres</span>
+            <div className="space-x-2">
+                <span>🎫Genres</span>
                 {genres ? (
-                    <span className="font-semibold">{genres.join(', ')}</span>
+                    <span className="font-semibold text-gray-700">
+                        {genres.join(', ')}
+                    </span>
                 ) : (
                     <button
                         onClick={() =>
-                            useHint({ variables: { rengaId, type: 'GENRES' } })
+                            spendHint({
+                                variables: { rengaId, type: 'GENRES' },
+                            })
                         }
-                        className="px-4 py-2 focus:outline-none bg-primary rounded text-white"
+                        className="font-semibold uppercase rounded text-primary focus:outline-none"
                     >
                         See for 1 💡
                     </button>
