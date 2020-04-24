@@ -96,7 +96,7 @@ const MovieAutocomplete: React.FC<Props> = ({
                     <div
                         ref={ref}
                         {...restContainerProps}
-                        className="bg-white border border-gray-300 overflow-auto absolute z-10 w-full"
+                        className="bg-white border border-gray-300 overflow-auto absolute z-20 w-full"
                         style={{ maxHeight: '300px' }}
                     >
                         {children}
