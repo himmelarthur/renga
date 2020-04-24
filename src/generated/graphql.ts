@@ -417,7 +417,7 @@ export type MovieCreateWithoutRengasInput = {
 }
 
 export type MovieCreategenresInput = {
-    set?: Maybe<Array<Scalars['String']>>
+    set?: Maybe<Array<Scalars['Int']>>
 }
 
 export type MovieWhereUniqueInput = {
@@ -628,7 +628,7 @@ export type MovieUpdateWithoutRengasDataInput = {
 }
 
 export type MovieUpdategenresInput = {
-    set?: Maybe<Array<Scalars['String']>>
+    set?: Maybe<Array<Scalars['Int']>>
 }
 
 export type MovieUpsertWithoutRengasInput = {
@@ -973,6 +973,7 @@ export type CreateRengaMutationVariables = {
     movieId: Scalars['Int']
     movieTitle: Scalars['String']
     movieYear: Scalars['Int']
+    movieGenres?: Maybe<Array<Scalars['Int']>>
 }
 
 export type CreateRengaMutation = { __typename?: 'Mutation' } & {
@@ -1263,6 +1264,7 @@ export const CreateRengaDocument = gql`
         $movieId: Int!
         $movieTitle: String!
         $movieYear: Int!
+        $movieGenres: [Int!]
     ) {
         createOneRenga(
             data: {
@@ -1274,6 +1276,7 @@ export const CreateRengaDocument = gql`
                         movieDBId: $movieId
                         title: $movieTitle
                         year: $movieYear
+                        genres: { set: $movieGenres }
                     }
                 }
             }
@@ -1303,6 +1306,7 @@ export const CreateRengaDocument = gql`
  *      movieId: // value for 'movieId'
  *      movieTitle: // value for 'movieTitle'
  *      movieYear: // value for 'movieYear'
+ *      movieGenres: // value for 'movieGenres'
  *   },
  * });
  */
