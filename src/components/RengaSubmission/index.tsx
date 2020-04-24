@@ -17,6 +17,7 @@ import { useDeleteRenga } from './hooks'
 import RengaSubmissionSkeleton from './Skeleton'
 import Timeline from './Timeline'
 import Hints from './Hints'
+import TextButton from '../TextButton'
 
 interface IRengaSubmissionProps {
     rengaId: number
@@ -163,10 +164,14 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     {data.renga?.emojis.map((e, index) => {
                         return (
                             <div
-                                className="mx-2 bg-white rounded-lg mx-2 sm:h-16 sm:w-16 h-12 w-12 text-3xl sm:text-5xl text-center"
+                                className="mx-2 bg-white rounded-lg mx-2 sm:h-16 sm:w-16 h-12 w-12 text-3xl sm:text-5xl text-center flex items-center justify-center"
                                 key={index}
                             >
-                                <Emoji native={false} emoji={e} size={42} />
+                                <Emoji
+                                    native={false}
+                                    emoji={e}
+                                    size={isMobile() ? 32 : 42}
+                                />
                             </div>
                         )
                     })}
