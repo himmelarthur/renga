@@ -6,7 +6,7 @@ export const useFetchLeaderboard = (partyId: string, userId?: number) => {
     const [userScore, setUserScore] = useState<number>()
     const { data, loading } = useGetPlayersQuery({
         errorPolicy: 'all', // not fan but when because userId can be null ...
-        variables: { partyId, userId },
+        variables: { partyId },
         pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
         onCompleted: (data) =>
             setUserScore(
