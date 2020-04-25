@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client'
 
 export const incrementHintCount = async (
     client: PrismaClient,
-    { userId }: { userId: number }
+    { userId, rengaId }: { userId: number; rengaId: number }
 ) => {
     const user = await client.user.findOne({
         select: { id: true, hintCount: true },
@@ -10,10 +10,19 @@ export const incrementHintCount = async (
     })
     if (!user) throw Error('User not found')
 
-    return client.user.update({
-        where: { id: userId },
-        data: { hintCount: user.hintCount + 1 },
-    })
+    const isFirstSolved =
+        (await client.submission.count({
+            where: { rengaId, valid: true },
+        })) === 0
+
+    if (isFirstSolved) {
+        return client.user.update({
+            where: { id: userId },
+            data: { hintCount: user.hintCount + 1 },
+        })
+    } else {
+        return user
+    }
 }
 
 export const incrementScore = async (
