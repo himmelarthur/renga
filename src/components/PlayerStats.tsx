@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import gql from 'graphql-tag'
 import { useGetUserQuery } from '../generated/graphql'
 import ReactTooltip from 'react-tooltip'
+import { track } from '../utils/tracking'
 
 gql`
     query getUser($userId: Int!) {
@@ -33,7 +34,10 @@ export default ({ className, userId }: PlayerStatsProps) => {
                 'flex flex-none flex-row space-x-2 px-4 py-2 bg-gray-100 rounded-full cursor-default'
             )}
         >
-            <ReactTooltip effect="solid" />
+            <ReactTooltip
+                effect="solid"
+                afterShow={() => track('Shown hint tooltip')}
+            />
             <div className="flex flex-row items-baseline">
                 <span className="font-medium text-sm text-gray-800">
                     🎬{data?.user?.postedCount ?? '•'}
