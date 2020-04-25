@@ -80,7 +80,7 @@ export default ({ className, renga, userId }: TimelineProps) => {
                                 <span>{s.valid ? 'found' : 'tried'}</span>
                                 <span className="font-semibold text-gray-800 truncate w-3/5">
                                     {' '}
-                                    {s.valid && !status.isMine ? (
+                                    {s.valid ? (
                                         'the movie'
                                     ) : s.maybeTitle ? (
                                         s.maybeTitle
