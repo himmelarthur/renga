@@ -1,6 +1,5 @@
 import logger from '../logging'
 
-// TODO ENGLISH
 const MOVIEDB_GENRES: { [i: number]: string } = {
     28: 'Action',
     12: 'Adventure',
