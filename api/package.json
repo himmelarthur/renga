@@ -11,7 +11,7 @@
         "postinstall": "npm -s run generate",
         "dev": "ts-node-dev --no-notify --respawn --transpileOnly server",
         "seed": "ts-node prisma/_scripts/seed",
-        "foo": "ts-node prisma/_scripts/genres_to_movie"
+        "genres": "ts-node prisma/_scripts/genres_to_movie"
     },
     "dependencies": {
         "@nexus/schema": "^0.13.1",

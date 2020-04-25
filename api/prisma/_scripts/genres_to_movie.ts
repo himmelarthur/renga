@@ -16,10 +16,16 @@ async function main() {
     try {
         logging.info('Script start')
         const movies = await client.movie.findMany({
-            select: { movieDBId: true },
+            select: { movieDBId: true, genres: true },
         })
         logger.info(movies)
-        const movieDBIds = Array.from(new Set(movies.map((x) => x.movieDBId)))
+        const movieDBIds = Array.from(
+            new Set(
+                movies
+                    .filter((x) => x.genres.length === 0)
+                    .map((x) => x.movieDBId)
+            )
+        )
 
         const promises = movieDBIds.map(async (e) => {
             try {
