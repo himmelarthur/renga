@@ -148,8 +148,8 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                         emoji={'male-artist'}
                     ></Emoji>{' '}
                     <span className="flex-shrink-0">Posted by </span>
-                    <span className="font-medium truncate">
-                        {renga?.author.username}
+                    <span className="font-medium truncate text-gray-700">
+                        {renga.status.isMine ? 'You' : renga.author.username}
                     </span>{' '}
                     <span className="flex-shrink-0">
                         {moment(renga?.createdAt).fromNow()}
