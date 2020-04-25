@@ -36,8 +36,7 @@ export const Mutation = mutationType({
                     // FIXME should be transaction when available
                     // https://github.com/prisma/prisma-client-js/issues/349
 
-                    await (context.prisma,
-                    {
+                    await incrementScore(context.prisma, {
                         userId: auth.userId,
                         rengaId,
                     })
