@@ -93,17 +93,16 @@ export const Mutation = mutationType({
                 const auth = await ctx.user
                 if (!auth) throw new Error('No user')
 
-                const hintCount =
-                    (
-                        await ctx.prisma.user.findOne({
-                            select: { id: true, hintCount: true },
-                            where: {
-                                id: auth.userId,
-                            },
-                        })
-                    )?.hintCount || 0
+                const user = await ctx.prisma.user.findOne({
+                    select: { id: true, hintCount: true },
+                    where: {
+                        id: auth.userId,
+                    },
+                })
 
-                if (hintCount > 0) {
+                if (!user) throw new Error('No user')
+
+                if (user.hintCount > 0) {
                     await ctx.prisma.hint.create({
                         data: {
                             type: type as HintType,
@@ -111,6 +110,16 @@ export const Mutation = mutationType({
                             renga: { connect: { id: rengaId } },
                         },
                     })
+
+                    await ctx.prisma.user.update({
+                        where: {
+                            id: auth.userId,
+                        },
+                        data: {
+                            hintCount: user.hintCount - 1,
+                        },
+                    })
+
                     return true
                 } else {
                     return false
