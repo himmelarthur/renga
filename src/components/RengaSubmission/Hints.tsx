@@ -6,6 +6,7 @@ import {
     GetUserDocument,
     GetRengaDocument,
 } from '../../generated/graphql'
+import { track } from '../../utils/tracking'
 
 gql`
     mutation useHint($rengaId: Int!, $type: String!) {
@@ -16,7 +17,10 @@ gql`
 export const useHint = (userId: number, rengaId: number) => {
     const [useHint] = useUseHintMutation({
         onCompleted: (data) => {
-            if (!data.useHint) alert('No hint left')
+            if (!data.useHint) {
+                track('No hint left message', { rengaId })
+                alert('No hint left! You get hints when your rengas are solved')
+            }
         },
         refetchQueries: [
             { query: GetUserDocument, variables: { userId } },
@@ -49,9 +53,13 @@ export default ({ className, year, genres, rengaId, userId }: HintsProps) => {
                     <span className="font-semibold text-gray-700">{year}</span>
                 ) : (
                     <button
-                        onClick={() =>
+                        onClick={() => {
+                            track('Clicked use hint', {
+                                rengaId,
+                                type: 'YEAR',
+                            })
                             spendHint({ variables: { rengaId, type: 'YEAR' } })
-                        }
+                        }}
                         className="font-semibold uppercase rounded text-primary focus:outline-none"
                     >
                         See for 1 💡
@@ -66,11 +74,15 @@ export default ({ className, year, genres, rengaId, userId }: HintsProps) => {
                     </span>
                 ) : (
                     <button
-                        onClick={() =>
+                        onClick={() => {
+                            track('Clicked use hint', {
+                                rengaId,
+                                type: 'GENRES',
+                            })
                             spendHint({
                                 variables: { rengaId, type: 'GENRES' },
                             })
-                        }
+                        }}
                         className="font-semibold uppercase rounded text-primary focus:outline-none"
                     >
                         See for 1 💡

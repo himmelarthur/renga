@@ -3,6 +3,7 @@ import moment from 'moment'
 import * as React from 'react'
 import { GetRengaQuery } from '../../generated/graphql'
 import { useHint } from './Hints'
+import { track } from '../../utils/tracking'
 
 export interface TimelineProps extends Pick<GetRengaQuery, 'renga'> {
     className?: string
@@ -33,14 +34,18 @@ export default ({ className, renga, userId }: TimelineProps) => {
                         👀 All failed attempts
                     </span>
                     <button
-                        onClick={() =>
+                        onClick={() => {
+                            track('Clicked use hint', {
+                                rengaId: renga.id,
+                                type: 'TIMELINE',
+                            })
                             spendHint({
                                 variables: {
                                     rengaId: renga.id,
                                     type: 'TIMELINE',
                                 },
                             })
-                        }
+                        }}
                         className="font-semibold uppercase rounded text-primary focus:outline-nonetext-sm"
                     >
                         see for 1 💡
@@ -79,9 +84,9 @@ export default ({ className, renga, userId }: TimelineProps) => {
                                 </span>{' '}
                                 <span>{s.valid ? 'found' : 'tried'}</span>
                                 <span className="font-semibold text-gray-800 truncate w-3/5">
-                                    {renga.status.isMine ||
+                                    {status.isMine ||
                                     isMySubmission ||
-                                    renga.status.isResolved ? (
+                                    status.isResolved ? (
                                         s.maybeTitle
                                     ) : // It's not my renga
                                     s.valid ? (
