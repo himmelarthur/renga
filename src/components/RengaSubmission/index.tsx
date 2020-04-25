@@ -132,11 +132,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
         return () => document.removeEventListener('keydown', enterListener)
     }, [handleSubmission])
 
-    if (loading || !data) return <RengaSubmissionSkeleton />
+    if (loading || !data || !data.renga) return <RengaSubmissionSkeleton />
 
     const { renga } = data
-
-    if (!renga) return <div></div>
 
     return (
         <div className="rounded p-4 sm:p-6 bg-gray-100 flex flex-col w-full mb-4">
