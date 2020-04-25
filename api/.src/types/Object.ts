@@ -79,13 +79,24 @@ export const Submission = objectType({
                             valid: true,
                         },
                     })) > 0
+
+                const isMyRenga =
+                    (await ctx.prisma.renga.count({
+                        where: {
+                            authorId: user?.userId,
+                            // @ts-ignore
+                            id: parent.rengaId,
+                        },
+                    })) > 0
+
                 // @ts-ignore
                 const maybeTitle = parent.movieTitle
                 // @ts-ignore
-                const isMine = parent.authorId === user.userId
+                const isMySubmission = parent.authorId === user.userId
                 return isResolved ||
+                    isMyRenga ||
                     (!parent.valid && usedHintTimeline) ||
-                    isMine
+                    isMySubmission
                     ? maybeTitle
                     : null
             },

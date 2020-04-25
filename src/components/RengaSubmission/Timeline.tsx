@@ -48,7 +48,7 @@ export default ({ className, renga, userId }: TimelineProps) => {
                 </div>
             )}
             {submissionsCut?.map((s, index) => {
-                const isMe = s.author.id === userId
+                const isMySubmission = s.author.id === userId
                 return (
                     <div
                         className="flex my-4 items-center relative w-full"
@@ -75,16 +75,22 @@ export default ({ className, renga, userId }: TimelineProps) => {
                         <div className="text-gray-600 flex flex-col ml-4 w-full">
                             <div className="w-full flex flex-row no-wrap space-x-1">
                                 <span className="font-semibold text-gray-800 flex-shrink-0 truncate max-w-xs">
-                                    {isMe ? 'You' : s.author.username}
+                                    {isMySubmission ? 'You' : s.author.username}
                                 </span>{' '}
                                 <span>{s.valid ? 'found' : 'tried'}</span>
                                 <span className="font-semibold text-gray-800 truncate w-3/5">
-                                    {' '}
-                                    {s.valid ? (
+                                    {renga.status.isMine ||
+                                    isMySubmission ||
+                                    renga.status.isResolved ? (
+                                        s.maybeTitle
+                                    ) : // It's not my renga
+                                    s.valid ? (
                                         'the movie'
                                     ) : s.maybeTitle ? (
+                                        // Display title if hint used
                                         s.maybeTitle
                                     ) : (
+                                        // Display blur title if hint not used
                                         <span className="blur-1 rounded-full">
                                             'the movie'
                                         </span>
