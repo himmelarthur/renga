@@ -36,24 +36,6 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
                     <h3 className="text-gray-800 text-2xl font-bold">
                         Leaderboard
                     </h3>
-                    <div className="flex flex-row sm:mt-0 mt-2">
-                        <div className="flex flex-row items-baseline">
-                            <span className="font-medium text-sm text-gray-800">
-                                🎬{data.user?.postedCount ?? 0}
-                            </span>
-                            <span className="ml-1 uppercase text-gray-600 text-xs">
-                                created
-                            </span>
-                        </div>
-                        <div className="flex flex-row items-baseline ml-2">
-                            <span className="font-medium text-sm text-gray-800">
-                                🔍{data.user?.solvedCount ?? 0}
-                            </span>
-                            <span className="ml-1 uppercase text-gray-600 text-xs">
-                                solved
-                            </span>
-                        </div>
-                    </div>
                 </div>
                 <div className="w-full text-gray-600 my-2">
                     {users.map((player, index) => {

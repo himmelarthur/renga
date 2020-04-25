@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import logging from '../.src/logging'
+import logging from '../../.src/logging'
 import { truncate } from 'fs'
 const client = new PrismaClient()
 
@@ -28,6 +28,7 @@ async function main() {
                                         movieDBId: index * 10,
                                         title: `Film-${index}`,
                                         year: 2014,
+                                        genres: { set: [14, 36] },
                                     },
                                 },
                                 party: { connect: { id: 'party-1' } },
@@ -39,6 +40,7 @@ async function main() {
                                         movieDBId: index * 10 + 1,
                                         title: `Film-${index}`,
                                         year: 208,
+                                        genres: { set: [80, 99] },
                                     },
                                 },
                                 party: { connect: { id: 'party-1' } },
@@ -51,7 +53,7 @@ async function main() {
         })
 
         await Promise.all(userPromises)
-        
+
         const submissionPromises = [1, 2, 3].map(async (index) => {
             const user = await userPromises[index]
             return client.submission.create({

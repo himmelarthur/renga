@@ -1,0 +1,170 @@
+{
+    "version": "0.3.14-fixed",
+    "steps": [
+        {
+            "tag": "CreateEnum",
+            "enum": "HintType",
+            "values": ["TIMELINE", "YEAR"]
+        },
+        {
+            "tag": "CreateModel",
+            "model": "Hint"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Hint",
+            "field": "id",
+            "type": "Int",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "id"
+                },
+                "directive": "default"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "id"
+                },
+                "directive": "default"
+            },
+            "argument": "",
+            "value": "autoincrement()"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "id"
+                },
+                "directive": "id"
+            }
+        },
+        {
+            "tag": "CreateField",
+            "model": "Hint",
+            "field": "user",
+            "type": "User",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "user"
+                },
+                "directive": "relation"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "user"
+                },
+                "directive": "relation"
+            },
+            "argument": "fields",
+            "value": "[userId]"
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "user"
+                },
+                "directive": "relation"
+            },
+            "argument": "references",
+            "value": "[id]"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Hint",
+            "field": "userId",
+            "type": "Int",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Hint",
+            "field": "renga",
+            "type": "Renga",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "renga"
+                },
+                "directive": "relation"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "renga"
+                },
+                "directive": "relation"
+            },
+            "argument": "fields",
+            "value": "[rengaId]"
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Hint",
+                    "field": "renga"
+                },
+                "directive": "relation"
+            },
+            "argument": "references",
+            "value": "[id]"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Hint",
+            "field": "rengaId",
+            "type": "Int",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Hint",
+            "field": "type",
+            "type": "HintType",
+            "arity": "Required"
+        }
+    ]
+}

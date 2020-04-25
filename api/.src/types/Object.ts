@@ -1,5 +1,8 @@
 import { objectType } from '@nexus/schema'
+import { HintType } from '@prisma/client'
 import { Context } from '../context'
+import { getMovieGenre } from '../services/Movie'
+import logger from '../logging'
 
 export const User = objectType({
     name: 'User',
@@ -7,6 +10,7 @@ export const User = objectType({
         t.model.id()
         t.model.username()
         t.model.score()
+        t.model.hintCount()
         t.int('solvedCount', {
             async resolve(parent, args, ctx: Context) {
                 const auth = await ctx.user
@@ -51,10 +55,22 @@ export const Submission = objectType({
         t.model.author()
         t.model.createdAt()
         t.string('maybeTitle', {
+            nullable: true,
             async resolve(parent, args, ctx: Context) {
                 const user = await ctx.user
-                if (!user) return ''
-                const hasValidSubmission =
+                if (!user) throw new Error('User shoud be auth')
+
+                const usedHintTimeline =
+                    (await ctx.prisma.hint.count({
+                        where: {
+                            userId: user.userId,
+                            // @ts-ignore
+                            rengaId: parent.rengaId,
+                            type: HintType.TIMELINE,
+                        },
+                    })) > 0
+
+                const isResolved =
                     (await ctx.prisma.submission.count({
                         where: {
                             authorId: user?.userId,
@@ -63,9 +79,26 @@ export const Submission = objectType({
                             valid: true,
                         },
                     })) > 0
+
+                const isMyRenga =
+                    (await ctx.prisma.renga.count({
+                        where: {
+                            authorId: user?.userId,
+                            // @ts-ignore
+                            id: parent.rengaId,
+                        },
+                    })) > 0
+
                 // @ts-ignore
                 const maybeTitle = parent.movieTitle
-                return hasValidSubmission || !parent.valid ? maybeTitle : ''
+                // @ts-ignore
+                const isMySubmission = parent.authorId === user.userId
+                return isResolved ||
+                    isMyRenga ||
+                    (!parent.valid && usedHintTimeline) ||
+                    isMySubmission
+                    ? maybeTitle
+                    : null
             },
         })
     },
@@ -100,8 +133,18 @@ export const Renga = objectType({
                         },
                     })) > 0 && !!user?.userId
 
+                const hints = (
+                    await ctx.prisma.hint.findMany({
+                        select: { type: true },
+                        where: {
+                            rengaId: parent.id,
+                            userId: user?.userId,
+                        },
+                    })
+                ).map((x) => x.type)
+
                 const movie = await ctx.prisma.movie.findOne({
-                    select: { title: true },
+                    select: { title: true, year: true, genres: true },
                     // @ts-ignore
                     where: { id: parent.movieId },
                 })
@@ -110,11 +153,21 @@ export const Renga = objectType({
 
                 // @ts-ignore
                 const maybeTitle = isResolved || isMine ? movie.title : ''
+                const maybeYear =
+                    isResolved || isMine || hints.includes('YEAR')
+                        ? movie.year
+                        : null
+                const maybeGenres =
+                    isResolved || isMine || hints.includes('GENRES')
+                        ? movie.genres.map((x) => getMovieGenre(x))
+                        : null
 
                 return {
                     isMine,
                     isResolved,
                     maybeTitle,
+                    maybeYear,
+                    maybeGenres,
                 }
             },
         })
@@ -127,6 +180,8 @@ export const status = objectType({
         t.string('maybeTitle')
         t.boolean('isMine')
         t.boolean('isResolved')
+        t.int('maybeYear', { nullable: true })
+        t.string('maybeGenres', { list: true, nullable: true })
     },
 })
 

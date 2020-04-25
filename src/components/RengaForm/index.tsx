@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import {
     useCreateRengaMutation,
     GetRengasDocument,
+    GetUserDocument,
 } from '../../generated/graphql'
 import EmojiSelector, { TBricks as TEmojis } from './EmojiSelector'
 import classNames from 'classnames'
@@ -91,6 +92,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
             },
             refetchQueries: [
                 { query: GetRengasDocument, variables: { partyId } },
+                { query: GetUserDocument, variables: { userId } },
             ],
         })
         track('Created Renga', {

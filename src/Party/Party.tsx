@@ -8,6 +8,7 @@ import { useLocation, useHistory } from 'react-router-dom'
 import Rengas from './Rengas/Rengas'
 import { track } from '../utils/tracking'
 import { User } from '../AuthContext'
+import PlayerStats from '../components/PlayerStats'
 
 type Props = {
     partyId: string
@@ -82,7 +83,7 @@ const Party = ({ partyId, user }: Props) => {
             ></canvas>
             <div className="sm:p-10 p-4">
                 <div className="mb-4">
-                    <div className="flex flex-row items-start items-center justify-between">
+                    <div className="flex flex-row items-center justify-between">
                         <h1 className="text-primary font-logo text-3xl">
                             Renga
                         </h1>
@@ -104,6 +105,9 @@ const Party = ({ partyId, user }: Props) => {
                         className="sm:hidden text-xs max-w-full mt-3"
                         partyId={partyId}
                     />
+                </div>
+                <div className="flex justify-center my-4 sm:my-0">
+                    <PlayerStats userId={user.userId} />
                 </div>
                 <div className="flex sm:flex-row sm:justify-center flex-col sm:px-20 sm:mt-20 sm:items-start">
                     <div className="sm:mx-4 sm:max-w-screen-md sm:w-full">

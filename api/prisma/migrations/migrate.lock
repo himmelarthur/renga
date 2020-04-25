@@ -6,3 +6,7 @@
 20200412194056-initial-migration
 20200421191856-add-deletion-field
 20200424160746-change-genre
+20200424160747-addhint
+20200424180937-enum-genres-hint
+20200424193647-backtohint-count
+20200424195917-add-date-to-hint

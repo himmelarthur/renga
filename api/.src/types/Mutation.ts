@@ -1,7 +1,10 @@
 import { intArg, mutationType, stringArg } from '@nexus/schema'
+import { HintType } from '@prisma/client'
 import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
+import { incrementHintCount, incrementScore } from '../services/User'
+import logger from '../logging'
 
 export const Mutation = mutationType({
     definition(t) {
@@ -19,34 +22,27 @@ export const Mutation = mutationType({
                 { rengaId, movieDBId, movieTitle },
                 context: Context
             ) => {
-                const isValid =
-                    (await context.prisma.renga.count({
-                        where: {
-                            AND: [{ id: rengaId }, { movie: { movieDBId } }],
-                        },
-                    })) > 0
+                const renga = await context.prisma.renga.findOne({
+                    select: { authorId: true, movie: true },
+                    where: { id: rengaId },
+                })
+                if (!renga) throw Error('Renga not found')
+                const isValid = renga.movie.movieDBId === movieDBId
 
                 const auth = await context.user
                 if (!auth?.userId) throw Error('User should be authenticated')
 
                 if (isValid) {
-                    const user = await context.prisma.user.findOne({
-                        where: { id: auth.userId },
-                    })
-                    if (!user) throw Error('User not found')
-
-                    const isFirstSolved =
-                        (await context.prisma.submission.count({
-                            where: { rengaId, valid: true },
-                        })) === 0
-
-                    const points = isFirstSolved ? 2 : 1
-
                     // FIXME should be transaction when available
                     // https://github.com/prisma/prisma-client-js/issues/349
-                    await context.prisma.user.update({
-                        where: { id: user.id },
-                        data: { score: user.score + points },
+
+                    await incrementScore(context.prisma, {
+                        userId: auth.userId,
+                        rengaId,
+                    })
+
+                    await incrementHintCount(context.prisma, {
+                        userId: renga.authorId,
                     })
                 }
 
@@ -85,6 +81,49 @@ export const Mutation = mutationType({
                     },
                     appSecret()
                 )
+            },
+        })
+        t.field('useHint', {
+            type: 'Boolean',
+            args: {
+                rengaId: intArg({ required: true }),
+                type: stringArg({ required: true }),
+            },
+            resolve: async (_, { rengaId, type }, ctx: Context) => {
+                const auth = await ctx.user
+                if (!auth) throw new Error('No user')
+
+                const user = await ctx.prisma.user.findOne({
+                    select: { id: true, hintCount: true },
+                    where: {
+                        id: auth.userId,
+                    },
+                })
+
+                if (!user) throw new Error('No user')
+
+                if (user.hintCount > 0) {
+                    await ctx.prisma.hint.create({
+                        data: {
+                            type: type as HintType,
+                            user: { connect: { id: auth.userId } },
+                            renga: { connect: { id: rengaId } },
+                        },
+                    })
+
+                    await ctx.prisma.user.update({
+                        where: {
+                            id: auth.userId,
+                        },
+                        data: {
+                            hintCount: user.hintCount - 1,
+                        },
+                    })
+
+                    return true
+                } else {
+                    return false
+                }
             },
         })
         t.field('joinParty', {
