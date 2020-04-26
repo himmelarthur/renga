@@ -12,6 +12,7 @@ gql`
             postedCount
             solvedCount
             hintCount
+            likedRengaCount
         }
     }
 `
@@ -61,6 +62,15 @@ export default ({ className, userId }: PlayerStatsProps) => {
                 </span>
                 <span className="ml-1 uppercase text-gray-600 text-xs">
                     hints
+                </span>
+            </div>
+            <div className="flex flex-row items-baseline">
+                <span className="font-medium text-sm text-gray-800">
+                    ❤️
+                    {data?.user?.likedRengaCount ?? '•'}
+                </span>
+                <span className="ml-1 uppercase text-gray-600 text-xs">
+                    likes
                 </span>
             </div>
         </div>
