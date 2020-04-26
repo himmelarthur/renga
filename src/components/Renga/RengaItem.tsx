@@ -14,6 +14,7 @@ const RengaItem = ({ renga }: Props) => {
                 }
             )}
         >
+            <div>{renga.id}</div>
             <div className="flex flex-row justify-center space-x-2">
                 {renga.emojis.map((emoji, index) => (
                     <div key={index.toString()}>

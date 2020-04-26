@@ -1,38 +1,50 @@
-import { useAnimation } from 'framer-motion'
-import { useState, useLayoutEffect } from 'react'
+import { useState } from 'react'
 import { useGetRengasQuery } from '../../generated/graphql'
 
-export const useFetchRengas = (partyId: string) => {
-    const animationControl = useAnimation()
-    const [rengaIds, setRengaIds] = useState<number[]>()
-    const { loading, data } = useGetRengasQuery({
-        variables: { partyId },
-        pollInterval: Number(process.env.REACT_APP_POLL_INTERVAL) || undefined,
-        onCompleted: (data) => setRengaIds(data.rengas.map(({ id }) => id)),
+const POLLING_INTERVAL = Number(process.env.REACT_APP_POLL_INTERVAL) || 0
+
+export const useFetchRengas = (partyId: string, pageCount: number = 20) => {
+    const [page, setPage] = useState(0)
+    const [reachedEnd, setReachedEnd] = useState(false)
+    const {
+        loading,
+        data,
+        fetchMore,
+        stopPolling,
+        startPolling,
+        networkStatus,
+    } = useGetRengasQuery({
+        variables: { partyId, first: pageCount, skip: 0 },
+        fetchPolicy: 'cache-and-network',
+        pollInterval: POLLING_INTERVAL,
     })
 
-    useLayoutEffect(() => {
-        if (!data || !rengaIds?.length) {
-            // Rengas not fetched yet
-            return
-        }
-        const newRengaIds = data.rengas
-            .filter(({ id }) => !rengaIds.includes(id))
-            .map(({ id }) => id)
-        if (!newRengaIds.length) {
-            // No new rengas
-            return
-        }
-        animationControl.start((rengaId) =>
-            newRengaIds.includes(rengaId)
-                ? {
-                      scale: [1, 1.3, 1],
-                      transition: { delay: 1, duration: 0.5 },
-                  }
-                : {}
-        )
-        setRengaIds(data.rengas.map(({ id }) => id))
-    }, [data, rengaIds, animationControl])
-
-    return { animationControl, loading, data }
+    return {
+        loading,
+        data,
+        page,
+        networkStatus,
+        fetchMore: () => {
+            if (reachedEnd) return
+            stopPolling()
+            fetchMore({
+                variables: {
+                    skip: (page + 1) * pageCount,
+                },
+                updateQuery: (prev, { fetchMoreResult }) => {
+                    if (!fetchMoreResult) return prev
+                    if (fetchMoreResult.rengas.length === 0) {
+                        setReachedEnd(true)
+                        return prev
+                    }
+                    return {
+                        ...prev,
+                        rengas: [...prev.rengas, ...fetchMoreResult?.rengas],
+                    }
+                },
+            })
+            setPage(page + 1)
+            startPolling(POLLING_INTERVAL)
+        },
+    }
 }
