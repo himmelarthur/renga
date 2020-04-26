@@ -1,8 +1,9 @@
 import moment from 'moment'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 import Autosuggest from 'react-autosuggest'
 import classNames from 'classnames'
 import throttle from 'lodash.throttle'
+import TextButton from './TextButton'
 
 export interface MovieResult {
     id: number
@@ -67,22 +68,26 @@ const MovieAutocomplete: React.FC<Props> = ({
                     // @ts-ignore
                     <input
                         {...props}
+                        autoFocus
                         style={{ height: 54 }}
                         className="appearance-none p-6 border-2 rounded w-full text-xl font-bold"
                     />
                 ) : (
                     <div
-                        className="p-3 border-2 rounded w-full text-xl font-bold relative flex items-center mr-16 bg-white"
+                        className="p-3 border-2 rounded w-full sm:text-xl text-base font-bold relative flex items-center bg-white pr-20"
                         style={{ height: 54 }}
                     >
-                        {movie.title} (
-                        {moment(movie.release_date).format('YYYY')})
-                        <div
-                            onClick={() => onMovieChange?.(undefined)}
-                            className="uppercase text-red-500 absolute right-0 cursor-pointer text-sm mr-2"
-                        >
-                            change
+                        <div className="max-w-full overflow-hidden truncate">
+                            {movie.title} (
+                            {moment(movie.release_date).format('YYYY')})
                         </div>
+                        <TextButton
+                            onClick={() => onMovieChange?.(undefined)}
+                            color="red"
+                            className="mr-4 text-sm absolute right-0"
+                        >
+                            Change
+                        </TextButton>
                     </div>
                 )
             }

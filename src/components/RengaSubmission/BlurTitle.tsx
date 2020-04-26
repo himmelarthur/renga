@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import classNames from 'classnames'
+import TextButton from '../TextButton'
 
 export interface BlurTitleProps {
     className?: string
@@ -24,12 +25,13 @@ export default ({ className, title, rengaId }: BlurTitleProps) => {
             >
                 {title}
             </div>
-            <div
-                className="text-xs uppercase text-teal-700 cursor-pointer "
+            <TextButton
                 onClick={() => setIsShown(!isShown)}
+                color="teal"
+                className="text-xs mt-2"
             >
                 {isShown ? 'hide' : 'show'}
-            </div>
+            </TextButton>
         </div>
     )
 }
