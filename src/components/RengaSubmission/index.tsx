@@ -138,9 +138,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
     const { renga } = data
 
     return (
-        <div className="rounded p-4 sm:p-6 bg-gray-100 flex flex-col w-full mb-4">
+        <div className="rounded bg-gray-100 flex flex-col w-full mb-4">
             <div className="relative">
-                <div className="text-gray-600 text-sm relative flex flex-row space-x-1 items-baseline">
+                <div className="text-gray-600 text-sm relative flex flex-row space-x-1 items-baseline p-4 sm:p-6">
                     <Emoji
                         size={16}
                         native={isMobile()}
@@ -154,7 +154,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                         {moment(renga?.createdAt).fromNow()}
                     </span>
                     <div
-                        className="absolute top-0 -mt-2 text-gray-600 hover:text-gray-700 cursor-pointer text-xl right-0"
+                        className="absolute top-0 p-4 text-gray-600 hover:text-gray-700 cursor-pointer text-xl right-0"
                         onClick={onClose}
                     >
                         ✕
@@ -177,7 +177,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     })}
                 </div>
                 {(renga?.status.isResolved || renga?.status.isMine) && (
-                    <div className="pb-8 mb-2 flex flex-row justify-center items-end w-full">
+                    <div className="pb-8 flex flex-row justify-center items-end w-full">
                         <BlurTitle
                             title={renga.status.maybeTitle}
                             rengaId={rengaId}
@@ -185,23 +185,24 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     </div>
                 )}
                 <Hints
-                    className="my-2"
+                    className="px-4 sm:px-6"
                     rengaId={renga?.id}
                     userId={userId}
                     year={renga.status.maybeYear}
                     genres={renga.status.maybeGenres}
                 />
                 {renga?.status.isMine && (
-                    <div
-                        className="text-sm uppercase text-red-700 cursor-pointer absolute bottom-0 right-0 my-2"
+                    <TextButton
+                        color="red"
+                        className="absolute bottom-0 right-0 my-2 text-sm mx-4 sm:mx-6"
                         onClick={() => handleDelete(rengaId)}
                     >
-                        DELETE
-                    </div>
+                        Delete
+                    </TextButton>
                 )}
             </div>
             {!renga?.status.isResolved && !renga?.status.isMine && (
-                <div className="my-4">
+                <div className="my-4 px-4 sm:px-6">
                     <MovieAutocomplete
                         movie={movie}
                         onMovieChange={setMovie}
@@ -223,22 +224,20 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                 </div>
             )}
 
-            <div className="h-px w-full bg-white"></div>
-            <div className="flex flex-row items-center w-full justify-between py-3">
+            <div className="flex flex-row items-center w-full justify-between py-3 px-4 sm:px-6">
                 <div className="invisibe flex flex-row text-gray-600 font-light leading-none items-baseline">
                     {/* TODO LIKE */}
                 </div>
-                <div className="text-gray-600 font-light">
+                <div className="text-gray-600 text-sm">
                     <span aria-label="" role="img">
                         🙌
                     </span>{' '}
-                    Resolved by{' '}
-                    {renga?.submissions.filter((x) => x.valid).length} people
+                    Solved by {renga?.submissions.filter((x) => x.valid).length}{' '}
+                    people
                 </div>
             </div>
-            <div className="h-px w-full bg-white"></div>
             <Timeline
-                className="w-full text-sm sm:text-base overflow-auto"
+                className="w-full text-sm sm:text-base overflow-auto px-4 sm:px-6"
                 renga={renga}
                 userId={userId}
             />

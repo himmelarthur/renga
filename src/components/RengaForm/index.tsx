@@ -112,7 +112,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
             className="flex sm:flex-row flex-col items-start w-full"
         >
             <div className="bg-gray-100 p-4 rounded-lg mb-3 relative w-full sm:w-5/6">
-                <h3 className="text-xl text-gray-800 font-bold mb-2">
+                <h3 className="sm:text-xl text-gray-800 font-bold mb-2">
                     Make people guess a movie...
                 </h3>
                 <MovieAutocomplete
@@ -146,7 +146,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 >
                     ✕
                 </div>
-                <h3 className="text-xl text-gray-800 font-bold my-2">
+                <h3 className="sm:text-xl text-gray-800 font-bold my-2">
                     ...with <span className="text-primary">three</span> emojis
                 </h3>
                 <EmojiSelector emojis={emojis} onEmojisChange={setEmojis} />

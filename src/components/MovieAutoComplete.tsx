@@ -1,5 +1,5 @@
 import moment from 'moment'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 import Autosuggest from 'react-autosuggest'
 import classNames from 'classnames'
 import throttle from 'lodash.throttle'
@@ -68,12 +68,13 @@ const MovieAutocomplete: React.FC<Props> = ({
                     // @ts-ignore
                     <input
                         {...props}
+                        autoFocus
                         style={{ height: 54 }}
                         className="appearance-none p-6 border-2 rounded w-full text-xl font-bold"
                     />
                 ) : (
                     <div
-                        className="p-3 border-2 rounded w-full text-xl font-bold relative flex items-center bg-white pr-20"
+                        className="p-3 border-2 rounded w-full sm:text-xl text-base font-bold relative flex items-center bg-white pr-20"
                         style={{ height: 54 }}
                     >
                         <div className="max-w-full overflow-hidden truncate">
