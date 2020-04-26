@@ -3,8 +3,9 @@ import { useGetRengasQuery } from '../../generated/graphql'
 
 const POLLING_INTERVAL = Number(process.env.REACT_APP_POLL_INTERVAL) || 0
 
-export const useFetchRengas = (partyId: string, pageCount: number = 20) => {
+export const useFetchRengas = (partyId: string, pageCount: number = 19) => {
     const [page, setPage] = useState(0)
+    const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
     const [reachedEnd, setReachedEnd] = useState(false)
     const { loading, data, fetchMore, networkStatus } = useGetRengasQuery({
         variables: { partyId, first: pageCount, skip: 0 },
@@ -12,8 +13,8 @@ export const useFetchRengas = (partyId: string, pageCount: number = 20) => {
     })
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            fetchMore({
+        const interval = setInterval(async () => {
+            await fetchMore({
                 variables: {
                     skip: 0,
                 },
@@ -40,10 +41,12 @@ export const useFetchRengas = (partyId: string, pageCount: number = 20) => {
         data,
         page,
         networkStatus,
-
-        fetchMore: () => {
+        fetchMoreLoading,
+        fetchMore: async () => {
             if (reachedEnd) return
-            fetchMore({
+            setFetchMoreLoading(true)
+            setPage(page + 1)
+            await fetchMore({
                 variables: {
                     skip: (page + 1) * pageCount,
                 },
@@ -59,7 +62,7 @@ export const useFetchRengas = (partyId: string, pageCount: number = 20) => {
                     }
                 },
             })
-            setPage(page + 1)
+            setFetchMoreLoading(false)
         },
     }
 }
