@@ -20,7 +20,7 @@ model Movie {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   movieDBId Int
-  genres    String[]
+  genres    Int[]
   title     String
   year      Int
   rengas    Renga[]
@@ -44,6 +44,23 @@ model Renga {
   userId      Int?
 }
 
+enum HintType {
+  TIMELINE
+  YEAR
+  GENRES
+}
+
+model Hint {
+  id        Int      @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  renga     Renga    @relation(fields: [rengaId], references: [id])
+  rengaId   Int
+  type      HintType
+}
+
 model User {
   id        Int      @default(autoincrement()) @id
   createdAt DateTime @default(now())
@@ -53,6 +70,7 @@ model User {
   partyId   String
   score     Int      @default(0)
   rengas    Renga[]
+  hintCount Int      @default(3)
   likes     Renga[]  @relation("likes", references: [id])
 }
 
