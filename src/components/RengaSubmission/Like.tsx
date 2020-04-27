@@ -5,6 +5,7 @@ import { useLikeRengaMutation } from '../../generated/graphql'
 import Loader from 'react-loader-spinner'
 import Button from '../Button'
 import { motion } from 'framer-motion'
+import { track } from '../../utils/tracking'
 
 export interface LikeProps {
     className?: string
@@ -29,19 +30,27 @@ export default ({ rengaId }: LikeProps) => {
     const [likeRenga, { loading, data }] = useLikeRengaMutation({
         variables: { rengaId },
     })
+    const onLikeRenga = React.useCallback(() => {
+        track('Liked Renga', {
+            rengaId,
+        })
+        likeRenga()
+    }, [likeRenga])
     if (loading)
         return (
-            <Loader
-                color="#ff7eb2"
-                type="TailSpin"
-                height={24}
-                width={24}
-            ></Loader>
+            <div className="flex justify-center w-full">
+                <Loader
+                    color="#ff7eb2"
+                    type="TailSpin"
+                    height={24}
+                    width={24}
+                ></Loader>
+            </div>
         )
     if (!data?.likeRenga.id)
         return (
             <motion.div
-                className="max-w-full flex justify-center justify-center text-center items-center flex-col sm:flex-row"
+                className="w-full flex justify-center justify-center text-center items-center flex-col sm:flex-row"
                 variants={{
                     hidden: { opacity: 0, y: -40 },
                     visible: { opacity: 1, y: 0, transition: { delay: 0.5 } },
@@ -49,16 +58,20 @@ export default ({ rengaId }: LikeProps) => {
                 initial="hidden"
                 animate="visible"
             >
-                <div className="text-gray-700 text-sm font-medium">
-                    Let the author know you liked it:
+                <div className="text-gray-700 text-sm font-medium my-2">
+                    Let us know if you liked it:
                 </div>
                 <button
-                    onClick={() => likeRenga()}
+                    onClick={onLikeRenga}
                     className="sm:ml-2 sm:mt-0 mt-2 border border-primary py-1 px-2 text-primary rounded text-sm transition hover:border-transparent hover:bg-primary hover:text-white"
                 >
                     Loved this Renga! <span>❤️</span>
                 </button>
             </motion.div>
         )
-    return <div className="text-gray-700 text-sm font-medium">Thanks ! ❤️</div>
+    return (
+        <div className="text-gray-700 text-sm font-medium px-4 sm:px-6 py-2 w-full text-center">
+            Thanks ! ❤️
+        </div>
+    )
 }

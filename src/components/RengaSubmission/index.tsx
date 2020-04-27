@@ -239,7 +239,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             ) : undefined}
 
             <div className="flex flex-row items-center w-full justify-between py-3 px-4 sm:px-6">
-                <div className="flex flex-row text-gray-600 font-light leading-none items-baseline">
+                <div className="flex flex-row text-gray-600 text-sm leading-none items-baseline">
                     ❤️ {renga.likeCount}
                 </div>
                 <div className="text-gray-600 text-sm">
