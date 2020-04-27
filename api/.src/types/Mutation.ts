@@ -1,15 +1,39 @@
-import { intArg, mutationType, stringArg } from '@nexus/schema'
 import { HintType } from '@prisma/client'
+import { incrementHintCount, incrementScore } from '../services/User'
+import { intArg, mutationType, stringArg, booleanArg } from '@nexus/schema'
 import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
-import { incrementHintCount, incrementScore } from '../services/User'
-import logger from '../logging'
 
 export const Mutation = mutationType({
     definition(t) {
         t.crud.createOneRenga()
         t.crud.updateOneRenga()
+        t.field('likeRenga', {
+            type: 'Renga',
+            args: {
+                rengaId: intArg({ required: true }),
+            },
+            resolve: async (_, { rengaId }, ctx: Context) => {
+                const auth = await ctx.user
+                if (!auth?.userId) throw Error('User should be authenticated')
+
+                await ctx.prisma.renga.update({
+                    where: { id: rengaId },
+                    data: { likedBy: { connect: { id: auth.userId } } },
+                })
+                const renga = await ctx.prisma.renga.findOne({
+                    where: { id: rengaId },
+                    select: { likedBy: { select: { id: true } } },
+                })
+                return ctx.prisma.renga.update({
+                    where: { id: rengaId },
+                    data: {
+                        likeCount: renga?.likedBy.length,
+                    },
+                })
+            },
+        })
         t.field('createSubmission', {
             type: 'Submission',
             args: {

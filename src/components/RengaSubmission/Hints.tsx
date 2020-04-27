@@ -1,4 +1,5 @@
 import * as React from 'react'
+import pluralize from 'pluralize'
 import classNames from 'classnames'
 import gql from 'graphql-tag'
 import {
@@ -47,8 +48,9 @@ export default ({ className, year, genres, rengaId, userId }: HintsProps) => {
                 'flex flex-col space-y-2 justify-between text-sm text-gray-600'
             )}
         >
-            <div className="space-x-2">
-                <span>📅Release date</span>
+            <div className="space-x-2 flex items-center">
+                <span>📅</span>
+                <span>Release date</span>
                 {year ? (
                     <span className="font-semibold text-gray-700">{year}</span>
                 ) : (
@@ -67,7 +69,10 @@ export default ({ className, year, genres, rengaId, userId }: HintsProps) => {
                 )}
             </div>
             <div className="space-x-2">
-                <span>🎫Genres</span>
+                <span>🎫</span>
+                <span>
+                    {genres ? pluralize('Genre', genres.length) : 'Genres'}
+                </span>
                 {genres ? (
                     <span className="font-semibold text-gray-700">
                         {genres.join(', ')}

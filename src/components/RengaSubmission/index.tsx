@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import isMobile from 'is-mobile'
 import moment from 'moment'
 import * as React from 'react'
+import pluralize from 'pluralize'
 import {
     GetPlayersDocument,
     GetRengaDocument,
@@ -18,6 +19,7 @@ import RengaSubmissionSkeleton from './Skeleton'
 import Timeline from './Timeline'
 import Hints from './Hints'
 import TextButton from '../TextButton'
+import Like from './Like'
 
 interface IRengaSubmissionProps {
     rengaId: number
@@ -34,12 +36,15 @@ gql`
             emojis
             createdAt
             deletedAt
+            likeCount
             status {
                 isResolved
                 isMine
                 maybeTitle
                 maybeYear
                 maybeGenres
+                isLiked
+                solversCount
             }
             author {
                 id
@@ -85,12 +90,14 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
         fetchPolicy: 'network-only',
         variables: { rengaId },
     })
-    const [movie, setMovie] = React.useState<MovieResult | undefined>()
+    const [movie, setMovie] = React.useState<MovieResult>()
+    const [justResolved, setJustResolved] = React.useState(false)
 
     const [createSubmission] = useCreateSubmissionMutation({
         onCompleted: (data) => {
             if (data?.createSubmission.valid) {
                 onSolved()
+                setJustResolved(true)
             }
             setMovie(undefined)
         },
@@ -223,17 +230,28 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     </button>
                 </div>
             )}
+            {justResolved ? (
+                <Like
+                    rengaId={rengaId}
+                    userId={userId}
+                    isLiked={renga.status.isLiked}
+                />
+            ) : undefined}
 
             <div className="flex flex-row items-center w-full justify-between py-3 px-4 sm:px-6">
-                <div className="invisibe flex flex-row text-gray-600 font-light leading-none items-baseline">
-                    {/* TODO LIKE */}
+                <div className="flex flex-row text-gray-600 text-sm leading-none items-baseline">
+                    ❤️ {renga.likeCount}
                 </div>
                 <div className="text-gray-600 text-sm">
-                    <span aria-label="" role="img">
+                    <span aria-label="" role="img" className="mr-2">
                         🙌
                     </span>{' '}
-                    Solved by {renga?.submissions.filter((x) => x.valid).length}{' '}
-                    people
+                    Solved{' '}
+                    {pluralize(
+                        'time',
+                        renga.submissions.filter((x) => x.valid).length,
+                        true
+                    )}
                 </div>
             </div>
             <Timeline
