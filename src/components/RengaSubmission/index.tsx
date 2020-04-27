@@ -146,7 +146,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
 
     return (
         <div className="rounded bg-gray-100 flex flex-col w-full mb-4">
-            <div className="relative">
+            <div className="relative mb-3">
                 <div className="text-gray-600 text-sm relative flex flex-row space-x-1 items-baseline p-4 sm:p-6">
                     <Emoji
                         size={16}
@@ -237,7 +237,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     isLiked={renga.status.isLiked}
                 />
             ) : undefined}
-
+            <div className="w-full border-white border"></div>
             <div className="flex flex-row items-center w-full justify-between py-3 px-4 sm:px-6">
                 <div className="flex flex-row text-gray-600 text-sm leading-none items-baseline">
                     ❤️ {renga.likeCount}
@@ -254,6 +254,7 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                     )}
                 </div>
             </div>
+            <div className="w-full border-white border"></div>
             <Timeline
                 className="w-full text-sm sm:text-base overflow-auto px-4 sm:px-6"
                 renga={renga}
