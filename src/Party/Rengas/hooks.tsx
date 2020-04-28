@@ -3,7 +3,7 @@ import { useGetRengasQuery } from '../../generated/graphql'
 
 const POLLING_INTERVAL = Number(process.env.REACT_APP_POLL_INTERVAL) || 0
 
-export const useFetchRengas = (partyId: string, pageCount: number = 19) => {
+export const useFetchRengas = (partyId: string, pageCount: number) => {
     const [page, setPage] = useState(0)
     const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
     const [reachedEnd, setReachedEnd] = useState(false)

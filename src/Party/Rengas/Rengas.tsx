@@ -6,6 +6,7 @@ import { useFetchRengas } from './hooks'
 import { NetworkStatus } from 'apollo-boost'
 import Loader from 'react-loader-spinner'
 import Button from '../../components/Button'
+import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
 
 const Rengas = ({
     partyId,
@@ -19,7 +20,8 @@ const Rengas = ({
     onSolvedRenga,
 }: Props) => {
     const { data, fetchMoreLoading, networkStatus, fetchMore } = useFetchRengas(
-        partyId
+        partyId,
+        DEFAULT_RENGAS_PAGE_COUNT
     )
 
     const [hideMe, setHideMe] = useState(false)
@@ -92,22 +94,24 @@ const Rengas = ({
                     )}
                 </AnimateSharedLayout>
             </div>
-            <div className="w-full flex justify-center">
-                <div className="w-56 flex items-center justify-center">
-                    {fetchMoreLoading ? (
-                        <Loader
-                            color="#ff7eb2"
-                            type="TailSpin"
-                            height={42}
-                            width={42}
-                        ></Loader>
-                    ) : (
-                        <Button className="w-4" onClick={fetchMore}>
-                            More Rengas
-                        </Button>
-                    )}
+            {data.rengas.length >= DEFAULT_RENGAS_PAGE_COUNT && (
+                <div className="w-full flex justify-center">
+                    <div className="w-56 flex items-center justify-center">
+                        {fetchMoreLoading ? (
+                            <Loader
+                                color="#ff7eb2"
+                                type="TailSpin"
+                                height={42}
+                                width={42}
+                            ></Loader>
+                        ) : (
+                            <Button className="w-4" onClick={fetchMore}>
+                                More Rengas
+                            </Button>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

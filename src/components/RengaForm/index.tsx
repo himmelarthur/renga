@@ -12,6 +12,7 @@ import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 import Button from '../Button'
 import { track } from '../../utils/tracking'
 import DEFAULT_MOVIES from './defaultMovies'
+import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
 
 gql`
     mutation createRenga(
@@ -91,7 +92,14 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 partyId,
             },
             refetchQueries: [
-                { query: GetRengasDocument, variables: { partyId } },
+                {
+                    query: GetRengasDocument,
+                    variables: {
+                        partyId,
+                        first: DEFAULT_RENGAS_PAGE_COUNT,
+                        skip: 0,
+                    },
+                },
                 { query: GetUserDocument, variables: { userId } },
             ],
         })
