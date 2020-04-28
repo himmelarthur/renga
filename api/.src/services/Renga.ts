@@ -51,10 +51,10 @@ export const populateRengas = async (
         GROUP BY 1, 2, 3
         HAVING (count(1) filter (WHERE VALID = TRUE))::float/count(1) > ${minSuccessRatio}
         AND count(1) > ${minAttemptsCount}
-        ORDER BY RANDOM()
         ) s
   ) t
   WHERE rank = 1 -- take the most popular renga
+  ORDER BY RANDOM()
   LIMIT ${count};`
 
     const rengaIds = popularRengaIds.map((x) => x.id)
