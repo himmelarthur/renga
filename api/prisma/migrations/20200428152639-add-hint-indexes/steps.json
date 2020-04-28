@@ -1,0 +1,45 @@
+{
+    "version": "0.3.14-fixed",
+    "steps": [
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Model",
+                    "model": "Hint",
+                    "arguments": [
+                        {
+                            "name": "",
+                            "value": "[rengaId]"
+                        },
+                        {
+                            "name": "name",
+                            "value": "\"Renga_fkey\""
+                        }
+                    ]
+                },
+                "directive": "index"
+            }
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Model",
+                    "model": "Hint",
+                    "arguments": [
+                        {
+                            "name": "",
+                            "value": "[userId]"
+                        },
+                        {
+                            "name": "name",
+                            "value": "\"User_fkey\""
+                        }
+                    ]
+                },
+                "directive": "index"
+            }
+        }
+    ]
+}
