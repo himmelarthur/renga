@@ -6,11 +6,11 @@ import Button from '../../components/Button'
 import Renga from '../../components/Renga/Renga'
 import { track } from '../../utils/tracking'
 import { useFetchRengas } from './hooks'
+import WelcomeMessage from '../WelcomeMessage'
 
 const Rengas = ({
     partyId,
     highlightedRenga,
-    noRengasComponent,
     onClickRenga,
     displayNewButton,
     showControls,
@@ -88,9 +88,7 @@ const Rengas = ({
                                     />
                                 ))}
                         </>
-                    ) : (
-                        noRengasComponent
-                    )}
+                    ) : undefined}
                 </AnimateSharedLayout>
             </div>
             {data.rengas.length >= DEFAULT_RENGAS_PAGE_COUNT && (
@@ -111,6 +109,7 @@ const Rengas = ({
                     </div>
                 </div>
             )}
+            <WelcomeMessage />
         </div>
     )
 }
@@ -118,7 +117,6 @@ const Rengas = ({
 type Props = {
     partyId: string
     onClickRenga: (rengaId: number) => void
-    noRengasComponent?: JSX.Element
     highlightedRenga?: number
     displayNewButton?: boolean
     showControls: boolean

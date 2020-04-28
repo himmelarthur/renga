@@ -1,9 +1,8 @@
-import React from 'react'
 import { motion } from 'framer-motion'
+import React from 'react'
+import Leaderboard from '../components/Leaderboard/Leaderboard'
 import JoinForm from './JoinForm'
 import Rengas from './Rengas/Rengas'
-import NoRengas from './NoRengas'
-import Leaderboard from '../components/Leaderboard/Leaderboard'
 
 type Props = {
     partyId: string
@@ -51,9 +50,6 @@ const JoinParty = ({ partyId }: Props) => {
                                 <Rengas
                                     showControls={false}
                                     partyId={partyId}
-                                    noRengasComponent={
-                                        <NoRengas onClickNew={() => {}} />
-                                    }
                                     onClickRenga={() => {}}
                                     onClose={() => {}}
                                     onSolvedRenga={() => {}}

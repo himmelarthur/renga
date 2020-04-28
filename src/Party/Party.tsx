@@ -1,14 +1,13 @@
 import ConfettiGenerator from 'confetti-js'
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
+import { User } from '../AuthContext'
 import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard/Leaderboard'
-import RengaForm from '../components/RengaForm'
-import NoRengas from './NoRengas'
-import { useLocation, useHistory } from 'react-router-dom'
-import Rengas from './Rengas/Rengas'
-import { track } from '../utils/tracking'
-import { User } from '../AuthContext'
 import PlayerStats from '../components/PlayerStats'
+import RengaForm from '../components/RengaForm'
+import { track } from '../utils/tracking'
+import Rengas from './Rengas/Rengas'
 
 type Props = {
     partyId: string
@@ -139,11 +138,6 @@ const Party = ({ partyId, user }: Props) => {
                                 }}
                                 highlightedRenga={solvingRenga}
                                 partyId={partyId}
-                                noRengasComponent={
-                                    <NoRengas
-                                        onClickNew={() => goToHash('new')}
-                                    />
-                                }
                                 onClickRenga={(rengaId) => {
                                     track('Clicked Renga', {
                                         partyId,
