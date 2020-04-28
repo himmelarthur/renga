@@ -103,8 +103,8 @@ export const Mutation = mutationType({
                 await populateRengas(context.prisma, {
                     partyId: user.partyId,
                     count: 5,
-                    minAttemptsCount: 0,
-                    minSuccessRatio: 0,
+                    minAttemptsCount: 10,
+                    minSuccessRatio: 0.7,
                 })
 
                 return sign(
