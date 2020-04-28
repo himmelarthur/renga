@@ -1,0 +1,25 @@
+{
+    "version": "0.3.14-fixed",
+    "steps": [
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Model",
+                    "model": "Submission",
+                    "arguments": [
+                        {
+                            "name": "",
+                            "value": "[rengaId]"
+                        },
+                        {
+                            "name": "name",
+                            "value": "\"Renga_fkey\""
+                        }
+                    ]
+                },
+                "directive": "index"
+            }
+        }
+    ]
+}
