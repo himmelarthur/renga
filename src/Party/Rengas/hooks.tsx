@@ -30,10 +30,7 @@ export const useFetchRengas = (partyId: string, pageCount: number) => {
                     )
                     return {
                         ...prev,
-                        rengas: [...newRengas, ...prev.rengas].slice(
-                            0,
-                            pageCount
-                        ),
+                        rengas: [...newRengas, ...prev.rengas],
                     }
                 },
             })
