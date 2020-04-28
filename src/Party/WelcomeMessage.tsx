@@ -35,7 +35,7 @@ const WelcomeMessage = ({ className }: { className?: string }) => {
             )}
         >
             <div className="">
-                <span className="text-primary">Renga</span> is groups of{' '}
+                <span className="text-primary">Rengas</span> are groups of{' '}
                 <span className="text-primary">three emojis</span> that depict a
                 movie. Create Rengas and solve your friends’ Rengas to gain
                 points!
