@@ -1,5 +1,8 @@
 import { AnimateSharedLayout } from 'framer-motion'
 import React, { useState } from 'react'
+import Loader from 'react-loader-spinner'
+import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
+import Button from '../../components/Button'
 import Renga from '../../components/Renga/Renga'
 import { track } from '../../utils/tracking'
 import { useFetchRengas } from './hooks'
@@ -15,13 +18,14 @@ const Rengas = ({
     onClose,
     onSolvedRenga,
 }: Props) => {
-    const { data, loading } = useFetchRengas(partyId)
+    const { data, isFetchingMore, fetchMoreRengas } = useFetchRengas(
+        partyId,
+        DEFAULT_RENGAS_PAGE_COUNT
+    )
 
     const [hideMe, setHideMe] = useState(false)
     const [hideResolved, setHideResolved] = useState(false)
-    if (loading) {
-        return <div></div>
-    }
+    if (!data) return <div></div>
     return (
         <div className="flex flex-col items-center sm:items-start">
             {showControls ? (
@@ -54,7 +58,7 @@ const Rengas = ({
             ) : undefined}
             <div className="flex flex-row flex-wrap justify-center sm:justify-start mt-4 max-w-full">
                 <AnimateSharedLayout type="switch">
-                    {data?.rengas.length ? (
+                    {data.rengas.length ? (
                         <>
                             {displayNewButton ? (
                                 <div
@@ -89,6 +93,24 @@ const Rengas = ({
                     )}
                 </AnimateSharedLayout>
             </div>
+            {data.rengas.length >= DEFAULT_RENGAS_PAGE_COUNT && (
+                <div className="w-full flex justify-center">
+                    <div className="w-56 flex items-center justify-center">
+                        {isFetchingMore ? (
+                            <Loader
+                                color="#ff7eb2"
+                                type="TailSpin"
+                                height={42}
+                                width={42}
+                            ></Loader>
+                        ) : (
+                            <Button className="w-4" onClick={fetchMoreRengas}>
+                                More Rengas
+                            </Button>
+                        )}
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

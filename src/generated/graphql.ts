@@ -1377,6 +1377,8 @@ export type JoinPartyMutation = (
 
 export type GetRengasQueryVariables = {
   partyId: Scalars['String'];
+  first: Scalars['Int'];
+  skip: Scalars['Int'];
 };
 
 
@@ -1589,8 +1591,8 @@ export type JoinPartyMutationHookResult = ReturnType<typeof useJoinPartyMutation
 export type JoinPartyMutationResult = ApolloReactCommon.MutationResult<JoinPartyMutation>;
 export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<JoinPartyMutation, JoinPartyMutationVariables>;
 export const GetRengasDocument = gql`
-    query GetRengas($partyId: String!) {
-  rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}) {
+    query GetRengas($partyId: String!, $first: Int!, $skip: Int!) {
+  rengas(where: {partyId: {equals: $partyId}}, orderBy: {createdAt: desc}, first: $first, skip: $skip) {
     id
     emojis
     author {
@@ -1620,6 +1622,8 @@ export const GetRengasDocument = gql`
  * const { data, loading, error } = useGetRengasQuery({
  *   variables: {
  *      partyId: // value for 'partyId'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
  *   },
  * });
  */

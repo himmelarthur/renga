@@ -4,7 +4,7 @@ export const Query = queryType({
     definition(t) {
         t.crud.user()
         t.crud.renga()
-        t.crud.rengas({ filtering: true, ordering: true })
+        t.crud.rengas({ filtering: true, ordering: true, pagination: true })
         t.crud.party()
     },
 })

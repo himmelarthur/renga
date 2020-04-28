@@ -1,7 +1,9 @@
-query GetRengas($partyId: String!) {
+query GetRengas($partyId: String!, $first: Int!, $skip: Int!) {
     rengas(
         where: { partyId: { equals: $partyId } }
         orderBy: { createdAt: desc }
+        first: $first
+        skip: $skip
     ) {
         id
         emojis
