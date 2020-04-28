@@ -5,11 +5,13 @@ const POLLING_INTERVAL = Number(process.env.REACT_APP_POLL_INTERVAL) || 0
 
 export const useFetchRengas = (partyId: string, pageCount: number) => {
     const [page, setPage] = useState(0)
-    const [fetchMoreLoading, setFetchMoreLoading] = useState(false)
-    const [reachedEnd, setReachedEnd] = useState(false)
-    const { loading, data, fetchMore, networkStatus } = useGetRengasQuery({
+    const [isFetchingMore, setIsFetchingMore] = useState(false)
+    const [hasReachEnd, setHasReachEnd] = useState(false)
+
+    const { loading, data, fetchMore } = useGetRengasQuery({
         variables: { partyId, first: pageCount, skip: 0 },
         fetchPolicy: 'cache-and-network',
+        partialRefetch: true,
     })
 
     useEffect(() => {
@@ -28,7 +30,10 @@ export const useFetchRengas = (partyId: string, pageCount: number) => {
                     )
                     return {
                         ...prev,
-                        rengas: [...newRengas, ...prev.rengas],
+                        rengas: [...newRengas, ...prev.rengas].slice(
+                            0,
+                            pageCount
+                        ),
                     }
                 },
             })
@@ -36,33 +41,34 @@ export const useFetchRengas = (partyId: string, pageCount: number) => {
         return () => clearInterval(interval)
     }, [])
 
+    const fetchMoreRengas = async () => {
+        if (hasReachEnd) return
+        setIsFetchingMore(true)
+        setPage(page + 1)
+        await fetchMore({
+            variables: {
+                skip: (page + 1) * pageCount,
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prev
+                if (fetchMoreResult.rengas.length === 0) {
+                    setHasReachEnd(true)
+                    return prev
+                }
+                return {
+                    ...prev,
+                    rengas: [...prev.rengas, ...fetchMoreResult?.rengas],
+                }
+            },
+        })
+        setIsFetchingMore(false)
+    }
     return {
         loading,
         data,
         page,
-        networkStatus,
-        fetchMoreLoading,
-        fetchMore: async () => {
-            if (reachedEnd) return
-            setFetchMoreLoading(true)
-            setPage(page + 1)
-            await fetchMore({
-                variables: {
-                    skip: (page + 1) * pageCount,
-                },
-                updateQuery: (prev, { fetchMoreResult }) => {
-                    if (!fetchMoreResult) return prev
-                    if (fetchMoreResult.rengas.length === 0) {
-                        setReachedEnd(true)
-                        return prev
-                    }
-                    return {
-                        ...prev,
-                        rengas: [...prev.rengas, ...fetchMoreResult?.rengas],
-                    }
-                },
-            })
-            setFetchMoreLoading(false)
-        },
+        isFetchingMore,
+        fetchMoreRengas,
+        hasReachEnd,
     }
 }

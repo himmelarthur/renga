@@ -1,12 +1,11 @@
 import { AnimateSharedLayout } from 'framer-motion'
 import React, { useState } from 'react'
+import Loader from 'react-loader-spinner'
+import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
+import Button from '../../components/Button'
 import Renga from '../../components/Renga/Renga'
 import { track } from '../../utils/tracking'
 import { useFetchRengas } from './hooks'
-import { NetworkStatus } from 'apollo-boost'
-import Loader from 'react-loader-spinner'
-import Button from '../../components/Button'
-import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
 
 const Rengas = ({
     partyId,
@@ -19,14 +18,14 @@ const Rengas = ({
     onClose,
     onSolvedRenga,
 }: Props) => {
-    const { data, fetchMoreLoading, networkStatus, fetchMore } = useFetchRengas(
+    const { data, isFetchingMore, fetchMoreRengas } = useFetchRengas(
         partyId,
         DEFAULT_RENGAS_PAGE_COUNT
     )
 
     const [hideMe, setHideMe] = useState(false)
     const [hideResolved, setHideResolved] = useState(false)
-    if (networkStatus === NetworkStatus.loading || !data) return <div></div>
+    if (!data) return <div></div>
     return (
         <div className="flex flex-col items-center sm:items-start">
             {showControls ? (
@@ -97,7 +96,7 @@ const Rengas = ({
             {data.rengas.length >= DEFAULT_RENGAS_PAGE_COUNT && (
                 <div className="w-full flex justify-center">
                     <div className="w-56 flex items-center justify-center">
-                        {fetchMoreLoading ? (
+                        {isFetchingMore ? (
                             <Loader
                                 color="#ff7eb2"
                                 type="TailSpin"
@@ -105,7 +104,7 @@ const Rengas = ({
                                 width={42}
                             ></Loader>
                         ) : (
-                            <Button className="w-4" onClick={fetchMore}>
+                            <Button className="w-4" onClick={fetchMoreRengas}>
                                 More Rengas
                             </Button>
                         )}
