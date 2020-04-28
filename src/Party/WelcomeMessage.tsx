@@ -41,7 +41,7 @@ const WelcomeMessage = ({ className }: { className?: string }) => {
                 points!
             </div>
             <TextButton
-                className="sm:absolute right-0 bottom-0 sm:p-3"
+                className="sm:absolute right-0 bottom-0 sm:p-3 text-sm"
                 color="teal"
                 onClick={() => {
                     track('Cliked Close Welcome Message')
