@@ -15,26 +15,36 @@ export const useFetchRengas = (partyId: string, pageCount: number) => {
     })
 
     useEffect(() => {
-        const interval = setInterval(async () => {
-            await fetchMore({
-                variables: {
-                    skip: 0,
-                },
-                updateQuery: (prev, { fetchMoreResult }) => {
-                    if (!fetchMoreResult) return prev
-                    const currentRengaIds = new Set(
-                        prev.rengas.map((renga) => renga.id)
-                    )
-                    const newRengas = fetchMoreResult.rengas.filter(
-                        (renga) => !currentRengaIds.has(renga.id)
-                    )
-                    return {
-                        ...prev,
-                        rengas: [...newRengas, ...prev.rengas],
-                    }
-                },
-            })
-        }, POLLING_INTERVAL)
+        let interval: number | undefined
+        const startInterval = () =>
+            window.setInterval(async () => {
+                await fetchMore({
+                    variables: {
+                        skip: 0,
+                    },
+                    updateQuery: (prev, { fetchMoreResult }) => {
+                        if (!fetchMoreResult) return prev
+                        const currentRengaIds = new Set(
+                            prev.rengas.map((renga) => renga.id)
+                        )
+                        const newRengas = fetchMoreResult.rengas.filter(
+                            (renga) => !currentRengaIds.has(renga.id)
+                        )
+                        return {
+                            ...prev,
+                            rengas: [...newRengas, ...prev.rengas],
+                        }
+                    },
+                })
+            }, POLLING_INTERVAL)
+        interval = startInterval()
+        document.addEventListener('visibilitychange', (ev) => {
+            if (document.visibilityState === 'hidden') {
+                clearInterval(interval)
+            } else {
+                interval = startInterval()
+            }
+        })
         return () => clearInterval(interval)
     }, [])
 
