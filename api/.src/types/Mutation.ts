@@ -4,6 +4,7 @@ import { intArg, mutationType, stringArg, booleanArg } from '@nexus/schema'
 import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
+import { populateRengas } from '../services/Renga'
 
 export const Mutation = mutationType({
     definition(t) {
@@ -98,6 +99,14 @@ export const Mutation = mutationType({
                         username,
                     },
                 })
+
+                await populateRengas(context.prisma, {
+                    partyId: user.partyId,
+                    count: 5,
+                    minAttemptsCount: 10,
+                    minSuccessRatio: 0.7,
+                })
+
                 return sign(
                     {
                         userId: user.id,
