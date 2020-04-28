@@ -3,7 +3,8 @@ import { ApolloClient } from 'apollo-client'
 import { setContext } from 'apollo-link-context'
 import { createHttpLink } from 'apollo-link-http'
 
-export const DEFAULT_RENGAS_PAGE_COUNT = 3
+export const DEFAULT_RENGAS_PAGE_COUNT =
+    Number(process.env.REACT_APP_DEFAULT_RENGAS_PAGE_COUNT) || 3
 
 const httpLink = createHttpLink({
     uri: process.env.REACT_APP_API_URL,
