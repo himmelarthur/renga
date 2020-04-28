@@ -59,6 +59,9 @@ model Hint {
   renga     Renga    @relation(fields: [rengaId], references: [id])
   rengaId   Int
   type      HintType
+
+  @@index([rengaId], name: "Hint_Renga_fkey")
+  @@index([userId], name: "Hint_User_fkey")
 }
 
 model User {
