@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useGetRengasQuery } from '../../generated/graphql'
+import { track } from '../../utils/tracking'
 
 const POLLING_INTERVAL = Number(process.env.REACT_APP_POLL_INTERVAL) || 0
 
@@ -39,6 +40,7 @@ export const useFetchRengas = (partyId: string, pageCount: number) => {
     }, [])
 
     const fetchMoreRengas = async () => {
+        track('Fetched More Rengas', { hasReachEnd })
         if (hasReachEnd) return
         setIsFetchingMore(true)
         setPage(page + 1)
