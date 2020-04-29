@@ -180,7 +180,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                             invisible: !isMovieAlreadyUsed,
                         })}
                     >
-                        ⚠️ This movie has been already used in another renga ⚠️
+                        ⚠️ This movie has been already used in another renga
                     </span>
                     <a
                         className="text-primary underline pl-1 cursor-pointer flex-shrink-0"
