@@ -37,7 +37,7 @@ export default ({ className, onSelect }: OrderingProps) => {
     return (
         <div
             className={classNames(
-                'flex flex-none flex-row relative text-gray-600 text-xs items-baseline space-x-2',
+                'flex flex-none flex-row relative text-gray-600 text-xs items-baseline space-x-2 w-48',
                 className
             )}
         >
@@ -45,7 +45,7 @@ export default ({ className, onSelect }: OrderingProps) => {
             <select
                 onChange={handleChange}
                 value={ordering}
-                className="block appearance-none text-xs w-32 font-medium uppercase w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                className="block appearance-none cursor-pointer text-xs font-medium uppercase w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-1 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
             >
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
