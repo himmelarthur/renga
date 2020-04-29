@@ -97,3 +97,30 @@ const createBotIfNotExist = async (client: PrismaClient) => {
         return bots[0]
     }
 }
+
+export const incrementRenga = async (
+    client: PrismaClient,
+    {
+        rengaId,
+        previousSubmissions,
+        isSolved,
+    }: {
+        rengaId: number
+        previousSubmissions: Array<{ valid: boolean }>
+        isSolved: boolean
+    }
+) => {
+    const attemptCount = previousSubmissions.length + 1
+    const solverCount =
+        previousSubmissions.filter((x) => x.valid).length + +isSolved
+    const successRatio = solverCount / attemptCount
+
+    return client.renga.update({
+        where: { id: rengaId },
+        data: {
+            attemptCount,
+            solverCount,
+            successRatio,
+        },
+    })
+}

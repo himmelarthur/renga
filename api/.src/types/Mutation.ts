@@ -4,7 +4,7 @@ import { intArg, mutationType, stringArg, booleanArg } from '@nexus/schema'
 import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
-import { populateRengas } from '../services/Renga'
+import { populateRengas, incrementRenga } from '../services/Renga'
 
 export const Mutation = mutationType({
     definition(t) {
@@ -52,25 +52,40 @@ export const Mutation = mutationType({
                     where: { id: rengaId },
                 })
                 if (!renga) throw Error('Renga not found')
-                const isValid = renga.movie.movieDBId === movieDBId
+                const isSolved = renga.movie.movieDBId === movieDBId
 
                 const auth = await context.user
                 if (!auth?.userId) throw Error('User should be authenticated')
 
-                if (isValid) {
+                const previousSubmissions = await context.prisma.submission.findMany(
+                    {
+                        select: { valid: true },
+                        where: { rengaId },
+                    }
+                )
+
+                const isFirstSolved = !previousSubmissions.some((x) => x.valid)
+
+                if (isSolved) {
                     // FIXME should be transaction when available
                     // https://github.com/prisma/prisma-client-js/issues/349
 
                     await incrementScore(context.prisma, {
                         userId: auth.userId,
-                        rengaId,
+                        isFirstSolved,
                     })
 
                     await incrementHintCount(context.prisma, {
                         userId: renga.authorId,
-                        rengaId,
+                        isFirstSolved,
                     })
                 }
+
+                await incrementRenga(context.prisma, {
+                    rengaId,
+                    previousSubmissions,
+                    isSolved,
+                })
 
                 return await context.prisma.submission.create({
                     data: {
@@ -78,7 +93,7 @@ export const Mutation = mutationType({
                         renga: { connect: { id: rengaId } },
                         movieDBId,
                         movieTitle,
-                        valid: isValid,
+                        valid: isSolved,
                     },
                 })
             },

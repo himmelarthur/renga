@@ -14,7 +14,6 @@ export const Submission = objectType({
             async resolve(parent, args, ctx: Context) {
                 const user = await ctx.user
                 if (!user) throw new Error('User shoud be auth')
-
                 const usedHintTimeline =
                     (await ctx.prisma.hint.count({
                         where: {
