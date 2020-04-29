@@ -30,7 +30,7 @@ export type QueryRengaArgs = {
 
 export type QueryRengasArgs = {
     where?: Maybe<RengaWhereInput>
-    orderBy?: Maybe<RengaOrderByInput>
+    orderBy?: Maybe<QueryRengasOrderByInput>
     skip?: Maybe<Scalars['Int']>
     after?: Maybe<RengaWhereUniqueInput>
     before?: Maybe<RengaWhereUniqueInput>
@@ -69,6 +69,9 @@ export type Renga = {
     author: User
     movie: Movie
     likeCount: Scalars['Int']
+    solverCount: Scalars['Int']
+    attemptCount: Scalars['Int']
+    successRatio: Scalars['Float']
     submissions: Array<Submission>
     emojis: Array<Scalars['String']>
     status: Status
@@ -155,7 +158,9 @@ export type RengaWhereInput = {
     partyId?: Maybe<StringFilter>
     likedBy?: Maybe<UserFilter>
     likeCount?: Maybe<IntFilter>
-    userId?: Maybe<NullableIntFilter>
+    solverCount?: Maybe<IntFilter>
+    attemptCount?: Maybe<IntFilter>
+    successRatio?: Maybe<FloatFilter>
     hint?: Maybe<HintFilter>
     AND?: Maybe<Array<RengaWhereInput>>
     OR?: Maybe<Array<RengaWhereInput>>
@@ -290,15 +295,15 @@ export type UserFilter = {
     none?: Maybe<UserWhereInput>
 }
 
-export type NullableIntFilter = {
-    equals?: Maybe<Scalars['Int']>
-    not?: Maybe<Scalars['Int']>
-    in?: Maybe<Array<Scalars['Int']>>
-    notIn?: Maybe<Array<Scalars['Int']>>
-    lt?: Maybe<Scalars['Int']>
-    lte?: Maybe<Scalars['Int']>
-    gt?: Maybe<Scalars['Int']>
-    gte?: Maybe<Scalars['Int']>
+export type FloatFilter = {
+    equals?: Maybe<Scalars['Float']>
+    not?: Maybe<Scalars['Float']>
+    in?: Maybe<Array<Scalars['Float']>>
+    notIn?: Maybe<Array<Scalars['Float']>>
+    lt?: Maybe<Scalars['Float']>
+    lte?: Maybe<Scalars['Float']>
+    gt?: Maybe<Scalars['Float']>
+    gte?: Maybe<Scalars['Float']>
 }
 
 export type MovieWhereInput = {
@@ -314,19 +319,12 @@ export type MovieWhereInput = {
     NOT?: Maybe<Array<MovieWhereInput>>
 }
 
-export type RengaOrderByInput = {
-    id?: Maybe<OrderByArg>
+export type QueryRengasOrderByInput = {
     createdAt?: Maybe<OrderByArg>
-    updatedAt?: Maybe<OrderByArg>
-    deletedAt?: Maybe<OrderByArg>
-    movie?: Maybe<OrderByArg>
-    movieId?: Maybe<OrderByArg>
-    author?: Maybe<OrderByArg>
-    authorId?: Maybe<OrderByArg>
-    party?: Maybe<OrderByArg>
-    partyId?: Maybe<OrderByArg>
     likeCount?: Maybe<OrderByArg>
-    userId?: Maybe<OrderByArg>
+    solverCount?: Maybe<OrderByArg>
+    attemptCount?: Maybe<OrderByArg>
+    successRatio?: Maybe<OrderByArg>
 }
 
 export type PartyWhereUniqueInput = {
@@ -401,7 +399,9 @@ export type RengaCreateInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
@@ -468,7 +468,9 @@ export type RengaCreateWithoutPartyInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
@@ -526,7 +528,9 @@ export type RengaCreateWithoutLikedByInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
@@ -574,7 +578,9 @@ export type RengaCreateWithoutAuthorInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
@@ -622,7 +628,9 @@ export type RengaCreateWithoutHintInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaCreateemojisInput>
     submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
     movie: MovieCreateOneWithoutRengasInput
@@ -659,7 +667,9 @@ export type RengaCreateWithoutSubmissionsInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaCreateemojisInput>
     movie: MovieCreateOneWithoutRengasInput
     author: UserCreateOneWithoutRengasInput
@@ -703,7 +713,9 @@ export type RengaUpdateInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaUpdateemojisInput>
     submissions?: Maybe<SubmissionUpdateManyWithoutRengaInput>
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
@@ -801,7 +813,9 @@ export type RengaUpdateWithoutPartyDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaUpdateemojisInput>
     submissions?: Maybe<SubmissionUpdateManyWithoutRengaInput>
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
@@ -879,7 +893,9 @@ export type RengaUpdateWithoutLikedByDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaUpdateemojisInput>
     submissions?: Maybe<SubmissionUpdateManyWithoutRengaInput>
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
@@ -955,7 +971,9 @@ export type RengaUpdateWithoutAuthorDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaUpdateemojisInput>
     submissions?: Maybe<SubmissionUpdateManyWithoutRengaInput>
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
@@ -1032,7 +1050,9 @@ export type RengaUpdateWithoutHintDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaUpdateemojisInput>
     submissions?: Maybe<SubmissionUpdateManyWithoutRengaInput>
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
@@ -1116,7 +1136,9 @@ export type RengaUpdateWithoutSubmissionsDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaUpdateemojisInput>
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
     author?: Maybe<UserUpdateOneRequiredWithoutRengasInput>
@@ -1273,7 +1295,9 @@ export type RengaScalarWhereInput = {
     partyId?: Maybe<StringFilter>
     likedBy?: Maybe<UserFilter>
     likeCount?: Maybe<IntFilter>
-    userId?: Maybe<NullableIntFilter>
+    solverCount?: Maybe<IntFilter>
+    attemptCount?: Maybe<IntFilter>
+    successRatio?: Maybe<FloatFilter>
     hint?: Maybe<HintFilter>
     AND?: Maybe<Array<RengaScalarWhereInput>>
     OR?: Maybe<Array<RengaScalarWhereInput>>
@@ -1286,7 +1310,9 @@ export type RengaUpdateManyDataInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
     likeCount?: Maybe<Scalars['Int']>
-    userId?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
     emojis?: Maybe<RengaUpdateemojisInput>
 }
 
@@ -1363,6 +1389,7 @@ export type GetRengasQueryVariables = {
     partyId: Scalars['String']
     first: Scalars['Int']
     skip: Scalars['Int']
+    orderBy: QueryRengasOrderByInput
 }
 
 export type GetRengasQuery = { __typename?: 'Query' } & {
@@ -1607,10 +1634,15 @@ export type JoinPartyMutationOptions = ApolloReactCommon.BaseMutationOptions<
     JoinPartyMutationVariables
 >
 export const GetRengasDocument = gql`
-    query GetRengas($partyId: String!, $first: Int!, $skip: Int!) {
+    query GetRengas(
+        $partyId: String!
+        $first: Int!
+        $skip: Int!
+        $orderBy: QueryRengasOrderByInput!
+    ) {
         rengas(
             where: { partyId: { equals: $partyId } }
-            orderBy: { createdAt: desc }
+            orderBy: $orderBy
             first: $first
             skip: $skip
         ) {
@@ -1645,6 +1677,7 @@ export const GetRengasDocument = gql`
  *      partyId: // value for 'partyId'
  *      first: // value for 'first'
  *      skip: // value for 'skip'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */

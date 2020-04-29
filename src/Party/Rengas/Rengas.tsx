@@ -5,8 +5,9 @@ import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
 import Button from '../../components/Button'
 import Renga from '../../components/Renga/Renga'
 import { track } from '../../utils/tracking'
-import { useFetchRengas } from './hooks'
 import WelcomeMessage from '../WelcomeMessage'
+import { useFetchRengas } from './hooks'
+import Ordering from './Ordering'
 
 const Rengas = ({
     partyId,
@@ -18,10 +19,12 @@ const Rengas = ({
     onClose,
     onSolvedRenga,
 }: Props) => {
-    const { data, isFetchingMore, fetchMoreRengas } = useFetchRengas(
-        partyId,
-        DEFAULT_RENGAS_PAGE_COUNT
-    )
+    const {
+        data,
+        isFetchingMore,
+        fetchMoreRengas,
+        setOrderBy,
+    } = useFetchRengas(partyId, DEFAULT_RENGAS_PAGE_COUNT)
 
     const [hideMe, setHideMe] = useState(false)
     const [hideResolved, setHideResolved] = useState(false)
@@ -29,31 +32,34 @@ const Rengas = ({
     return (
         <div className="flex flex-col items-center sm:items-start">
             {showControls ? (
-                <div className="flex items-end py-2 text-xs font-medium w-64 mr-8">
-                    <label className="block text-gray-600">
-                        <input
-                            className="leading-tight"
-                            type="checkbox"
-                            onClick={() => {
-                                track('Change Hide Resolved', {
-                                    hide: !hideResolved,
-                                })
-                                setHideResolved(!hideResolved)
-                            }}
-                        />
-                        <span className="uppercase ml-2">Hide solved</span>
-                    </label>
-                    <label className="block text-gray-600 ml-6">
-                        <input
-                            className="leading-tight"
-                            type="checkbox"
-                            onClick={() => {
-                                track('Change Hide Mine', { hide: !hideMe })
-                                setHideMe(!hideMe)
-                            }}
-                        />
-                        <span className="uppercase ml-2">Hide mine</span>
-                    </label>
+                <div className="flex flex-col items-start space-y-2 sm:flex-row sm:space-x-4 mr-20 sm:items-baseline">
+                    <div className="flex flex-none items-baseline py-2 text-xs font-medium space-x-4">
+                        <label className="block text-gray-600">
+                            <input
+                                className="leading-tight"
+                                type="checkbox"
+                                onClick={() => {
+                                    track('Change Hide Resolved', {
+                                        hide: !hideResolved,
+                                    })
+                                    setHideResolved(!hideResolved)
+                                }}
+                            />
+                            <span className="uppercase ml-2">Hide solved</span>
+                        </label>
+                        <label className="block text-gray-600">
+                            <input
+                                className="leading-tight"
+                                type="checkbox"
+                                onClick={() => {
+                                    track('Change Hide Mine', { hide: !hideMe })
+                                    setHideMe(!hideMe)
+                                }}
+                            />
+                            <span className="uppercase ml-2">Hide mine</span>
+                        </label>
+                    </div>
+                    <Ordering onSelect={setOrderBy} />
                 </div>
             ) : undefined}
             <div className="flex flex-row flex-wrap justify-center sm:justify-start mt-4 max-w-full">
