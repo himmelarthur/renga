@@ -34,7 +34,7 @@ const Rengas = ({
             {showControls ? (
                 <div className="flex flex-col items-start space-y-2 sm:flex-row sm:space-x-4 mr-20 sm:items-baseline">
                     <div className="flex flex-none items-baseline py-2 text-xs font-medium space-x-4">
-                        <label className="block text-gray-600">
+                        <label className="block text-gray-600 hover:text-gray-700 cursor-pointer">
                             <input
                                 className="leading-tight"
                                 type="checkbox"
@@ -47,7 +47,7 @@ const Rengas = ({
                             />
                             <span className="uppercase ml-2">Hide solved</span>
                         </label>
-                        <label className="block text-gray-600">
+                        <label className="block text-gray-600 hover:text-gray-700 cursor-pointer">
                             <input
                                 className="leading-tight"
                                 type="checkbox"

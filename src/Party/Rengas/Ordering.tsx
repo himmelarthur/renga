@@ -45,7 +45,7 @@ export default ({ className, onSelect }: OrderingProps) => {
             <select
                 onChange={handleChange}
                 value={ordering}
-                className="block appearance-none cursor-pointer text-xs font-medium uppercase w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-1 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                className="block appearance-none cursor-pointer  text-xs font-medium uppercase w-full bg-white border border-gray-400 hover:border-gray-500 hover:text-gray-700 px-2 py-1 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
             >
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
