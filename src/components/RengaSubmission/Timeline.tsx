@@ -27,9 +27,9 @@ export default ({ className, renga, userId }: TimelineProps) => {
     const [spendHint] = useHint(userId, renga.id)
 
     return (
-        <div className={classNames(className)}>
+        <div className={classNames(className, 'py-4 space-y-4')}>
             {hasHiddenAttemptsTitle && (
-                <div className="flex flex-row  mt-4 items-baseline space-x-2 text-sm ">
+                <div className="flex flex-row items-baseline space-x-2 text-sm ">
                     <span className="text-gray-600">
                         👀 All failed attempts
                     </span>
