@@ -66,7 +66,9 @@ const useMovieDuplication = (
     const [isMovieAlreadyUsed, setIsMovieAlreadyUsed] = useState(false)
     const [hasMovie, { called }] = useHasMovieLazyQuery({
         onCompleted: (data) => {
-            setIsMovieAlreadyUsed(data.rengas.length !== 0)
+            const isDuplicated = data.rengas.length !== 0
+            if (isDuplicated) track('Selected Movie Already Exist')
+            setIsMovieAlreadyUsed(isDuplicated)
         },
     })
 
