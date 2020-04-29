@@ -176,7 +176,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                 />
                 <div className="flex text-sm text-gray-500 mt-2 justify-between">
                     <span
-                        className={classNames('text-orange-700', {
+                        className={classNames('text-orange-500', {
                             invisible: !isMovieAlreadyUsed,
                         })}
                     >
