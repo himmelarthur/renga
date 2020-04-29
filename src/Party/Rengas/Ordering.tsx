@@ -1,6 +1,7 @@
 import * as React from 'react'
 import classNames from 'classnames'
 import { QueryRengasOrderByInput, OrderByArg } from '../../generated/graphql'
+import { track } from '../../utils/tracking'
 
 export interface OrderingProps {
     className?: string
@@ -14,7 +15,7 @@ export default ({ className, onSelect }: OrderingProps) => {
 
     const handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
         const orderingValue = event.currentTarget.value as Ordering
-
+        track('Clicked Order By', { orderBy: orderingValue })
         switch (orderingValue) {
             case 'newest':
                 onSelect({ createdAt: OrderByArg.Desc })
