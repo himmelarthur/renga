@@ -10,6 +10,7 @@ export const Query = queryType({
                 createdAt: true,
                 likeCount: true,
                 attemptCount: true,
+                solverCount: true,
                 successRatio: true,
             },
             pagination: true,
