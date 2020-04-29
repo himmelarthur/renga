@@ -1,10 +1,11 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 import gql from 'graphql-tag'
 import {
     useCreateRengaMutation,
     GetRengasDocument,
     GetUserDocument,
+    useHasMovieLazyQuery,
 } from '../../generated/graphql'
 import EmojiSelector, { TBricks as TEmojis } from './EmojiSelector'
 import classNames from 'classnames'
@@ -13,6 +14,19 @@ import Button from '../Button'
 import { track } from '../../utils/tracking'
 import DEFAULT_MOVIES from './defaultMovies'
 import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
+
+gql`
+    query hasMovie($partyId: String!, $movieId: Int!) {
+        rengas(
+            where: {
+                movie: { movieDBId: { equals: $movieId } }
+                partyId: { equals: $partyId }
+            }
+        ) {
+            id
+        }
+    }
+`
 
 gql`
     mutation createRenga(
@@ -45,6 +59,31 @@ gql`
     }
 `
 
+const useMovieDuplication = (
+    partyId: string,
+    movie: MovieResult | undefined
+) => {
+    const [isMovieAlreadyUsed, setIsMovieAlreadyUsed] = useState(false)
+    const [hasMovie, { called }] = useHasMovieLazyQuery({
+        onCompleted: (data) => {
+            const isDuplicated = data.rengas.length !== 0
+            if (isDuplicated) track('Selected Movie Already Exist')
+            setIsMovieAlreadyUsed(isDuplicated)
+        },
+    })
+
+    useEffect(() => {
+        if (movie) {
+            hasMovie({
+                variables: { partyId, movieId: movie?.id },
+            })
+        } else {
+            setIsMovieAlreadyUsed(false)
+        }
+    }, [movie, partyId])
+    return { isMovieAlreadyUsed, isMovieChecked: called }
+}
+
 export interface IRengaFormProps {
     userId: number
     partyId: string
@@ -58,6 +97,10 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
     )
     const [createRenga] = useCreateRengaMutation()
     const [movie, setMovie] = React.useState<MovieResult | undefined>()
+    const { isMovieAlreadyUsed, isMovieChecked } = useMovieDuplication(
+        partyId,
+        movie
+    )
     const [emojis, setEmojis] = React.useState<TEmojis>([
         undefined,
         undefined,
@@ -108,6 +151,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
             movieTitle: movie.title,
             emojis: emojiIds.join(''),
             fromSuggestion: movieIsFromSuggestion,
+            isDuplicate: isMovieChecked ? isMovieAlreadyUsed : null,
         })
         e.stopPropagation()
         e.preventDefault()
@@ -130,9 +174,16 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                         setMovieIsFromSuggestion(false)
                     }}
                 />
-                <div className="flex text-sm text-gray-500 mt-2 justify-end">
+                <div className="flex text-sm text-gray-500 mt-2 justify-between">
+                    <span
+                        className={classNames('text-orange-500', {
+                            invisible: !isMovieAlreadyUsed,
+                        })}
+                    >
+                        ⚠️ This movie has been already used in another renga
+                    </span>
                     <a
-                        className="text-primary underline pl-1 cursor-pointer"
+                        className="text-primary underline pl-1 cursor-pointer flex-shrink-0"
                         onClick={() => {
                             track('Picked Suggestion')
                             setMovie(
