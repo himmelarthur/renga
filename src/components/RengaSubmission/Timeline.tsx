@@ -113,7 +113,12 @@ export default ({ className, renga, userId }: TimelineProps) => {
                 <div className="flex flex-row justify-end">
                     <span
                         className="text-gray-600 cursor-pointer"
-                        onClick={() => setTimelineMore(!timelineMore)}
+                        onClick={() => {
+                            track('Clicked More Timeline', {
+                                more: timelineMore,
+                            })
+                            setTimelineMore(!timelineMore)
+                        }}
                     >
                         See {timelineMore ? 'less' : 'more'}
                     </span>
