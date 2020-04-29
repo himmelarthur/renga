@@ -1,5 +1,9 @@
-import { useState, useEffect } from 'react'
-import { useGetRengasQuery } from '../../generated/graphql'
+import { useEffect, useState } from 'react'
+import {
+    OrderByArg,
+    QueryRengasOrderByInput,
+    useGetRengasQuery,
+} from '../../generated/graphql'
 import { track } from '../../utils/tracking'
 
 const POLLING_INTERVAL = Number(process.env.REACT_APP_POLL_INTERVAL) || 0
@@ -8,9 +12,11 @@ export const useFetchRengas = (partyId: string, pageCount: number) => {
     const [page, setPage] = useState(0)
     const [isFetchingMore, setIsFetchingMore] = useState(false)
     const [hasReachEnd, setHasReachEnd] = useState(false)
-
+    const [orderBy, setOrderBy] = useState<QueryRengasOrderByInput>({
+        createdAt: OrderByArg.Desc,
+    })
     const { loading, data, fetchMore } = useGetRengasQuery({
-        variables: { partyId, first: pageCount, skip: 0 },
+        variables: { partyId, first: pageCount, skip: 0, orderBy },
         fetchPolicy: 'cache-and-network',
         partialRefetch: true,
     })
@@ -69,5 +75,6 @@ export const useFetchRengas = (partyId: string, pageCount: number) => {
         isFetchingMore,
         fetchMoreRengas,
         hasReachEnd,
+        setOrderBy,
     }
 }

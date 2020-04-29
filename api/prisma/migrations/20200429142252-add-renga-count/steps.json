@@ -1,0 +1,101 @@
+{
+    "version": "0.3.14-fixed",
+    "steps": [
+        {
+            "tag": "CreateField",
+            "model": "Renga",
+            "field": "solverCount",
+            "type": "Int",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "solverCount"
+                },
+                "directive": "default"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "solverCount"
+                },
+                "directive": "default"
+            },
+            "argument": "",
+            "value": "0"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Renga",
+            "field": "attemptCount",
+            "type": "Int",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "attemptCount"
+                },
+                "directive": "default"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "attemptCount"
+                },
+                "directive": "default"
+            },
+            "argument": "",
+            "value": "0"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Renga",
+            "field": "successRatio",
+            "type": "Float",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "successRatio"
+                },
+                "directive": "default"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Renga",
+                    "field": "successRatio"
+                },
+                "directive": "default"
+            },
+            "argument": "",
+            "value": "0"
+        }
+    ]
+}

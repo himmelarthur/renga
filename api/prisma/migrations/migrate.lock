@@ -13,3 +13,5 @@
 20200427165100-addlike
 20200428142438-adds-index-on-renga-id-for-submission
 20200428153432-add-hint-indexes
+20200429134323-remove-useless-user-id
+20200429142252-add-renga-count

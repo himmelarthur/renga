@@ -11,6 +11,9 @@ export const Renga = objectType({
         t.model.author()
         t.model.movie()
         t.model.likeCount()
+        t.model.solverCount()
+        t.model.attemptCount()
+        t.model.successRatio()
         t.model.submissions({
             ordering: { createdAt: true },
             filtering: { authorId: true, valid: true },

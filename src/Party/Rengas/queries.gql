@@ -1,7 +1,12 @@
-query GetRengas($partyId: String!, $first: Int!, $skip: Int!) {
+query GetRengas(
+    $partyId: String!
+    $first: Int!
+    $skip: Int!
+    $orderBy: QueryRengasOrderByInput!
+) {
     rengas(
         where: { partyId: { equals: $partyId } }
-        orderBy: { createdAt: desc }
+        orderBy: $orderBy
         first: $first
         skip: $skip
     ) {

@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -27,23 +27,20 @@ model Movie {
 }
 
 model Renga {
-  id           Int          @default(autoincrement()) @id
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  deletedAt    DateTime?
-  emojis       String[]
-  submissions  Submission[]
-  movie        Movie        @relation(fields: [movieId], references: [id])
-  movieId      Int
-  author       User         @relation(fields: [authorId], references: [id])
-  authorId     Int
-  party        Party        @relation(fields: [partyId], references: [id])
-  partyId      String
-  likedBy      User[]       @relation("likes", references: [id])
-  likeCount    Int          @default(0)
-  solverCount  Int          @default(0)
-  attemptCount Int          @default(0)
-  successRatio Float        @default(0)
+  id          Int          @default(autoincrement()) @id
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  emojis      String[]
+  submissions Submission[]
+  movie       Movie        @relation(fields: [movieId], references: [id])
+  movieId     Int
+  author      User         @relation(fields: [authorId], references: [id])
+  authorId    Int
+  party       Party        @relation(fields: [partyId], references: [id])
+  partyId     String
+  likedBy     User[]       @relation("likes", references: [id])
+  likeCount   Int          @default(0)
 }
 
 enum HintType {
