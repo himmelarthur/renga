@@ -20,6 +20,7 @@ import Timeline from './Timeline'
 import Hints from './Hints'
 import TextButton from '../TextButton'
 import Like from './Like'
+import ReactTooltip from 'react-tooltip'
 
 interface IRengaSubmissionProps {
     rengaId: number
@@ -37,6 +38,9 @@ gql`
             createdAt
             deletedAt
             likeCount
+            solverCount
+            successRatio
+            attemptCount
             status {
                 isResolved
                 isMine
@@ -44,7 +48,6 @@ gql`
                 maybeYear
                 maybeGenres
                 isLiked
-                solversCount
             }
             author {
                 id
@@ -239,19 +242,26 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
             ) : undefined}
             <div className="w-full border-white border"></div>
             <div className="flex flex-row items-center w-full justify-between py-3 px-4 sm:px-6">
+                <ReactTooltip
+                    effect="solid"
+                    afterShow={() => track('Shown hint tooltip')}
+                />
                 <div className="flex flex-row text-gray-600 text-sm leading-none items-baseline">
                     ❤️ {renga.likeCount}
                 </div>
-                <div className="text-gray-600 text-sm">
-                    <span aria-label="" role="img" className="mr-2">
+                <div
+                    className="text-gray-600 text-sm"
+                    data-tip={`${
+                        renga.attemptCount
+                    } total attempts for a success of ${(
+                        100 * renga.successRatio
+                    ).toFixed(0)}%`}
+                >
+                    <span aria-label="" role="img" className="mr-1">
                         🙌
                     </span>{' '}
-                    Solved{' '}
-                    {pluralize(
-                        'time',
-                        renga.submissions.filter((x) => x.valid).length,
-                        true
-                    )}
+                    Solved {pluralize('time', renga.solverCount, true)} • 👨‍🎓
+                    {(100 * renga.successRatio).toFixed(0)}%
                 </div>
             </div>
             <div className="w-full border-white border"></div>

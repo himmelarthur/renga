@@ -29,25 +29,20 @@ export const Renga = objectType({
                         isResolved: false,
                         isLiked: false,
                         maybeTitle: '',
-                        solversCount: 0,
                     }
                 }
 
                 // @ts-ignore
                 const isMine = parent.authorId === user.userId
-                const solvers = (
-                    await ctx.prisma.submission.findMany({
-                        select: { authorId: true },
+                const isResolved =
+                    (await ctx.prisma.submission.count({
                         where: {
                             // @ts-ignore
                             rengaId: parent.id,
+                            authorId: user.userId,
                             valid: true,
                         },
-                    })
-                ).map((x) => x.authorId)
-
-                const isResolved = solvers.includes(user.userId)
-                const solversCount = solvers.length
+                    })) > 0 || false
 
                 const hints = (
                     await ctx.prisma.hint.findMany({
@@ -98,7 +93,6 @@ export const Renga = objectType({
                     maybeTitle,
                     maybeYear,
                     maybeGenres,
-                    solversCount,
                 }
             },
         })
@@ -114,6 +108,5 @@ export const status = objectType({
         t.boolean('isResolved')
         t.int('maybeYear', { nullable: true })
         t.string('maybeGenres', { list: true, nullable: true })
-        t.int('solversCount')
     },
 })

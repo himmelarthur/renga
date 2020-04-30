@@ -144,7 +144,6 @@ export type Status = {
     isResolved: Scalars['Boolean']
     maybeYear?: Maybe<Scalars['Int']>
     maybeGenres?: Maybe<Array<Scalars['String']>>
-    solversCount: Scalars['Int']
 }
 
 export type RengaWhereInput = {
@@ -1503,7 +1502,14 @@ export type GetRengaQuery = { __typename?: 'Query' } & {
     renga?: Maybe<
         { __typename?: 'Renga' } & Pick<
             Renga,
-            'id' | 'emojis' | 'createdAt' | 'deletedAt' | 'likeCount'
+            | 'id'
+            | 'emojis'
+            | 'createdAt'
+            | 'deletedAt'
+            | 'likeCount'
+            | 'solverCount'
+            | 'successRatio'
+            | 'attemptCount'
         > & {
                 status: { __typename?: 'Status' } & Pick<
                     Status,
@@ -1513,7 +1519,6 @@ export type GetRengaQuery = { __typename?: 'Query' } & {
                     | 'maybeYear'
                     | 'maybeGenres'
                     | 'isLiked'
-                    | 'solversCount'
                 >
                 author: { __typename?: 'User' } & Pick<User, 'id' | 'username'>
                 submissions: Array<
@@ -2110,6 +2115,9 @@ export const GetRengaDocument = gql`
             createdAt
             deletedAt
             likeCount
+            solverCount
+            successRatio
+            attemptCount
             status {
                 isResolved
                 isMine
@@ -2117,7 +2125,6 @@ export const GetRengaDocument = gql`
                 maybeYear
                 maybeGenres
                 isLiked
-                solversCount
             }
             author {
                 id
