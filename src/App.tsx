@@ -6,6 +6,7 @@ import Party from './Party'
 import { PartyProvider } from './PartyContext'
 import { Auth0Provider } from './utils/auth0'
 import { track } from './utils/tracking'
+import Profile from './Profile'
 
 export default () => {
     const location = useLocation()
@@ -33,6 +34,9 @@ export default () => {
                     <PartyProvider>
                         <Landing></Landing>
                     </PartyProvider>
+                </Route>
+                <Route path="/me" exact>
+                    <Profile></Profile>
                 </Route>
             </Switch>
         </Auth0Provider>

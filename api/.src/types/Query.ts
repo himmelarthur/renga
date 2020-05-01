@@ -2,7 +2,9 @@ import { queryType } from '@nexus/schema'
 
 export const Query = queryType({
     definition(t) {
+        t.crud.account()
         t.crud.user()
+        t.crud.users({ filtering: true })
         t.crud.renga()
         t.crud.rengas({
             filtering: true,

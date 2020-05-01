@@ -14,14 +14,29 @@ export type Scalars = {
 
 export type Query = {
     __typename?: 'Query'
+    account?: Maybe<Account>
     user?: Maybe<User>
+    users: Array<User>
     renga?: Maybe<Renga>
     rengas: Array<Renga>
     party?: Maybe<Party>
 }
 
+export type QueryAccountArgs = {
+    where: AccountWhereUniqueInput
+}
+
 export type QueryUserArgs = {
     where: UserWhereUniqueInput
+}
+
+export type QueryUsersArgs = {
+    where?: Maybe<UserWhereInput>
+    skip?: Maybe<Scalars['Int']>
+    after?: Maybe<UserWhereUniqueInput>
+    before?: Maybe<UserWhereUniqueInput>
+    first?: Maybe<Scalars['Int']>
+    last?: Maybe<Scalars['Int']>
 }
 
 export type QueryRengaArgs = {
@@ -40,6 +55,28 @@ export type QueryRengasArgs = {
 
 export type QueryPartyArgs = {
     where: PartyWhereUniqueInput
+}
+
+export type AccountWhereUniqueInput = {
+    id?: Maybe<Scalars['Int']>
+    auth0id?: Maybe<Scalars['String']>
+}
+
+export type Account = {
+    __typename?: 'Account'
+    id: Scalars['Int']
+    auth0id: Scalars['String']
+    createdAt: Scalars['DateTime']
+    players: Array<User>
+    stats?: Maybe<AccountStats>
+}
+
+export type AccountPlayersArgs = {
+    skip?: Maybe<Scalars['Int']>
+    after?: Maybe<UserWhereUniqueInput>
+    before?: Maybe<UserWhereUniqueInput>
+    first?: Maybe<Scalars['Int']>
+    last?: Maybe<Scalars['Int']>
 }
 
 export type UserWhereUniqueInput = {
@@ -61,6 +98,7 @@ export type User = {
 export type Party = {
     __typename?: 'Party'
     id: Scalars['String']
+    createdAt: Scalars['DateTime']
     users: Array<User>
 }
 
@@ -82,45 +120,30 @@ export enum OrderByArg {
     Desc = 'desc',
 }
 
-export type RengaWhereUniqueInput = {
-    id?: Maybe<Scalars['Int']>
+export type AccountStats = {
+    __typename?: 'AccountStats'
+    distinctMovieCount: Scalars['Int']
+    rengaCount: Scalars['Int']
 }
 
-export type Renga = {
-    __typename?: 'Renga'
-    id: Scalars['Int']
-    createdAt: Scalars['DateTime']
-    deletedAt?: Maybe<Scalars['DateTime']>
-    author: User
-    movie: Movie
-    likeCount: Scalars['Int']
-    solverCount: Scalars['Int']
-    attemptCount: Scalars['Int']
-    successRatio: Scalars['Float']
-    submissions: Array<Submission>
-    emojis: Array<Scalars['String']>
-    status: Status
-}
-
-export type RengaSubmissionsArgs = {
-    where?: Maybe<RengaSubmissionsWhereInput>
-    orderBy?: Maybe<RengaSubmissionsOrderByInput>
-    skip?: Maybe<Scalars['Int']>
-    after?: Maybe<SubmissionWhereUniqueInput>
-    before?: Maybe<SubmissionWhereUniqueInput>
-    first?: Maybe<Scalars['Int']>
-    last?: Maybe<Scalars['Int']>
-}
-
-export type Movie = {
-    __typename?: 'Movie'
-    id: Scalars['Int']
-    movieDBId: Scalars['Int']
-}
-
-export type RengaSubmissionsWhereInput = {
-    authorId?: Maybe<IntFilter>
-    valid?: Maybe<BooleanFilter>
+export type UserWhereInput = {
+    id?: Maybe<IntFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    username?: Maybe<StringFilter>
+    partyId?: Maybe<StringFilter>
+    score?: Maybe<IntFilter>
+    rengas?: Maybe<RengaFilter>
+    hintCount?: Maybe<IntFilter>
+    likes?: Maybe<RengaFilter>
+    accountId?: Maybe<NullableIntFilter>
+    hint?: Maybe<HintFilter>
+    submission?: Maybe<SubmissionFilter>
+    AND?: Maybe<Array<UserWhereInput>>
+    OR?: Maybe<Array<UserWhereInput>>
+    NOT?: Maybe<Array<UserWhereInput>>
+    party?: Maybe<PartyWhereInput>
+    account?: Maybe<AccountWhereInput>
 }
 
 export type IntFilter = {
@@ -134,37 +157,35 @@ export type IntFilter = {
     gte?: Maybe<Scalars['Int']>
 }
 
-export type BooleanFilter = {
-    equals?: Maybe<Scalars['Boolean']>
-    not?: Maybe<Scalars['Boolean']>
+export type DateTimeFilter = {
+    equals?: Maybe<Scalars['DateTime']>
+    not?: Maybe<Scalars['DateTime']>
+    in?: Maybe<Array<Scalars['DateTime']>>
+    notIn?: Maybe<Array<Scalars['DateTime']>>
+    lt?: Maybe<Scalars['DateTime']>
+    lte?: Maybe<Scalars['DateTime']>
+    gt?: Maybe<Scalars['DateTime']>
+    gte?: Maybe<Scalars['DateTime']>
 }
 
-export type RengaSubmissionsOrderByInput = {
-    createdAt?: Maybe<OrderByArg>
+export type StringFilter = {
+    equals?: Maybe<Scalars['String']>
+    not?: Maybe<Scalars['String']>
+    in?: Maybe<Array<Scalars['String']>>
+    notIn?: Maybe<Array<Scalars['String']>>
+    lt?: Maybe<Scalars['String']>
+    lte?: Maybe<Scalars['String']>
+    gt?: Maybe<Scalars['String']>
+    gte?: Maybe<Scalars['String']>
+    contains?: Maybe<Scalars['String']>
+    startsWith?: Maybe<Scalars['String']>
+    endsWith?: Maybe<Scalars['String']>
 }
 
-export type SubmissionWhereUniqueInput = {
-    id?: Maybe<Scalars['Int']>
-}
-
-export type Submission = {
-    __typename?: 'Submission'
-    id: Scalars['Int']
-    valid: Scalars['Boolean']
-    author: User
-    createdAt: Scalars['DateTime']
-    movieDBId: Scalars['Int']
-    maybeTitle?: Maybe<Scalars['String']>
-}
-
-export type Status = {
-    __typename?: 'Status'
-    maybeTitle: Scalars['String']
-    isMine: Scalars['Boolean']
-    isLiked: Scalars['Boolean']
-    isResolved: Scalars['Boolean']
-    maybeYear?: Maybe<Scalars['Int']>
-    maybeGenres?: Maybe<Array<Scalars['String']>>
+export type RengaFilter = {
+    every?: Maybe<RengaWhereInput>
+    some?: Maybe<RengaWhereInput>
+    none?: Maybe<RengaWhereInput>
 }
 
 export type RengaWhereInput = {
@@ -188,17 +209,6 @@ export type RengaWhereInput = {
     movie?: Maybe<MovieWhereInput>
     author?: Maybe<UserWhereInput>
     party?: Maybe<PartyWhereInput>
-}
-
-export type DateTimeFilter = {
-    equals?: Maybe<Scalars['DateTime']>
-    not?: Maybe<Scalars['DateTime']>
-    in?: Maybe<Array<Scalars['DateTime']>>
-    notIn?: Maybe<Array<Scalars['DateTime']>>
-    lt?: Maybe<Scalars['DateTime']>
-    lte?: Maybe<Scalars['DateTime']>
-    gt?: Maybe<Scalars['DateTime']>
-    gte?: Maybe<Scalars['DateTime']>
 }
 
 export type NullableDateTimeFilter = {
@@ -234,55 +244,26 @@ export type SubmissionWhereInput = {
     renga?: Maybe<RengaWhereInput>
 }
 
-export type StringFilter = {
-    equals?: Maybe<Scalars['String']>
-    not?: Maybe<Scalars['String']>
-    in?: Maybe<Array<Scalars['String']>>
-    notIn?: Maybe<Array<Scalars['String']>>
-    lt?: Maybe<Scalars['String']>
-    lte?: Maybe<Scalars['String']>
-    gt?: Maybe<Scalars['String']>
-    gte?: Maybe<Scalars['String']>
-    contains?: Maybe<Scalars['String']>
-    startsWith?: Maybe<Scalars['String']>
-    endsWith?: Maybe<Scalars['String']>
+export type BooleanFilter = {
+    equals?: Maybe<Scalars['Boolean']>
+    not?: Maybe<Scalars['Boolean']>
 }
 
-export type UserWhereInput = {
-    id?: Maybe<IntFilter>
-    createdAt?: Maybe<DateTimeFilter>
-    updatedAt?: Maybe<DateTimeFilter>
-    username?: Maybe<StringFilter>
-    partyId?: Maybe<StringFilter>
-    score?: Maybe<IntFilter>
-    rengas?: Maybe<RengaFilter>
-    hintCount?: Maybe<IntFilter>
-    likes?: Maybe<RengaFilter>
-    accountId?: Maybe<NullableIntFilter>
-    hint?: Maybe<HintFilter>
-    submission?: Maybe<SubmissionFilter>
-    AND?: Maybe<Array<UserWhereInput>>
-    OR?: Maybe<Array<UserWhereInput>>
-    NOT?: Maybe<Array<UserWhereInput>>
-    party?: Maybe<PartyWhereInput>
-    account?: Maybe<AccountWhereInput>
+export type UserFilter = {
+    every?: Maybe<UserWhereInput>
+    some?: Maybe<UserWhereInput>
+    none?: Maybe<UserWhereInput>
 }
 
-export type RengaFilter = {
-    every?: Maybe<RengaWhereInput>
-    some?: Maybe<RengaWhereInput>
-    none?: Maybe<RengaWhereInput>
-}
-
-export type NullableIntFilter = {
-    equals?: Maybe<Scalars['Int']>
-    not?: Maybe<Scalars['Int']>
-    in?: Maybe<Array<Scalars['Int']>>
-    notIn?: Maybe<Array<Scalars['Int']>>
-    lt?: Maybe<Scalars['Int']>
-    lte?: Maybe<Scalars['Int']>
-    gt?: Maybe<Scalars['Int']>
-    gte?: Maybe<Scalars['Int']>
+export type FloatFilter = {
+    equals?: Maybe<Scalars['Float']>
+    not?: Maybe<Scalars['Float']>
+    in?: Maybe<Array<Scalars['Float']>>
+    notIn?: Maybe<Array<Scalars['Float']>>
+    lt?: Maybe<Scalars['Float']>
+    lte?: Maybe<Scalars['Float']>
+    gt?: Maybe<Scalars['Float']>
+    gte?: Maybe<Scalars['Float']>
 }
 
 export type HintFilter = {
@@ -311,6 +292,19 @@ export enum HintType {
     Genres = 'GENRES',
 }
 
+export type MovieWhereInput = {
+    id?: Maybe<IntFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    movieDBId?: Maybe<IntFilter>
+    title?: Maybe<StringFilter>
+    year?: Maybe<IntFilter>
+    rengas?: Maybe<RengaFilter>
+    AND?: Maybe<Array<MovieWhereInput>>
+    OR?: Maybe<Array<MovieWhereInput>>
+    NOT?: Maybe<Array<MovieWhereInput>>
+}
+
 export type PartyWhereInput = {
     id?: Maybe<StringFilter>
     createdAt?: Maybe<DateTimeFilter>
@@ -322,10 +316,15 @@ export type PartyWhereInput = {
     NOT?: Maybe<Array<PartyWhereInput>>
 }
 
-export type UserFilter = {
-    every?: Maybe<UserWhereInput>
-    some?: Maybe<UserWhereInput>
-    none?: Maybe<UserWhereInput>
+export type NullableIntFilter = {
+    equals?: Maybe<Scalars['Int']>
+    not?: Maybe<Scalars['Int']>
+    in?: Maybe<Array<Scalars['Int']>>
+    notIn?: Maybe<Array<Scalars['Int']>>
+    lt?: Maybe<Scalars['Int']>
+    lte?: Maybe<Scalars['Int']>
+    gt?: Maybe<Scalars['Int']>
+    gte?: Maybe<Scalars['Int']>
 }
 
 export type AccountWhereInput = {
@@ -340,28 +339,74 @@ export type AccountWhereInput = {
     NOT?: Maybe<Array<AccountWhereInput>>
 }
 
-export type FloatFilter = {
-    equals?: Maybe<Scalars['Float']>
-    not?: Maybe<Scalars['Float']>
-    in?: Maybe<Array<Scalars['Float']>>
-    notIn?: Maybe<Array<Scalars['Float']>>
-    lt?: Maybe<Scalars['Float']>
-    lte?: Maybe<Scalars['Float']>
-    gt?: Maybe<Scalars['Float']>
-    gte?: Maybe<Scalars['Float']>
+export type RengaWhereUniqueInput = {
+    id?: Maybe<Scalars['Int']>
 }
 
-export type MovieWhereInput = {
-    id?: Maybe<IntFilter>
-    createdAt?: Maybe<DateTimeFilter>
-    updatedAt?: Maybe<DateTimeFilter>
-    movieDBId?: Maybe<IntFilter>
-    title?: Maybe<StringFilter>
-    year?: Maybe<IntFilter>
-    rengas?: Maybe<RengaFilter>
-    AND?: Maybe<Array<MovieWhereInput>>
-    OR?: Maybe<Array<MovieWhereInput>>
-    NOT?: Maybe<Array<MovieWhereInput>>
+export type Renga = {
+    __typename?: 'Renga'
+    id: Scalars['Int']
+    createdAt: Scalars['DateTime']
+    deletedAt?: Maybe<Scalars['DateTime']>
+    author: User
+    movie: Movie
+    party: Party
+    likeCount: Scalars['Int']
+    solverCount: Scalars['Int']
+    attemptCount: Scalars['Int']
+    successRatio: Scalars['Float']
+    submissions: Array<Submission>
+    emojis: Array<Scalars['String']>
+    status: Status
+}
+
+export type RengaSubmissionsArgs = {
+    where?: Maybe<RengaSubmissionsWhereInput>
+    orderBy?: Maybe<RengaSubmissionsOrderByInput>
+    skip?: Maybe<Scalars['Int']>
+    after?: Maybe<SubmissionWhereUniqueInput>
+    before?: Maybe<SubmissionWhereUniqueInput>
+    first?: Maybe<Scalars['Int']>
+    last?: Maybe<Scalars['Int']>
+}
+
+export type Movie = {
+    __typename?: 'Movie'
+    id: Scalars['Int']
+    movieDBId: Scalars['Int']
+}
+
+export type RengaSubmissionsWhereInput = {
+    authorId?: Maybe<IntFilter>
+    valid?: Maybe<BooleanFilter>
+}
+
+export type RengaSubmissionsOrderByInput = {
+    createdAt?: Maybe<OrderByArg>
+}
+
+export type SubmissionWhereUniqueInput = {
+    id?: Maybe<Scalars['Int']>
+}
+
+export type Submission = {
+    __typename?: 'Submission'
+    id: Scalars['Int']
+    valid: Scalars['Boolean']
+    author: User
+    createdAt: Scalars['DateTime']
+    movieDBId: Scalars['Int']
+    maybeTitle?: Maybe<Scalars['String']>
+}
+
+export type Status = {
+    __typename?: 'Status'
+    maybeTitle: Scalars['String']
+    isMine: Scalars['Boolean']
+    isLiked: Scalars['Boolean']
+    isResolved: Scalars['Boolean']
+    maybeYear?: Maybe<Scalars['Int']>
+    maybeGenres?: Maybe<Array<Scalars['String']>>
 }
 
 export type QueryRengasOrderByInput = {
@@ -657,11 +702,6 @@ export type AccountCreateWithoutPlayersInput = {
     updatedAt?: Maybe<Scalars['DateTime']>
     auth0id: Scalars['String']
     email: Scalars['String']
-}
-
-export type AccountWhereUniqueInput = {
-    id?: Maybe<Scalars['Int']>
-    auth0id?: Maybe<Scalars['String']>
 }
 
 export type HintCreateManyWithoutUserInput = {
@@ -1453,22 +1493,6 @@ export type SubmissionUpsertWithWhereUniqueWithoutRengaInput = {
     create: SubmissionCreateWithoutRengaInput
 }
 
-export type Account = {
-    __typename?: 'Account'
-    id: Scalars['Int']
-    auth0id: Scalars['String']
-    createdAt: Scalars['DateTime']
-    players: Array<User>
-}
-
-export type AccountPlayersArgs = {
-    skip?: Maybe<Scalars['Int']>
-    after?: Maybe<UserWhereUniqueInput>
-    before?: Maybe<UserWhereUniqueInput>
-    first?: Maybe<Scalars['Int']>
-    last?: Maybe<Scalars['Int']>
-}
-
 export type UpsertAccountMutationVariables = {
     email: Scalars['String']
     playerIds?: Maybe<Array<Scalars['Int']>>
@@ -1523,6 +1547,50 @@ export type GetRengasQuery = { __typename?: 'Query' } & {
                 status: { __typename?: 'Status' } & Pick<
                     Status,
                     'isResolved' | 'isMine'
+                >
+            }
+    >
+}
+
+export type GetAccountStatsQueryVariables = {
+    auth0Id: Scalars['String']
+}
+
+export type GetAccountStatsQuery = { __typename?: 'Query' } & {
+    account?: Maybe<
+        { __typename?: 'Account' } & Pick<Account, 'id'> & {
+                stats?: Maybe<
+                    { __typename?: 'AccountStats' } & Pick<
+                        AccountStats,
+                        'distinctMovieCount' | 'rengaCount'
+                    >
+                >
+            }
+    >
+}
+
+export type GetAccountRengasQueryVariables = {
+    auth0Id: Scalars['String']
+    first: Scalars['Int']
+    skip: Scalars['Int']
+}
+
+export type GetAccountRengasQuery = { __typename?: 'Query' } & {
+    rengasAccount: Array<
+        { __typename?: 'Renga' } & Pick<
+            Renga,
+            | 'id'
+            | 'emojis'
+            | 'attemptCount'
+            | 'createdAt'
+            | 'likeCount'
+            | 'solverCount'
+            | 'successRatio'
+        > & {
+                status: { __typename?: 'Status' } & Pick<Status, 'maybeTitle'>
+                party: { __typename?: 'Party' } & Pick<
+                    Party,
+                    'id' | 'createdAt'
                 >
             }
     >
@@ -1932,6 +2000,141 @@ export type GetRengasLazyQueryHookResult = ReturnType<
 export type GetRengasQueryResult = ApolloReactCommon.QueryResult<
     GetRengasQuery,
     GetRengasQueryVariables
+>
+export const GetAccountStatsDocument = gql`
+    query getAccountStats($auth0Id: String!) {
+        account(where: { auth0id: $auth0Id }) {
+            id
+            stats {
+                distinctMovieCount
+                rengaCount
+            }
+        }
+    }
+`
+
+/**
+ * __useGetAccountStatsQuery__
+ *
+ * To run a query within a React component, call `useGetAccountStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountStatsQuery({
+ *   variables: {
+ *      auth0Id: // value for 'auth0Id'
+ *   },
+ * });
+ */
+export function useGetAccountStatsQuery(
+    baseOptions?: ApolloReactHooks.QueryHookOptions<
+        GetAccountStatsQuery,
+        GetAccountStatsQueryVariables
+    >
+) {
+    return ApolloReactHooks.useQuery<
+        GetAccountStatsQuery,
+        GetAccountStatsQueryVariables
+    >(GetAccountStatsDocument, baseOptions)
+}
+export function useGetAccountStatsLazyQuery(
+    baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+        GetAccountStatsQuery,
+        GetAccountStatsQueryVariables
+    >
+) {
+    return ApolloReactHooks.useLazyQuery<
+        GetAccountStatsQuery,
+        GetAccountStatsQueryVariables
+    >(GetAccountStatsDocument, baseOptions)
+}
+export type GetAccountStatsQueryHookResult = ReturnType<
+    typeof useGetAccountStatsQuery
+>
+export type GetAccountStatsLazyQueryHookResult = ReturnType<
+    typeof useGetAccountStatsLazyQuery
+>
+export type GetAccountStatsQueryResult = ApolloReactCommon.QueryResult<
+    GetAccountStatsQuery,
+    GetAccountStatsQueryVariables
+>
+export const GetAccountRengasDocument = gql`
+    query getAccountRengas($auth0Id: String!, $first: Int!, $skip: Int!) {
+        rengasAccount: rengas(
+            first: $first
+            skip: $skip
+            where: { author: { account: { auth0id: { equals: $auth0Id } } } }
+        ) {
+            id
+            emojis
+            attemptCount
+            createdAt
+            likeCount
+            solverCount
+            successRatio
+            status {
+                maybeTitle
+            }
+            party {
+                id
+                createdAt
+            }
+        }
+    }
+`
+
+/**
+ * __useGetAccountRengasQuery__
+ *
+ * To run a query within a React component, call `useGetAccountRengasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountRengasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountRengasQuery({
+ *   variables: {
+ *      auth0Id: // value for 'auth0Id'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *   },
+ * });
+ */
+export function useGetAccountRengasQuery(
+    baseOptions?: ApolloReactHooks.QueryHookOptions<
+        GetAccountRengasQuery,
+        GetAccountRengasQueryVariables
+    >
+) {
+    return ApolloReactHooks.useQuery<
+        GetAccountRengasQuery,
+        GetAccountRengasQueryVariables
+    >(GetAccountRengasDocument, baseOptions)
+}
+export function useGetAccountRengasLazyQuery(
+    baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+        GetAccountRengasQuery,
+        GetAccountRengasQueryVariables
+    >
+) {
+    return ApolloReactHooks.useLazyQuery<
+        GetAccountRengasQuery,
+        GetAccountRengasQueryVariables
+    >(GetAccountRengasDocument, baseOptions)
+}
+export type GetAccountRengasQueryHookResult = ReturnType<
+    typeof useGetAccountRengasQuery
+>
+export type GetAccountRengasLazyQueryHookResult = ReturnType<
+    typeof useGetAccountRengasLazyQuery
+>
+export type GetAccountRengasQueryResult = ApolloReactCommon.QueryResult<
+    GetAccountRengasQuery,
+    GetAccountRengasQueryVariables
 >
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {

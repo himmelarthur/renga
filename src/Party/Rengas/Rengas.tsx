@@ -64,37 +64,33 @@ const Rengas = ({
             ) : undefined}
             <div className="flex flex-row flex-wrap justify-center sm:justify-start mt-4 max-w-full">
                 <AnimateSharedLayout type="switch">
-                    {data.rengas.length ? (
-                        <>
-                            {displayNewButton ? (
-                                <div
-                                    className="flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 px-2 py-10 cursor-pointer text-primary font-medium uppercase bg-gray-100"
-                                    onClick={onClickNew}
-                                >
-                                    + New renga
-                                </div>
-                            ) : undefined}
-                            {data.rengas
-                                .filter((x) => {
-                                    if (highlightedRenga === x.id) return true
-                                    if (hideMe && x.status.isMine) return false
-                                    if (hideResolved && x.status.isResolved)
-                                        return false
-                                    return true
-                                })
-                                .filter((x) => !x.deletedAt)
-                                .map((renga) => (
-                                    <Renga
-                                        key={renga.id}
-                                        renga={renga}
-                                        open={highlightedRenga === renga.id}
-                                        onClick={() => onClickRenga(renga.id)}
-                                        onSolved={() => onSolvedRenga(renga.id)}
-                                        onClose={() => onClose()}
-                                    />
-                                ))}
-                        </>
+                    {displayNewButton ? (
+                        <div
+                            className="flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 px-2 py-10 cursor-pointer text-primary font-medium uppercase bg-gray-100"
+                            onClick={onClickNew}
+                        >
+                            + New renga
+                        </div>
                     ) : undefined}
+                    {data.rengas
+                        .filter((x) => {
+                            if (highlightedRenga === x.id) return true
+                            if (hideMe && x.status.isMine) return false
+                            if (hideResolved && x.status.isResolved)
+                                return false
+                            return true
+                        })
+                        .filter((x) => !x.deletedAt)
+                        .map((renga) => (
+                            <Renga
+                                key={renga.id}
+                                renga={renga}
+                                open={highlightedRenga === renga.id}
+                                onClick={() => onClickRenga(renga.id)}
+                                onSolved={() => onSolvedRenga(renga.id)}
+                                onClose={() => onClose()}
+                            />
+                        ))}
                 </AnimateSharedLayout>
             </div>
             {data.rengas.length >= DEFAULT_RENGAS_PAGE_COUNT && (
