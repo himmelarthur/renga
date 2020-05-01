@@ -51,11 +51,20 @@ const isParticipant = rule({ cache: 'contextual' })(
 const shouldBePartyOnly = rule({ cache: 'contextual' })(
     async (
         _,
-        args: { where: { partyId: { equals: string } } },
+        args: {
+            where?: {
+                partyId: { equals: string }
+                OR?: { partyId: { equals: string } }[]
+            }
+        },
         ctx: Context,
         info
     ) => {
-        return args.where.partyId.equals !== undefined
+        return (
+            args.where?.partyId.equals !== undefined ||
+            args.where?.OR?.every((x) => x.partyId !== undefined) ||
+            false
+        )
     }
 )
 
@@ -68,7 +77,7 @@ export const permissions = shield(
             updateOneRenga: and(isAuthenticated, ownRenga),
         },
         Query: {
-            rengas: shouldBePartyOnly,
+            // rengas: shouldBePartyOnly,
             user: isAuthenticated,
         },
     },
