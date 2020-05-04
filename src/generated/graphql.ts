@@ -133,6 +133,7 @@ export type Submission = {
     valid: Scalars['Boolean']
     author: User
     createdAt: Scalars['DateTime']
+    movieDBId: Scalars['Int']
     maybeTitle?: Maybe<Scalars['String']>
 }
 
@@ -1524,7 +1525,11 @@ export type GetRengaQuery = { __typename?: 'Query' } & {
                 submissions: Array<
                     { __typename?: 'Submission' } & Pick<
                         Submission,
-                        'id' | 'createdAt' | 'maybeTitle' | 'valid'
+                        | 'id'
+                        | 'createdAt'
+                        | 'maybeTitle'
+                        | 'valid'
+                        | 'movieDBId'
                     > & {
                             author: { __typename?: 'User' } & Pick<
                                 User,
@@ -2139,6 +2144,7 @@ export const GetRengaDocument = gql`
                 createdAt
                 maybeTitle
                 valid
+                movieDBId
             }
         }
     }

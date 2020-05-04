@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import moment from 'moment'
+import classNames from 'classnames'
 import gql from 'graphql-tag'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
+import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
 import {
-    useCreateRengaMutation,
     GetRengasDocument,
     GetUserDocument,
+    OrderByArg,
+    useCreateRengaMutation,
     useHasMovieLazyQuery,
 } from '../../generated/graphql'
-import EmojiSelector, { TBricks as TEmojis } from './EmojiSelector'
-import classNames from 'classnames'
-import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
-import Button from '../Button'
 import { track } from '../../utils/tracking'
+import Button from '../Button'
+import MovieAutocomplete, { MovieResult } from '../MovieAutoComplete'
 import DEFAULT_MOVIES from './defaultMovies'
-import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
+import EmojiSelector, { TBricks as TEmojis } from './EmojiSelector'
 
 gql`
     query hasMovie($partyId: String!, $movieId: Int!) {
@@ -141,6 +142,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                         partyId,
                         first: DEFAULT_RENGAS_PAGE_COUNT,
                         skip: 0,
+                        orderBy: { createdAt: OrderByArg.Desc },
                     },
                 },
                 { query: GetUserDocument, variables: { userId } },

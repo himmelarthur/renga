@@ -9,6 +9,7 @@ export const Submission = objectType({
         t.model.valid()
         t.model.author()
         t.model.createdAt()
+        t.model.movieDBId()
         t.string('maybeTitle', {
             nullable: true,
             async resolve(parent, args, ctx: Context) {
