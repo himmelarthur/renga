@@ -62,6 +62,7 @@ gql`
                 createdAt
                 maybeTitle
                 valid
+                movieDBId
             }
         }
     }
@@ -217,6 +218,9 @@ const RengaSubmission: React.FunctionComponent<IRengaSubmissionProps> = ({
                         movie={movie}
                         onMovieChange={setMovie}
                         placeholder="Your guess"
+                        filteredIds={renga.submissions
+                            .filter((x) => x.author.id === userId)
+                            .map((x) => x.movieDBId)}
                     />
                     <button
                         className={classNames(

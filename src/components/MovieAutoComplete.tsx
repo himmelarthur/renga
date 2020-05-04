@@ -18,6 +18,7 @@ interface Props {
     placeholder?: string
     onMovieChange?: (movie: MovieResult | undefined) => void
     className?: string
+    filteredIds?: number[]
 }
 
 const MovieAutocomplete: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const MovieAutocomplete: React.FC<Props> = ({
     movie,
     onMovieChange,
     className,
+    filteredIds,
 }) => {
     const [query, setQuery] = useState('')
     const [suggestions, setSuggestions] = useState<MovieResult[]>([])
@@ -114,8 +116,12 @@ const MovieAutocomplete: React.FC<Props> = ({
             renderSuggestion={(result, { isHighlighted }) => (
                 <div
                     className={classNames(
-                        'text-gray-800 py-3 px-6 hover:bg-gray-200 cursor-pointer',
-                        { 'bg-gray-200': isHighlighted }
+                        'py-3 px-6 hover:bg-gray-200 cursor-pointer',
+                        {
+                            'bg-gray-200': isHighlighted,
+                            'text-gray-500': filteredIds?.includes(result.id),
+                            'text-gray-800 ': !filteredIds?.includes(result.id),
+                        }
                     )}
                     key={result.id}
                     onClick={() => {
