@@ -116,11 +116,10 @@ const MovieAutocomplete: React.FC<Props> = ({
             renderSuggestion={(result, { isHighlighted }) => (
                 <div
                     className={classNames(
-                        'py-3 px-6 hover:bg-gray-200 cursor-pointer',
+                        'text-gray-800 py-3 px-6 hover:bg-gray-200 cursor-pointer',
                         {
                             'bg-gray-200': isHighlighted,
-                            'text-gray-500': filteredIds?.includes(result.id),
-                            'text-gray-800 ': !filteredIds?.includes(result.id),
+                            'opacity-50': filteredIds?.includes(result.id),
                         }
                     )}
                     key={result.id}
