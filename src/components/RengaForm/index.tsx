@@ -6,9 +6,9 @@ import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
 import {
     GetRengasDocument,
     GetUserDocument,
-    OrderByArg,
     useCreateRengaMutation,
     useHasMovieLazyQuery,
+    OrderByArg,
 } from '../../generated/graphql'
 import { track } from '../../utils/tracking'
 import Button from '../Button'
