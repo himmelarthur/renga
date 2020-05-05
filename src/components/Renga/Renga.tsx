@@ -3,10 +3,10 @@ import { Renga as RengaType, User, Status } from '../../generated/graphql'
 import classNames from 'classnames'
 import RengaSubmission from '../RengaSubmission'
 import RengaItem from './RengaItem'
-import { useParty } from '../../hooks'
+import { useParty } from '../../Party/hooks'
 
 const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
-    const { partyId, user } = useParty()
+    const { partyId, player } = useParty()
     const ref = useRef<HTMLDivElement>(null)
     useLayoutEffect(() => {
         if (open && ref.current) {
@@ -42,7 +42,7 @@ const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
                 <RengaSubmission
                     rengaId={renga.id}
                     partyId={partyId!}
-                    userId={user!.userId}
+                    userId={player!.userId}
                     onClose={onClose}
                     onSolved={onSolved}
                 />

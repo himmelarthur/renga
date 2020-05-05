@@ -1,12 +1,23 @@
 import { objectType } from '@nexus/schema'
 import { Context } from '../../context'
 
+export const Account = objectType({
+    name: 'Account',
+    definition(t) {
+        t.model.id()
+        t.model.auth0id()
+        t.model.createdAt()
+        t.model.players()
+    },
+})
+
 export const User = objectType({
     name: 'User',
     definition(t) {
         t.model.id()
         t.model.username()
         t.model.score()
+        t.model.party()
         t.model.hintCount()
         t.int('likedRengaCount', {
             async resolve(parent, args, ctx: Context) {

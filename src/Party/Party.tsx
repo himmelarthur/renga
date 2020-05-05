@@ -1,7 +1,7 @@
 import ConfettiGenerator from 'confetti-js'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { User } from '../AuthContext'
+import { Player } from '../AuthContext'
 import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard/Leaderboard'
 import PlayerStats from '../components/PlayerStats'
@@ -11,7 +11,7 @@ import Rengas from './Rengas/Rengas'
 
 type Props = {
     partyId: string
-    user: User
+    user: Player
 }
 
 const Party = ({ partyId, user }: Props) => {

@@ -1,10 +1,10 @@
+import { intArg, mutationType, stringArg } from '@nexus/schema'
 import { HintType } from '@prisma/client'
-import { incrementHintCount, incrementScore } from '../services/User'
-import { intArg, mutationType, stringArg, booleanArg } from '@nexus/schema'
 import { sign } from 'jsonwebtoken'
 import { Context } from '../context'
-import { appSecret } from '../security/authentication'
-import { populateRengas, incrementRenga } from '../services/Renga'
+import { incrementRenga, populateRengas } from '../Renga/service'
+import { appSecret } from '../security/party_auth'
+import { incrementHintCount, incrementScore } from '../services/User'
 
 export const Mutation = mutationType({
     definition(t) {
@@ -104,8 +104,16 @@ export const Mutation = mutationType({
                 username: stringArg({ required: true }),
             },
             resolve: async (_, { username }, context: Context) => {
+                const auth0id = (await context.account)?.auth0Id
                 const user = await context.prisma.user.create({
                     data: {
+                        account: auth0id
+                            ? {
+                                  connect: {
+                                      auth0id,
+                                  },
+                              }
+                            : undefined,
                         party: {
                             create: {
                                 id: Math.random().toString(36).substr(2, 9),
@@ -182,12 +190,84 @@ export const Mutation = mutationType({
                 username: stringArg({ required: true }),
             },
             resolve: async (_, { partyId, username }, ctx: Context) => {
+                const auth0id = (await ctx.account)?.auth0Id
                 const user = await ctx.prisma.user.create({
                     data: {
                         username,
                         party: { connect: { id: partyId } },
+                        account: auth0id
+                            ? {
+                                  connect: { auth0id },
+                              }
+                            : undefined,
                     },
                 })
+                return sign(
+                    {
+                        userId: user.id,
+                        username: user.username,
+                        partyId: user.partyId,
+                    },
+                    appSecret()
+                )
+            },
+        })
+        t.field('upsertAccount', {
+            type: 'Account',
+            args: {
+                email: stringArg(),
+                userIds: intArg({ list: true }),
+            },
+            resolve: async (_, { email, userIds }, ctx: Context) => {
+                const auth0id = (await ctx.account)?.auth0Id
+                if (!auth0id) throw Error('Account not authenticated')
+                const players = await ctx.prisma.user.findMany({
+                    select: { id: true },
+                    where: { accountId: null, id: { in: userIds } },
+                })
+                return ctx.prisma.account.upsert({
+                    where: { auth0id },
+                    update: {
+                        email,
+                        players: {
+                            connect: players.map((x) => {
+                                return {
+                                    id: x.id,
+                                }
+                            }),
+                        },
+                    },
+                    create: {
+                        auth0id,
+                        email,
+                        players: {
+                            connect: players.map((x) => {
+                                return {
+                                    id: x.id,
+                                }
+                            }),
+                        },
+                    },
+                })
+            },
+        })
+        t.field('getPartyToken', {
+            type: 'String',
+            nullable: true,
+            args: {
+                partyId: stringArg({ required: true }),
+            },
+            resolve: async (_, { partyId }, ctx: Context) => {
+                const auth0id = (await ctx.account)?.auth0Id
+                if (!auth0id) throw Error('Account not authenticated')
+                const users = await ctx.prisma.user.findMany({
+                    where: {
+                        account: { auth0id: { equals: auth0id } },
+                        partyId,
+                    },
+                })
+                if (users.length !== 1) return null
+                const user = users[0]
                 return sign(
                     {
                         userId: user.id,
