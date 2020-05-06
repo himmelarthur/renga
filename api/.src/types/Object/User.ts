@@ -22,9 +22,10 @@ export const Account = objectType({
                 >`
                     SELECT 
                         COUNT(r."id") as rengacount, 
-                        COUNT(DISTINCT(r."movieId")) as distinctmoviecount
+                        COUNT(DISTINCT(m."movieDBId")) as distinctmoviecount
                     FROM "Renga" r
                     JOIN "User" u ON r."authorId" = u."id" 
+                    JOIN "Movie" m ON m."id" = r."movieId" 
                     JOIN "Account" a ON a."id" = u."accountId" 
                     WHERE a."auth0id" = ${account.auth0Id} AND r."solverCount" > 0;`
                 if (res.length != 1) return null

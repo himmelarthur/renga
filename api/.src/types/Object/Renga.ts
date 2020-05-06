@@ -36,9 +36,10 @@ export const Renga = objectType({
                     }
                 }
 
-                // @ts-ignore
                 const isMine =
+                    // @ts-ignore
                     parent.authorId === user?.userId ||
+                    // @ts-ignore
                     isAccountOwner(ctx.prisma, parent.authorId, ctx.account)
                 const isResolved =
                     (await ctx.prisma.submission.count({

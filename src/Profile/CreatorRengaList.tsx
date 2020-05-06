@@ -2,13 +2,24 @@ import classNames from 'classnames'
 import { Emoji } from 'emoji-mart'
 import gql from 'graphql-tag'
 import * as React from 'react'
-import { useGetAccountRengasQuery } from '../generated/graphql'
+import {
+    useGetAccountRengasQuery,
+    QueryRengasOrderByInput,
+    OrderByArg,
+} from '../generated/graphql'
 import Button from '../components/Button'
 import { DEFAULT_RENGAS_PAGE_COUNT } from '../client'
+import Ordering from '../Party/Rengas/Ordering'
 
 gql`
-    query getAccountRengas($auth0Id: String!, $first: Int!, $skip: Int!) {
+    query getAccountRengas(
+        $auth0Id: String!
+        $first: Int!
+        $skip: Int!
+        $orderBy: QueryRengasOrderByInput!
+    ) {
         rengasAccount: rengas(
+            orderBy: $orderBy
             first: $first
             skip: $skip
             where: { author: { account: { auth0id: { equals: $auth0Id } } } }
@@ -38,9 +49,12 @@ export interface MyRengaListProps {
 
 export default ({ className, auth0Id }: MyRengaListProps) => {
     const batch = DEFAULT_RENGAS_PAGE_COUNT
+    const [orderBy, setOrderBy] = React.useState<QueryRengasOrderByInput>({
+        createdAt: OrderByArg.Desc,
+    })
     const [page, setPage] = React.useState(1)
     const { data, fetchMore } = useGetAccountRengasQuery({
-        variables: { auth0Id, first: batch, skip: 0 },
+        variables: { auth0Id, first: batch, skip: 0, orderBy },
     })
     if (!data) return <div></div>
     return (
@@ -50,6 +64,7 @@ export default ({ className, auth0Id }: MyRengaListProps) => {
                 className
             )}
         >
+            <Ordering onSelect={setOrderBy} />
             {data.rengasAccount.map((renga) => {
                 return (
                     <div
@@ -58,9 +73,11 @@ export default ({ className, auth0Id }: MyRengaListProps) => {
                             { 'opacity-75': renga.solverCount === 0 }
                         )}
                     >
-                        <div className="flex flex-row items-baseline space-x-4 sm:w-3/5">
+                        <div className="flex flex-row items-baseline space-x-4 w-full sm:w-3/5">
                             <span className="text-gray-800 font-medium truncate">
-                                {renga.status.maybeTitle}
+                                <a href={`/p/${renga.party.id}#${renga.id}`}>
+                                    {renga.status.maybeTitle}
+                                </a>
                             </span>
                             <div className="flex flex-row justify-center items-baseline space-x-2 rounded-full px-3 py-2 bg-gray-100">
                                 {renga.emojis.map((emoji, index) => (
