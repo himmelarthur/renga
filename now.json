@@ -9,8 +9,7 @@
     },
     "env": {
         "APP_SECRET": "@app_secret",
-        "MOVIE_DB_API_KEY": "@movie_db_api_key",
-        "DATABASE_URL": "@database_url"
+        "MOVIE_DB_API_KEY": "@movie_db_api_key"
     },
     "routes": [{ "src": "/api", "dest": "/api/server.ts" }]
 }
