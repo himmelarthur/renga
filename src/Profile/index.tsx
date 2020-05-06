@@ -16,10 +16,17 @@ export default ({ className }: ProfileProps) => {
 
     return (
         <div className="flex flex-col items-center bg-gray-100 h-screen p-4 overflow-auto">
-            <div className="flex flex-row w-full">
+            <div className="flex flex-row w-full justify-between">
                 <h1 className="text-primary font-logo text-3xl">
                     <a href="/">Renga</a>
                 </h1>
+                <a
+                    href="/"
+                    target="_blank"
+                    className="border border-primary py-2 px-4 text-primary rounded bg-white"
+                >
+                    Start new party
+                </a>
             </div>
             <div className="w-full max-w-4xl mt-4">
                 <div className="flex flex-row space-x-4 mb-4 uppercase text-sm items-baseline">
