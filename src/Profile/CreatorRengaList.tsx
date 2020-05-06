@@ -68,6 +68,7 @@ export default ({ className, auth0Id }: MyRengaListProps) => {
             {data.rengasAccount.map((renga) => {
                 return (
                     <div
+                        key={renga.id}
                         className={classNames(
                             'flex flex-col sm:flex-row sm:justify-between sm:items-baseline items-center w-full space-y-3',
                             { 'opacity-75': renga.solverCount === 0 }
