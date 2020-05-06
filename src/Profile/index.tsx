@@ -2,14 +2,16 @@ import React from 'react'
 import { useAuth0 } from '../utils/auth0'
 import CreatorRengaList from './CreatorRengaList'
 import CreatorStats from './CreatorStats'
+import { Redirect } from 'react-router-dom'
 
 export interface ProfileProps {
     className?: string
 }
 
 export default ({ className }: ProfileProps) => {
-    const { user } = useAuth0()
+    const { user, loading, isAuthenticated } = useAuth0()
 
+    if (!loading && !isAuthenticated) return <Redirect to="/"></Redirect>
     if (!user) return <div></div>
 
     return (
@@ -21,7 +23,7 @@ export default ({ className }: ProfileProps) => {
             </div>
             <div className="w-full max-w-4xl mt-4">
                 <div className="flex flex-row space-x-4 mb-4 uppercase text-sm items-baseline">
-                    <div className="px-3 py-1 rounded-full bg-teal-700 text-white cursor-pointer">
+                    <div className="px-3 py-1 rounded-full bg-teal-600 text-white cursor-pointer">
                         Creator
                     </div>
                     <div className="opacity-50 cursor-not-allowed">Solver</div>
