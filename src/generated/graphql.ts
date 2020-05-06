@@ -1552,27 +1552,11 @@ export type GetRengasQuery = { __typename?: 'Query' } & {
     >
 }
 
-export type GetAccountStatsQueryVariables = {
-    auth0Id: Scalars['String']
-}
-
-export type GetAccountStatsQuery = { __typename?: 'Query' } & {
-    account?: Maybe<
-        { __typename?: 'Account' } & Pick<Account, 'id'> & {
-                stats?: Maybe<
-                    { __typename?: 'AccountStats' } & Pick<
-                        AccountStats,
-                        'distinctMovieCount' | 'rengaCount'
-                    >
-                >
-            }
-    >
-}
-
 export type GetAccountRengasQueryVariables = {
     auth0Id: Scalars['String']
     first: Scalars['Int']
     skip: Scalars['Int']
+    orderBy: QueryRengasOrderByInput
 }
 
 export type GetAccountRengasQuery = { __typename?: 'Query' } & {
@@ -1591,6 +1575,23 @@ export type GetAccountRengasQuery = { __typename?: 'Query' } & {
                 party: { __typename?: 'Party' } & Pick<
                     Party,
                     'id' | 'createdAt'
+                >
+            }
+    >
+}
+
+export type GetAccountStatsQueryVariables = {
+    auth0Id: Scalars['String']
+}
+
+export type GetAccountStatsQuery = { __typename?: 'Query' } & {
+    account?: Maybe<
+        { __typename?: 'Account' } & Pick<Account, 'id'> & {
+                stats?: Maybe<
+                    { __typename?: 'AccountStats' } & Pick<
+                        AccountStats,
+                        'distinctMovieCount' | 'rengaCount'
+                    >
                 >
             }
     >
@@ -2001,6 +2002,88 @@ export type GetRengasQueryResult = ApolloReactCommon.QueryResult<
     GetRengasQuery,
     GetRengasQueryVariables
 >
+export const GetAccountRengasDocument = gql`
+    query getAccountRengas(
+        $auth0Id: String!
+        $first: Int!
+        $skip: Int!
+        $orderBy: QueryRengasOrderByInput!
+    ) {
+        rengasAccount: rengas(
+            orderBy: $orderBy
+            first: $first
+            skip: $skip
+            where: { author: { account: { auth0id: { equals: $auth0Id } } } }
+        ) {
+            id
+            emojis
+            attemptCount
+            createdAt
+            likeCount
+            solverCount
+            successRatio
+            status {
+                maybeTitle
+            }
+            party {
+                id
+                createdAt
+            }
+        }
+    }
+`
+
+/**
+ * __useGetAccountRengasQuery__
+ *
+ * To run a query within a React component, call `useGetAccountRengasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountRengasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountRengasQuery({
+ *   variables: {
+ *      auth0Id: // value for 'auth0Id'
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *      orderBy: // value for 'orderBy'
+ *   },
+ * });
+ */
+export function useGetAccountRengasQuery(
+    baseOptions?: ApolloReactHooks.QueryHookOptions<
+        GetAccountRengasQuery,
+        GetAccountRengasQueryVariables
+    >
+) {
+    return ApolloReactHooks.useQuery<
+        GetAccountRengasQuery,
+        GetAccountRengasQueryVariables
+    >(GetAccountRengasDocument, baseOptions)
+}
+export function useGetAccountRengasLazyQuery(
+    baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+        GetAccountRengasQuery,
+        GetAccountRengasQueryVariables
+    >
+) {
+    return ApolloReactHooks.useLazyQuery<
+        GetAccountRengasQuery,
+        GetAccountRengasQueryVariables
+    >(GetAccountRengasDocument, baseOptions)
+}
+export type GetAccountRengasQueryHookResult = ReturnType<
+    typeof useGetAccountRengasQuery
+>
+export type GetAccountRengasLazyQueryHookResult = ReturnType<
+    typeof useGetAccountRengasLazyQuery
+>
+export type GetAccountRengasQueryResult = ApolloReactCommon.QueryResult<
+    GetAccountRengasQuery,
+    GetAccountRengasQueryVariables
+>
 export const GetAccountStatsDocument = gql`
     query getAccountStats($auth0Id: String!) {
         account(where: { auth0id: $auth0Id }) {
@@ -2060,81 +2143,6 @@ export type GetAccountStatsLazyQueryHookResult = ReturnType<
 export type GetAccountStatsQueryResult = ApolloReactCommon.QueryResult<
     GetAccountStatsQuery,
     GetAccountStatsQueryVariables
->
-export const GetAccountRengasDocument = gql`
-    query getAccountRengas($auth0Id: String!, $first: Int!, $skip: Int!) {
-        rengasAccount: rengas(
-            first: $first
-            skip: $skip
-            where: { author: { account: { auth0id: { equals: $auth0Id } } } }
-        ) {
-            id
-            emojis
-            attemptCount
-            createdAt
-            likeCount
-            solverCount
-            successRatio
-            status {
-                maybeTitle
-            }
-            party {
-                id
-                createdAt
-            }
-        }
-    }
-`
-
-/**
- * __useGetAccountRengasQuery__
- *
- * To run a query within a React component, call `useGetAccountRengasQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAccountRengasQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAccountRengasQuery({
- *   variables: {
- *      auth0Id: // value for 'auth0Id'
- *      first: // value for 'first'
- *      skip: // value for 'skip'
- *   },
- * });
- */
-export function useGetAccountRengasQuery(
-    baseOptions?: ApolloReactHooks.QueryHookOptions<
-        GetAccountRengasQuery,
-        GetAccountRengasQueryVariables
-    >
-) {
-    return ApolloReactHooks.useQuery<
-        GetAccountRengasQuery,
-        GetAccountRengasQueryVariables
-    >(GetAccountRengasDocument, baseOptions)
-}
-export function useGetAccountRengasLazyQuery(
-    baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-        GetAccountRengasQuery,
-        GetAccountRengasQueryVariables
-    >
-) {
-    return ApolloReactHooks.useLazyQuery<
-        GetAccountRengasQuery,
-        GetAccountRengasQueryVariables
-    >(GetAccountRengasDocument, baseOptions)
-}
-export type GetAccountRengasQueryHookResult = ReturnType<
-    typeof useGetAccountRengasQuery
->
-export type GetAccountRengasLazyQueryHookResult = ReturnType<
-    typeof useGetAccountRengasLazyQuery
->
-export type GetAccountRengasQueryResult = ApolloReactCommon.QueryResult<
-    GetAccountRengasQuery,
-    GetAccountRengasQueryVariables
 >
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {
