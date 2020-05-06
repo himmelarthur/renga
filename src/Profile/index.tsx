@@ -13,7 +13,7 @@ export default ({ className }: ProfileProps) => {
     if (!user) return <div></div>
 
     return (
-        <div className="flex flex-col items-center bg-gray-100 h-screen p-4">
+        <div className="flex flex-col items-center bg-gray-100 h-screen p-4 overflow-scroll">
             <div className="flex flex-row w-full">
                 <h1 className="text-primary font-logo text-3xl">
                     <a href="/">Renga</a>

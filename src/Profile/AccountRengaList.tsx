@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import * as React from 'react'
 import { useGetAccountRengasQuery } from '../generated/graphql'
 import Button from '../components/Button'
+import { DEFAULT_RENGAS_PAGE_COUNT } from '../client'
 
 gql`
     query getAccountRengas($auth0Id: String!, $first: Int!, $skip: Int!) {
@@ -36,7 +37,7 @@ export interface MyRengaListProps {
 }
 
 export default ({ className, auth0Id }: MyRengaListProps) => {
-    const batch = 2
+    const batch = DEFAULT_RENGAS_PAGE_COUNT
     const [page, setPage] = React.useState(1)
     const { data, fetchMore } = useGetAccountRengasQuery({
         variables: { auth0Id, first: batch, skip: 0 },
@@ -77,7 +78,7 @@ export default ({ className, auth0Id }: MyRengaListProps) => {
                         <div className="text-gray-600 flex flex-row items-baseline space-x-2 text-sm">
                             <span>
                                 🙌 {renga.solverCount}/{renga.attemptCount} (
-                                {renga.successRatio}%)
+                                {(renga.successRatio * 100).toFixed(0)}%)
                             </span>
                         </div>
                     </div>
