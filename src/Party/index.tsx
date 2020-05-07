@@ -1,9 +1,9 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { useParty } from './hooks'
+import { useParty } from '../PartyContext'
+import { useGlobalTracking } from '../utils/tracking'
 import JoinParty from './JoinParty'
 import Party from './Party'
-import { useGlobalTracking } from '../utils/tracking'
 
 const PartyPage = () => {
     const { player, partyId, ready } = useParty()

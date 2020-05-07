@@ -2,12 +2,12 @@ import gql from 'graphql-tag'
 import React, { useCallback, useState, FormEvent, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useCreatePartyMutation } from '../generated/graphql'
-import { useParty } from '../Party/hooks'
 import { useGlobalTracking } from '../utils/tracking'
 import EmojiRoulette from './EmojiRoulette'
 import Button from '../components/Button'
 import { track } from '../utils/tracking'
 import { useAuth0 } from '../utils/auth0'
+import { useParty } from '../AuthContext'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -38,6 +38,7 @@ const Landing = () => {
             const res = await create({ variables: { username } })
             try {
                 const partyId = addParty(res.data?.createParty)
+                
                 if (partyId) {
                     history.push(`/p/${partyId}`)
                 }
@@ -58,7 +59,7 @@ const Landing = () => {
         >
             <div className="flex flex-row justify-between items-start">
                 <h1 className="mb-4 text-primary font-logo text-6xl">Renga</h1>
-                <div className=" py-2 px-4 text-gray-600 text-lg font-medium">
+                <div className=" py-2 px-4 text-gray-600 text-sm font-medium">
                     {!isAuthenticated && (
                         <button onClick={loginWithPopup}>Log in</button>
                     )}

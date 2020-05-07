@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
-import { Player, PlayerContext } from './AuthContext'
+import { Player, PartyContext, PartyProvider } from './AuthContext'
 import config from './auth_config.json'
 import Landing from './Landing/Landing'
 import Party from './Party'
@@ -8,7 +8,6 @@ import { Auth0Provider } from './utils/auth0'
 import { track } from './utils/tracking'
 
 export default () => {
-    const [player, setPlayer] = useState<Player>()
     const location = useLocation()
     useEffect(() => {
         track('View Page', {
@@ -26,14 +25,14 @@ export default () => {
         >
             <Switch>
                 <Route path="/p/:partyId">
-                    <PlayerContext.Provider
-                        value={{ player: player, setPlayer }}
-                    >
+                    <PartyProvider>
                         <Party></Party>
-                    </PlayerContext.Provider>
+                    </PartyProvider>
                 </Route>
                 <Route path="/" exact>
-                    <Landing></Landing>
+                    <PartyProvider>
+                        <Landing></Landing>
+                    </PartyProvider>
                 </Route>
             </Switch>
         </Auth0Provider>

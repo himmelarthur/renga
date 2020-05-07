@@ -3,7 +3,7 @@ import { Renga as RengaType, User, Status } from '../../generated/graphql'
 import classNames from 'classnames'
 import RengaSubmission from '../RengaSubmission'
 import RengaItem from './RengaItem'
-import { useParty } from '../../Party/hooks'
+import { useParty } from '../../PartyContext'
 
 const Renga = ({ open, renga, onClick, onClose, onSolved }: Props) => {
     const { partyId, player } = useParty()

@@ -28,6 +28,6 @@ export const useFetchLeaderboard = (partyId: string, userId?: number) => {
             })
         }
         setUserScore(newUserScore)
-    }, [data, userScore])
+    }, [data, userScore, animationControl, userId])
     return { data, loading, animationControl }
 }

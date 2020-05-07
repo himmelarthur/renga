@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect } from 'react'
 import gql from 'graphql-tag'
 import { useJoinPartyMutation, GetPlayersDocument } from '../generated/graphql'
-import { useParty } from './hooks'
+import { useParty } from '../PartyContext'
 import Button from '../components/Button'
 import { track } from '../utils/tracking'
 

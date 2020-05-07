@@ -1,15 +1,34 @@
 import JwtDecode from 'jwt-decode'
-import { useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useAccount } from '../Account/hooks'
-import { PlayerContext } from '../AuthContext'
+import { useAccount } from './Account/hooks'
 
-// TODO: Remove ? when ubiquitous
 export type TokenBody = { userId: number; partyId: string; username?: string }
 
-export const useParty = () => {
+export type Player = {
+    userId: number
+    username?: string
+}
+
+type PartyContextProps = {
+    partyId?: string
+    player?: Player
+    ready: boolean
+    setPlayer: (user?: Player) => void
+    addParty: (token?: string) => string | undefined
+}
+
+export const PartyContext = createContext<PartyContextProps>({
+    partyId: undefined,
+    player: undefined,
+    setPlayer: () => {},
+    addParty: () => undefined,
+    ready: false,
+})
+
+export const PartyProvider = ({ children }: { children: React.ReactNode }) => {
     const [ready, setReady] = useState(false)
-    const { player, setPlayer } = useContext(PlayerContext)
+    const [player, setPlayer] = useState<Player>()
     const { partyId } = useParams()
     const { getTokenFromAccount, isAuthenticated, loading } = useAccount()
 
@@ -27,7 +46,7 @@ export const useParty = () => {
         } else {
             const token = localStorage.getItem(`token:${partyId}`)
 
-            // Try to get token remotely
+            // // Try to get token remotely
             if (isAuthenticated) {
                 setTokenFromAccount(partyId)
             }
@@ -62,5 +81,19 @@ export const useParty = () => {
         return player.partyId
     }
 
-    return { addParty, player, partyId, ready }
+    return (
+        <PartyContext.Provider
+            value={{
+                partyId,
+                setPlayer,
+                addParty,
+                ready,
+                player,
+            }}
+        >
+            {children}
+        </PartyContext.Provider>
+    )
 }
+
+export const useParty = () => useContext(PartyContext)

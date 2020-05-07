@@ -1,7 +1,7 @@
 import ConfettiGenerator from 'confetti-js'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Player } from '../AuthContext'
+import { Player } from '../PartyContext'
 import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard/Leaderboard'
 import PlayerStats from '../components/PlayerStats'
