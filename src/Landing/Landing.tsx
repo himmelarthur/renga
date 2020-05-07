@@ -60,7 +60,7 @@ const Landing = () => {
                 <h1 className="mb-4 text-primary font-logo sm:text-6xl text-4xl">
                     Renga
                 </h1>
-                <Navigation />
+                <Navigation displayNewParty={false} />
             </div>
             <h2 className="text-primary text-center text-2xl font-medium my-8 sm:mt-32">
                 Make your friends guess movies with only three emojis
