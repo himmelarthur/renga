@@ -1,9 +1,9 @@
-import React from 'react'
-import { useAuth0 } from '../utils/auth0'
-import CreatorRengaList from './CreatorRengaList'
-import CreatorStats from './CreatorStats'
+import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useAccount } from '../Account/hooks'
+import { track } from '../utils/tracking'
+import CreatorRengaList from './CreatorRengaList'
+import CreatorStats from './CreatorStats'
 
 export interface ProfileProps {
     className?: string
@@ -11,6 +11,10 @@ export interface ProfileProps {
 
 export default ({ className }: ProfileProps) => {
     const { user, loading, isAuthenticated } = useAccount()
+
+    useEffect(() => {
+        track('View Profile')
+    }, [])
 
     if (!loading && !isAuthenticated) return <Redirect to="/"></Redirect>
     if (!user) return <div></div>
