@@ -8,6 +8,7 @@ import PlayerStats from '../components/PlayerStats'
 import RengaForm from '../components/RengaForm'
 import { track } from '../utils/tracking'
 import Rengas from './Rengas/Rengas'
+import TopBar from '../components/TopBar'
 
 type Props = {
     partyId: string
@@ -81,30 +82,7 @@ const Party = ({ partyId, user }: Props) => {
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
             <div className="sm:p-10 p-4">
-                <div className="mb-4">
-                    <div className="flex flex-row items-center justify-between">
-                        <h1 className="text-primary font-logo text-3xl">
-                            Renga
-                        </h1>
-                        <div className="flex flex-row items-baseline">
-                            <InviteLink
-                                className="hidden sm:flex mr-4"
-                                partyId={partyId}
-                            />
-                            <a
-                                href="/"
-                                target="_blank"
-                                className="border border-primary py-2 px-4 text-primary rounded"
-                            >
-                                Start new party
-                            </a>
-                        </div>
-                    </div>
-                    <InviteLink
-                        className="sm:hidden text-xs max-w-full mt-3"
-                        partyId={partyId}
-                    />
-                </div>
+                <TopBar className="mb-4" />
                 <div className="flex justify-center my-4 sm:my-0">
                     <PlayerStats userId={user.userId} />
                 </div>

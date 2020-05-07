@@ -3,13 +3,14 @@ import { useAuth0 } from '../utils/auth0'
 import CreatorRengaList from './CreatorRengaList'
 import CreatorStats from './CreatorStats'
 import { Redirect } from 'react-router-dom'
+import { useAccount } from '../Account/hooks'
 
 export interface ProfileProps {
     className?: string
 }
 
 export default ({ className }: ProfileProps) => {
-    const { user, loading, isAuthenticated } = useAuth0()
+    const { user, loading, isAuthenticated } = useAccount()
 
     if (!loading && !isAuthenticated) return <Redirect to="/"></Redirect>
     if (!user) return <div></div>
