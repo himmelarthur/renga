@@ -19,6 +19,7 @@ interface Props {
     onMovieChange?: (movie: MovieResult | undefined) => void
     className?: string
     filteredIds?: number[]
+    inputClassName?: string
 }
 
 const MovieAutocomplete: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const MovieAutocomplete: React.FC<Props> = ({
     onMovieChange,
     className,
     filteredIds,
+    inputClassName,
 }) => {
     const [query, setQuery] = useState('')
     const [suggestions, setSuggestions] = useState<MovieResult[]>([])
@@ -69,10 +71,15 @@ const MovieAutocomplete: React.FC<Props> = ({
                 movie === undefined ? (
                     // @ts-ignore
                     <input
-                        {...props}
                         autoFocus
+                        {...props}
                         style={{ height: 54 }}
-                        className="appearance-none p-6 border-2 rounded w-full text-xl font-bold"
+                        className={
+                            inputClassName ||
+                            classNames(
+                                'appearance-none p-6 border-2 rounded w-full text-xl font-bold'
+                            )
+                        }
                     />
                 ) : (
                     <div

@@ -355,6 +355,7 @@ export type PlaylistRengaWhereInput = {
     deletedAt?: Maybe<NullableDateTimeFilter>
     movieId?: Maybe<IntFilter>
     playlistId?: Maybe<StringFilter>
+    title?: Maybe<StringFilter>
     AND?: Maybe<Array<PlaylistRengaWhereInput>>
     OR?: Maybe<Array<PlaylistRengaWhereInput>>
     NOT?: Maybe<Array<PlaylistRengaWhereInput>>
@@ -415,6 +416,7 @@ export type PlaylistRenga = {
     __typename?: 'PlaylistRenga'
     id: Scalars['Int']
     emojis: Array<Scalars['String']>
+    title?: Maybe<Scalars['String']>
 }
 
 export type Mutation = {
@@ -581,6 +583,7 @@ export type PlaylistRengaCreateWithoutMovieInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
+    title: Scalars['String']
     emojis?: Maybe<PlaylistRengaCreateemojisInput>
     playlist: PlaylistCreateOneWithoutRengasInput
 }
@@ -977,6 +980,7 @@ export type PlaylistRengaUpdateWithoutMovieDataInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
+    title?: Maybe<Scalars['String']>
     emojis?: Maybe<PlaylistRengaUpdateemojisInput>
     playlist?: Maybe<PlaylistUpdateOneRequiredWithoutRengasInput>
 }
@@ -1015,6 +1019,7 @@ export type PlaylistRengaScalarWhereInput = {
     deletedAt?: Maybe<NullableDateTimeFilter>
     movieId?: Maybe<IntFilter>
     playlistId?: Maybe<StringFilter>
+    title?: Maybe<StringFilter>
     AND?: Maybe<Array<PlaylistRengaScalarWhereInput>>
     OR?: Maybe<Array<PlaylistRengaScalarWhereInput>>
     NOT?: Maybe<Array<PlaylistRengaScalarWhereInput>>
@@ -1025,6 +1030,7 @@ export type PlaylistRengaUpdateManyDataInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
     deletedAt?: Maybe<Scalars['DateTime']>
+    title?: Maybe<Scalars['String']>
     emojis?: Maybe<PlaylistRengaUpdateemojisInput>
 }
 
@@ -1605,7 +1611,10 @@ export type GetPlaylistRengasQueryVariables = {
 
 export type GetPlaylistRengasQuery = { __typename?: 'Query' } & {
     playlistRengas: Array<
-        { __typename?: 'PlaylistRenga' } & Pick<PlaylistRenga, 'id' | 'emojis'>
+        { __typename?: 'PlaylistRenga' } & Pick<
+            PlaylistRenga,
+            'id' | 'emojis' | 'title'
+        >
     >
 }
 
@@ -1938,6 +1947,7 @@ export const GetPlaylistRengasDocument = gql`
         playlistRengas(where: { playlistId: { equals: $playlistId } }) {
             id
             emojis
+            title
         }
     }
 `

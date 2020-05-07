@@ -1,4 +1,5 @@
 import { queryType } from '@nexus/schema'
+import { Context } from '../context'
 
 export const Query = queryType({
     definition(t) {

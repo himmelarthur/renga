@@ -4,8 +4,8 @@ import MovieAutocomplete from '../components/MovieAutoComplete'
 
 const Renga = ({ renga, solved, onSubmitMovie }: Props) => {
     return (
-        <div>
-            <div>
+        <div className="flex items-center justify-center my-6">
+            <div className="w-56 flex justify-end mr-4">
                 {renga.emojis.map((emoji, i) => (
                     <Emoji
                         key={i}
@@ -15,17 +15,22 @@ const Renga = ({ renga, solved, onSubmitMovie }: Props) => {
                     ></Emoji>
                 ))}
             </div>
-            {solved ? (
-                <div>Solved</div>
-            ) : (
-                <MovieAutocomplete
-                    movie={undefined}
-                    onMovieChange={(movie) => {
-                        if (!movie) return
-                        onSubmitMovie(movie.id)
-                    }}
-                />
-            )}
+            <div className="w-64 ml-4">
+                {solved ? (
+                    <div className="text-gray-700 text-sm">{renga.title}</div>
+                ) : (
+                    <MovieAutocomplete
+                        inputClassName={
+                            'appearance-none p-2 px-4 border-2 rounded font-bold text-lg'
+                        }
+                        movie={undefined}
+                        onMovieChange={(movie) => {
+                            if (!movie) return
+                            onSubmitMovie(movie.id)
+                        }}
+                    />
+                )}
+            </div>
         </div>
     )
 }
@@ -35,6 +40,7 @@ type Props = {
     renga: {
         id: number
         emojis: string[]
+        title?: string | null
     }
     onSubmitMovie: (movieId: number) => void
 }

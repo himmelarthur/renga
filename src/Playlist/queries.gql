@@ -2,6 +2,7 @@ query GetPlaylistRengas($playlistId: String!) {
     playlistRengas(where: { playlistId: { equals: $playlistId } }) {
         id
         emojis
+        title
     }
 }
 
