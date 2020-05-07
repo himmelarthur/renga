@@ -7,6 +7,7 @@ import { useCreatePartyMutation } from '../generated/graphql'
 import { useParty } from '../PartyContext'
 import { track, useGlobalTracking } from '../utils/tracking'
 import EmojiRoulette from './EmojiRoulette'
+import { LoginButton, Navigation } from '../components/TopBar'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -55,23 +56,11 @@ const Landing = () => {
                 background: 'linear-gradient(-30deg, #eae2e6 0%, white 100%)',
             }}
         >
-            <div className="flex flex-row justify-between items-start">
-                <h1 className="mb-4 text-primary font-logo text-6xl">Renga</h1>
-                <div className=" py-2 px-4 text-gray-600 text-sm font-medium">
-                    {!isAuthenticated && (
-                        <button onClick={() => login()}>Log in</button>
-                    )}
-
-                    {isAuthenticated && (
-                        <button
-                            onClick={() =>
-                                logout?.({ returnTo: window.location.origin })
-                            }
-                        >
-                            Log out
-                        </button>
-                    )}
-                </div>
+            <div className="flex flex-row justify-between sm:items-start items-baseline">
+                <h1 className="mb-4 text-primary font-logo sm:text-6xl text-4xl">
+                    Renga
+                </h1>
+                <Navigation />
             </div>
             <h2 className="text-primary text-center text-2xl font-medium my-8 sm:mt-32">
                 Make your friends guess movies with only three emojis
