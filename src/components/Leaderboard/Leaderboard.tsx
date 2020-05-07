@@ -5,6 +5,7 @@ import pluralize from 'pluralize'
 import React from 'react'
 import { userEmoji } from '../../utils/emojis'
 import { useFetchLeaderboard } from './hooks'
+import InviteLink from '../InviteLink'
 
 interface ILeaderboardProps {
     partyId: string
@@ -32,10 +33,11 @@ const Leaderboard: React.FunctionComponent<ILeaderboardProps> = ({
             )}
         >
             <AnimateSharedLayout>
-                <div className="flex sm:flex-row flex-col justify-between w-full items-baseline">
+                <div className="flex flex-row justify-between w-full items-baseline">
                     <h3 className="text-gray-800 text-2xl font-bold">
                         Leaderboard
                     </h3>
+                    <InviteLink partyId={partyId!} />
                 </div>
                 <div className="w-full text-gray-600 my-2">
                     {users.map((player, index) => {

@@ -7,6 +7,7 @@ import {
     useUpsertAccountMutation,
 } from '../generated/graphql'
 import { Auth0User, useAuth0 } from '../utils/auth0'
+import { useHistory } from 'react-router-dom'
 
 gql`
     mutation upsertAccount($email: String!, $playerIds: [Int!]) {
@@ -33,6 +34,7 @@ export const getAllTokens: () => TokenBody[] = () => {
 }
 
 export const useAccount = () => {
+    const history = useHistory()
     const [createAccount] = useUpsertAccountMutation()
     const [getToken] = useGetPartyTokenMutation()
     const {
@@ -43,9 +45,10 @@ export const useAccount = () => {
         logout,
     } = useAuth0()
 
-    const login = async () => {
+    const login = async (redirectTo?: string) => {
         const newAuth = await loginWithPopup()
         if (newAuth) refreshAccount(newAuth)
+        if (redirectTo && newAuth) history.push(redirectTo)
     }
 
     const refreshAccount = useCallback(

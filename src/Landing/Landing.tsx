@@ -59,7 +59,7 @@ const Landing = () => {
                 <h1 className="mb-4 text-primary font-logo text-6xl">Renga</h1>
                 <div className=" py-2 px-4 text-gray-600 text-sm font-medium">
                     {!isAuthenticated && (
-                        <button onClick={login}>Log in</button>
+                        <button onClick={() => login()}>Log in</button>
                     )}
 
                     {isAuthenticated && (
