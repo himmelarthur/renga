@@ -423,6 +423,7 @@ export type Mutation = {
     __typename?: 'Mutation'
     createOneRenga: Renga
     updateOneRenga?: Maybe<Renga>
+    createOnePlaylist: Playlist
     likeRenga: Renga
     createSubmission: Submission
     createParty: Scalars['String']
@@ -438,6 +439,10 @@ export type MutationCreateOneRengaArgs = {
 export type MutationUpdateOneRengaArgs = {
     data: RengaUpdateInput
     where: RengaWhereUniqueInput
+}
+
+export type MutationCreateOnePlaylistArgs = {
+    data: PlaylistCreateInput
 }
 
 export type MutationLikeRengaArgs = {
@@ -1564,6 +1569,77 @@ export type SubmissionUpsertWithWhereUniqueWithoutRengaInput = {
     create: SubmissionCreateWithoutRengaInput
 }
 
+export type PlaylistCreateInput = {
+    id: Scalars['String']
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    rengas?: Maybe<PlaylistRengaCreateManyWithoutPlaylistInput>
+}
+
+export type PlaylistRengaCreateManyWithoutPlaylistInput = {
+    create?: Maybe<Array<PlaylistRengaCreateWithoutPlaylistInput>>
+    connect?: Maybe<Array<PlaylistRengaWhereUniqueInput>>
+}
+
+export type PlaylistRengaCreateWithoutPlaylistInput = {
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    title: Scalars['String']
+    emojis?: Maybe<PlaylistRengaCreateemojisInput>
+    movie: MovieCreateOneWithoutPlaylistRengaInput
+}
+
+export type MovieCreateOneWithoutPlaylistRengaInput = {
+    create?: Maybe<MovieCreateWithoutPlaylistRengaInput>
+    connect?: Maybe<MovieWhereUniqueInput>
+}
+
+export type MovieCreateWithoutPlaylistRengaInput = {
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    movieDBId: Scalars['Int']
+    title: Scalars['String']
+    year: Scalars['Int']
+    genres?: Maybe<MovieCreategenresInput>
+    rengas?: Maybe<RengaCreateManyWithoutMovieInput>
+}
+
+export type RengaCreateManyWithoutMovieInput = {
+    create?: Maybe<Array<RengaCreateWithoutMovieInput>>
+    connect?: Maybe<Array<RengaWhereUniqueInput>>
+}
+
+export type RengaCreateWithoutMovieInput = {
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    likeCount?: Maybe<Scalars['Int']>
+    solverCount?: Maybe<Scalars['Int']>
+    attemptCount?: Maybe<Scalars['Int']>
+    successRatio?: Maybe<Scalars['Float']>
+    emojis?: Maybe<RengaCreateemojisInput>
+    submissions?: Maybe<SubmissionCreateManyWithoutRengaInput>
+    author: UserCreateOneWithoutRengasInput
+    party: PartyCreateOneWithoutRengasInput
+    likedBy?: Maybe<UserCreateManyWithoutLikesInput>
+    Hint?: Maybe<HintCreateManyWithoutRengaInput>
+}
+
+export type Playlist = {
+    __typename?: 'Playlist'
+    id: Scalars['String']
+    rengas: Array<PlaylistRenga>
+}
+
+export type PlaylistRengasArgs = {
+    skip?: Maybe<Scalars['Int']>
+    after?: Maybe<PlaylistRengaWhereUniqueInput>
+    before?: Maybe<PlaylistRengaWhereUniqueInput>
+    first?: Maybe<Scalars['Int']>
+    last?: Maybe<Scalars['Int']>
+}
+
 export type CreatePartyMutationVariables = {
     username: Scalars['String']
 }
@@ -1627,6 +1703,22 @@ export type TryPlaylistRengaMutation = { __typename?: 'Mutation' } & Pick<
     Mutation,
     'tryPlaylistRenga'
 >
+
+export type CreatePlaylistMutationVariables = {
+    playlistId: Scalars['String']
+    rengas?: Maybe<Array<PlaylistRengaCreateWithoutPlaylistInput>>
+}
+
+export type CreatePlaylistMutation = { __typename?: 'Mutation' } & {
+    createOnePlaylist: { __typename?: 'Playlist' } & Pick<Playlist, 'id'> & {
+            rengas: Array<
+                { __typename?: 'PlaylistRenga' } & Pick<
+                    PlaylistRenga,
+                    'id' | 'emojis' | 'title'
+                >
+            >
+        }
+}
 
 export type GetPlayersQueryVariables = {
     partyId: Scalars['String']
@@ -2044,6 +2136,63 @@ export type TryPlaylistRengaMutationResult = ApolloReactCommon.MutationResult<
 export type TryPlaylistRengaMutationOptions = ApolloReactCommon.BaseMutationOptions<
     TryPlaylistRengaMutation,
     TryPlaylistRengaMutationVariables
+>
+export const CreatePlaylistDocument = gql`
+    mutation CreatePlaylist(
+        $playlistId: String!
+        $rengas: [PlaylistRengaCreateWithoutPlaylistInput!]
+    ) {
+        createOnePlaylist(
+            data: { id: $playlistId, rengas: { create: $rengas } }
+        ) {
+            id
+            rengas {
+                id
+                emojis
+                title
+            }
+        }
+    }
+`
+
+/**
+ * __useCreatePlaylistMutation__
+ *
+ * To run a mutation, you first call `useCreatePlaylistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePlaylistMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPlaylistMutation, { data, loading, error }] = useCreatePlaylistMutation({
+ *   variables: {
+ *      playlistId: // value for 'playlistId'
+ *      rengas: // value for 'rengas'
+ *   },
+ * });
+ */
+export function useCreatePlaylistMutation(
+    baseOptions?: ApolloReactHooks.MutationHookOptions<
+        CreatePlaylistMutation,
+        CreatePlaylistMutationVariables
+    >
+) {
+    return ApolloReactHooks.useMutation<
+        CreatePlaylistMutation,
+        CreatePlaylistMutationVariables
+    >(CreatePlaylistDocument, baseOptions)
+}
+export type CreatePlaylistMutationHookResult = ReturnType<
+    typeof useCreatePlaylistMutation
+>
+export type CreatePlaylistMutationResult = ApolloReactCommon.MutationResult<
+    CreatePlaylistMutation
+>
+export type CreatePlaylistMutationOptions = ApolloReactCommon.BaseMutationOptions<
+    CreatePlaylistMutation,
+    CreatePlaylistMutationVariables
 >
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {

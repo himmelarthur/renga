@@ -5,6 +5,7 @@ import Party from './Party'
 import Playlist from './Playlist/Playlist'
 import { AuthContext, User } from './AuthContext'
 import { track } from './utils/tracking'
+import CreatePlaylist from './Playlist/CreatePlaylist'
 
 export default () => {
     const [user, setUser] = useState<User>()
@@ -19,6 +20,9 @@ export default () => {
             <Switch>
                 <Route path="/p/:partyId">
                     <Party />
+                </Route>
+                <Route path="/l/new" exact>
+                    <CreatePlaylist />
                 </Route>
                 <Route path="/l/:playlistId">
                     <Playlist />

@@ -9,3 +9,17 @@ query GetPlaylistRengas($playlistId: String!) {
 mutation TryPlaylistRenga($rengaId: Int!, $movieId: Int!) {
     tryPlaylistRenga(rengaId: $rengaId, movieDBId: $movieId)
 }
+
+mutation CreatePlaylist(
+    $playlistId: String!
+    $rengas: [PlaylistRengaCreateWithoutPlaylistInput!]
+) {
+    createOnePlaylist(data: { id: $playlistId, rengas: { create: $rengas } }) {
+        id
+        rengas {
+            id
+            emojis
+            title
+        }
+    }
+}

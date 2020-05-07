@@ -20,6 +20,11 @@ interface Props {
     className?: string
     filteredIds?: number[]
     inputClassName?: string
+    renderInput?: (props: Autosuggest.InputProps<MovieResult>) => JSX.Element
+    renderResult?: (props: {
+        movie: MovieResult
+        onClickChange: () => void
+    }) => JSX.Element
 }
 
 const MovieAutocomplete: React.FC<Props> = ({
@@ -29,6 +34,8 @@ const MovieAutocomplete: React.FC<Props> = ({
     className,
     filteredIds,
     inputClassName,
+    renderInput,
+    renderResult,
 }) => {
     const [query, setQuery] = useState('')
     const [suggestions, setSuggestions] = useState<MovieResult[]>([])
@@ -69,18 +76,27 @@ const MovieAutocomplete: React.FC<Props> = ({
             suggestions={suggestions}
             renderInputComponent={(props) =>
                 movie === undefined ? (
-                    // @ts-ignore
-                    <input
-                        autoFocus
-                        {...props}
-                        style={{ height: 54 }}
-                        className={
-                            inputClassName ||
-                            classNames(
-                                'appearance-none p-6 border-2 rounded w-full text-xl font-bold'
-                            )
-                        }
-                    />
+                    renderInput ? (
+                        renderInput(props)
+                    ) : (
+                        // @ts-ignore
+                        <input
+                            autoFocus
+                            {...props}
+                            style={{ height: 54 }}
+                            className={
+                                inputClassName ||
+                                classNames(
+                                    'appearance-none p-6 border-2 rounded w-full text-xl font-bold'
+                                )
+                            }
+                        />
+                    )
+                ) : renderResult ? (
+                    renderResult({
+                        movie,
+                        onClickChange: () => onMovieChange?.(undefined),
+                    })
                 ) : (
                     <div
                         className="p-3 border-2 rounded w-full sm:text-xl text-base font-bold relative flex items-center bg-white pr-20"

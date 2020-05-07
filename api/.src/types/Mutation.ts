@@ -17,6 +17,7 @@ export const Mutation = mutationType({
     definition(t) {
         t.crud.createOneRenga()
         t.crud.updateOneRenga()
+        t.crud.createOnePlaylist()
         t.field('likeRenga', {
             type: 'Renga',
             args: {

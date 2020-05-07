@@ -3,6 +3,14 @@ import { Context } from '../../context'
 import { verify } from 'jsonwebtoken'
 import { appSecret } from '../../security/authentication'
 
+export const Playlist = objectType({
+    name: 'Playlist',
+    definition(t) {
+        t.model.id()
+        t.model.rengas()
+    },
+})
+
 export const PlaylistRenga = objectType({
     name: 'PlaylistRenga',
     definition(t) {
@@ -10,6 +18,7 @@ export const PlaylistRenga = objectType({
         t.model.emojis()
         t.string('title', {
             nullable: true,
+            // @ts-ignore
             resolve: async ({ title, id }, _, context: Context) => {
                 let rengaIds: number[] = []
 
