@@ -14,14 +14,12 @@ type PartyContextProps = {
     partyId?: string
     player?: Player
     ready: boolean
-    setPlayer: (user?: Player) => void
     addParty: (token?: string) => string | undefined
 }
 
 export const PartyContext = createContext<PartyContextProps>({
     partyId: undefined,
     player: undefined,
-    setPlayer: () => {},
     addParty: () => undefined,
     ready: false,
 })
@@ -85,7 +83,6 @@ export const PartyProvider = ({ children }: { children: React.ReactNode }) => {
         <PartyContext.Provider
             value={{
                 partyId,
-                setPlayer,
                 addParty,
                 ready,
                 player,
