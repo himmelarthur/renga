@@ -261,12 +261,13 @@ export const Mutation = mutationType({
                 const auth0id = (await ctx.account)?.auth0Id
                 if (!auth0id) throw Error('Account not authenticated')
                 const users = await ctx.prisma.user.findMany({
+                    orderBy: { createdAt: 'desc' },
                     where: {
                         account: { auth0id: { equals: auth0id } },
                         partyId,
                     },
                 })
-                if (users.length !== 1) return null
+                if (users.length === 0) return null
                 const user = users[0]
                 return sign(
                     {
