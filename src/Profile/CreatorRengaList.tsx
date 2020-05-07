@@ -10,6 +10,7 @@ import {
 import Button from '../components/Button'
 import { DEFAULT_RENGAS_PAGE_COUNT } from '../client'
 import Ordering from '../Party/Rengas/Ordering'
+import { track } from '../utils/tracking'
 
 gql`
     query getAccountRengas(
@@ -104,6 +105,7 @@ export default ({ className, auth0Id }: MyRengaListProps) => {
             })}
             <Button
                 onClick={() => {
+                    track('Clicked More Renga profile')
                     fetchMore({
                         updateQuery: (prev, { fetchMoreResult }) => {
                             if (!fetchMoreResult) return prev
