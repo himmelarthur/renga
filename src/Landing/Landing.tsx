@@ -1,14 +1,12 @@
 import gql from 'graphql-tag'
-import React, { useCallback, useState, FormEvent, useEffect } from 'react'
+import React, { FormEvent, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useCreatePartyMutation } from '../generated/graphql'
-import { useGlobalTracking } from '../utils/tracking'
-import EmojiRoulette from './EmojiRoulette'
-import Button from '../components/Button'
-import { track } from '../utils/tracking'
-import { useAuth0 } from '../utils/auth0'
-import { useParty } from '../PartyContext'
 import { useAccount } from '../Account/hooks'
+import Button from '../components/Button'
+import { useCreatePartyMutation } from '../generated/graphql'
+import { useParty } from '../PartyContext'
+import { track, useGlobalTracking } from '../utils/tracking'
+import EmojiRoulette from './EmojiRoulette'
 
 gql`
     mutation CreateParty($username: String!) {
