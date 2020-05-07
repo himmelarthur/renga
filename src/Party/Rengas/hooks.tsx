@@ -43,7 +43,7 @@ export const useFetchRengas = (partyId: string, pageCount: number) => {
             })
         }, POLLING_INTERVAL)
         return () => clearInterval(interval)
-    }, [])
+    }, [fetchMore])
 
     const fetchMoreRengas = async () => {
         track('Fetched More Rengas', { hasReachEnd })

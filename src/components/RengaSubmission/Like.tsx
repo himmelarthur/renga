@@ -33,7 +33,7 @@ export default ({ rengaId }: LikeProps) => {
             rengaId,
         })
         likeRenga()
-    }, [likeRenga])
+    }, [likeRenga, rengaId])
     if (loading)
         return (
             <div className="flex justify-center w-full">

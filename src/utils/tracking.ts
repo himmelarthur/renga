@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { v4 } from 'uuid'
-import { PartyContext } from '../AuthContext'
+import { PartyContext } from '../PartyContext'
 import { useAuth0 } from './auth0'
 
 export const track = (event: string, args?: {}) => {

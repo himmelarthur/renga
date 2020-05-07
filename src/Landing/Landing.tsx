@@ -7,7 +7,7 @@ import EmojiRoulette from './EmojiRoulette'
 import Button from '../components/Button'
 import { track } from '../utils/tracking'
 import { useAuth0 } from '../utils/auth0'
-import { useParty } from '../AuthContext'
+import { useParty } from '../PartyContext'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -38,7 +38,6 @@ const Landing = () => {
             const res = await create({ variables: { username } })
             try {
                 const partyId = addParty(res.data?.createParty)
-                
                 if (partyId) {
                     history.push(`/p/${partyId}`)
                 }

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Route, Switch, useLocation } from 'react-router-dom'
-import { Player, PartyContext, PartyProvider } from './AuthContext'
 import config from './auth_config.json'
 import Landing from './Landing/Landing'
 import Party from './Party'
+import { PartyProvider } from './PartyContext'
 import { Auth0Provider } from './utils/auth0'
 import { track } from './utils/tracking'
 

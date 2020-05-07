@@ -1,12 +1,12 @@
 import gql from 'graphql-tag'
+import JwtDecode from 'jwt-decode'
+import { useCallback } from 'react'
+import { TokenBody } from '../PartyContext'
 import {
     useGetPartyTokenMutation,
     useUpsertAccountMutation,
 } from '../generated/graphql'
 import { Auth0User, useAuth0 } from '../utils/auth0'
-import { TokenBody } from '../Party/hooks'
-import JwtDecode from 'jwt-decode'
-import { useEffect } from 'react'
 
 gql`
     mutation upsertAccount($email: String!, $playerIds: [Int!]) {
@@ -37,32 +37,34 @@ export const useAccount = () => {
     const [getToken] = useGetPartyTokenMutation()
     const { user, isAuthenticated, loading } = useAuth0()
 
-    useEffect(() => {
-        if (user) refreshAccount(user)
-    }, [user])
-
-    const refreshAccount = async (authUser: Auth0User) => {
-        const allTokens = getAllTokens()
-        const playerIds: number[] = allTokens.map((x) => x.userId)
-        return createAccount({
-            variables: {
-                email: authUser.email,
-                playerIds,
-            },
-        })
-    }
+    const refreshAccount = useCallback(
+        async (authUser: Auth0User) => {
+            const allTokens = getAllTokens()
+            const playerIds: number[] = allTokens.map((x) => x.userId)
+            return createAccount({
+                variables: {
+                    email: authUser.email,
+                    playerIds,
+                },
+            })
+        },
+        [createAccount]
+    )
 
     const getTokenFromAccount: (
         partyId: string
-    ) => Promise<string | undefined> = async (partyId) => {
-        if (!user) return undefined
-        const res = await getToken({
-            variables: { partyId },
-        })
-        if (res.errors) return undefined
-        if (!res.data?.getPartyToken) return undefined
-        return res.data.getPartyToken
-    }
+    ) => Promise<string | undefined> = useCallback(
+        async (partyId) => {
+            if (!user) return undefined
+            const res = await getToken({
+                variables: { partyId },
+            })
+            if (res.errors) return undefined
+            if (!res.data?.getPartyToken) return undefined
+            return res.data.getPartyToken
+        },
+        [getToken, user]
+    )
 
     return {
         getTokenFromAccount,

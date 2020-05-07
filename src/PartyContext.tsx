@@ -46,7 +46,7 @@ export const PartyProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
             const token = localStorage.getItem(`token:${partyId}`)
 
-            // // Try to get token remotely
+            // Try to get token remotely
             if (isAuthenticated) {
                 setTokenFromAccount(partyId)
             }
@@ -59,7 +59,7 @@ export const PartyProvider = ({ children }: { children: React.ReactNode }) => {
             // Ready when loading is over
             setReady(!loading)
         }
-    }, [partyId, setPlayer, loading, isAuthenticated])
+    }, [partyId, setPlayer, loading, isAuthenticated, getTokenFromAccount])
 
     // Set partyId depending on the current page
     useEffect(() => {
