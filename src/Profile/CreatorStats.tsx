@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { useGetAccountStatsQuery } from '../generated/graphql'
 import { Emoji } from 'emoji-mart'
 import ReactTooltip from 'react-tooltip'
+import pluralize from 'pluralize'
 import { track } from '../utils/tracking'
 
 gql`
@@ -100,11 +101,11 @@ export default ({ className, auth0Id }: AccountStatsProps) => {
             <div className="flex flex-row justify-between">
                 <div className="flex flex-col space-y-2">
                     <div className="text-gray-800 sm:text-3xl text-lg">
-                        You made guess {distinctMovieCount} different movies
+                        You made guess{' '}
+                        {pluralize('different movie', distinctMovieCount, true)}
                     </div>
                     <div className="text-gray-700 sm:text-base text-sm">
-                        {' '}
-                        over {rengaCount} rengas{' '}
+                        over {pluralize('renga', rengaCount, true)}
                     </div>
                 </div>
                 <CreatorLevel
