@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -81,6 +81,15 @@ model User {
   accountId  Int?
 }
 
+model Account {
+  id        Int      @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  auth0id   String   @unique
+  players   User[]
+  email     String
+}
+
 model Submission {
   id         Int      @default(autoincrement()) @id
   createdAt  DateTime @default(now())
@@ -94,13 +103,4 @@ model Submission {
   movieDBId  Int
 
   @@index([rengaId], name: "Renga_fkey")
-}
-
-model Account {
-  id        Int      @default(autoincrement()) @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  auth0id   String   @unique
-  players   User[]
-  email     String
 }

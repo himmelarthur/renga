@@ -1,10 +1,8 @@
-import * as React from 'react'
-import classNames from 'classnames'
-import gql from 'graphql-tag'
-import { useLikeRengaMutation } from '../../generated/graphql'
-import Loader from 'react-loader-spinner'
-import Button from '../Button'
 import { motion } from 'framer-motion'
+import gql from 'graphql-tag'
+import * as React from 'react'
+import Loader from 'react-loader-spinner'
+import { useLikeRengaMutation } from '../../generated/graphql'
 import { track } from '../../utils/tracking'
 
 export interface LikeProps {
@@ -35,7 +33,7 @@ export default ({ rengaId }: LikeProps) => {
             rengaId,
         })
         likeRenga()
-    }, [likeRenga])
+    }, [likeRenga, rengaId])
     if (loading)
         return (
             <div className="flex justify-center w-full">

@@ -1,5 +1,9 @@
 {
+    "extends": "react-app",
+    "plugins": ["react-hooks", "jsx-a11y"],
     "rules": {
-      "jsx-a11y/accessible-emoji": "off"
+        "jsx-a11y/accessible-emoji": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
     }
-  }
+}

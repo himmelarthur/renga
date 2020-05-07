@@ -1,8 +1,8 @@
-import moment from 'moment'
-import React, { useCallback, useState, useRef } from 'react'
-import Autosuggest from 'react-autosuggest'
 import classNames from 'classnames'
 import throttle from 'lodash.throttle'
+import moment from 'moment'
+import React, { useCallback, useState } from 'react'
+import Autosuggest from 'react-autosuggest'
 import TextButton from './TextButton'
 
 export interface MovieResult {

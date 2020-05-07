@@ -1,11 +1,12 @@
 import gql from 'graphql-tag'
-import React, { useCallback, useState, FormEvent, useEffect } from 'react'
+import React, { FormEvent, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useCreatePartyMutation } from '../generated/graphql'
-import { useParty } from '../hooks'
-import EmojiRoulette from './EmojiRoulette'
+import { useAccount } from '../Account/hooks'
 import Button from '../components/Button'
-import { track } from '../utils/tracking'
+import { useCreatePartyMutation } from '../generated/graphql'
+import { useParty } from '../PartyContext'
+import { track, useGlobalTracking } from '../utils/tracking'
+import EmojiRoulette from './EmojiRoulette'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -17,11 +18,14 @@ const Landing = () => {
     const [create, { loading }] = useCreatePartyMutation()
     const [username, setUsername] = useState('')
     const { addParty } = useParty()
+    useGlobalTracking()
     const history = useHistory()
 
     useEffect(() => {
         track('View Landing')
     }, [])
+
+    const { isAuthenticated, login, logout } = useAccount()
 
     const onCreate = useCallback(
         async (e: FormEvent) => {
@@ -51,7 +55,24 @@ const Landing = () => {
                 background: 'linear-gradient(-30deg, #eae2e6 0%, white 100%)',
             }}
         >
-            <h1 className="mb-4 text-primary font-logo text-6xl">Renga</h1>
+            <div className="flex flex-row justify-between items-start">
+                <h1 className="mb-4 text-primary font-logo text-6xl">Renga</h1>
+                <div className=" py-2 px-4 text-gray-600 text-sm font-medium">
+                    {!isAuthenticated && (
+                        <button onClick={login}>Log in</button>
+                    )}
+
+                    {isAuthenticated && (
+                        <button
+                            onClick={() =>
+                                logout?.({ returnTo: window.location.origin })
+                            }
+                        >
+                            Log out
+                        </button>
+                    )}
+                </div>
+            </div>
             <h2 className="text-primary text-center text-2xl font-medium my-8 sm:mt-32">
                 Make your friends guess movies with only three emojis
             </h2>

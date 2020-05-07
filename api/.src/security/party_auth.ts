@@ -1,4 +1,4 @@
-import { verify  } from 'jsonwebtoken'
+import { verify } from 'jsonwebtoken'
 
 export interface AuthenticatedUser {
     userId: number
@@ -6,7 +6,10 @@ export interface AuthenticatedUser {
 }
 
 export const verifyIdentity = async (token: string) => {
-    return verify(token.replace('Bearer ', ''), appSecret()) as AuthenticatedUser
+    return verify(
+        token.replace('Bearer ', ''),
+        appSecret()
+    ) as AuthenticatedUser
 }
 
 export const appSecret = () => {

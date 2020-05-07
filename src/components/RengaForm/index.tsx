@@ -81,7 +81,7 @@ const useMovieDuplication = (
         } else {
             setIsMovieAlreadyUsed(false)
         }
-    }, [movie, partyId])
+    }, [movie, partyId, hasMovie])
     return { isMovieAlreadyUsed, isMovieChecked: called }
 }
 
@@ -184,7 +184,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                     >
                         ⚠️ This movie has been already used in another renga
                     </span>
-                    <a
+                    <button
                         className="text-primary underline pl-1 cursor-pointer flex-shrink-0"
                         onClick={() => {
                             track('Picked Suggestion')
@@ -199,7 +199,7 @@ export default ({ userId, partyId, onCreated, onClose }: IRengaFormProps) => {
                         }}
                     >
                         Pick one for me!
-                    </a>
+                    </button>
                 </div>
                 <div
                     className="absolute top-0 p-4 right-0 text-gray-500 hover:text-gray-700 cursor-pointer"

@@ -51,10 +51,35 @@ export type User = {
     id: Scalars['Int']
     username: Scalars['String']
     score: Scalars['Int']
+    party: Party
     hintCount: Scalars['Int']
     likedRengaCount: Scalars['Int']
     solvedCount: Scalars['Int']
     postedCount: Scalars['Int']
+}
+
+export type Party = {
+    __typename?: 'Party'
+    id: Scalars['String']
+    users: Array<User>
+}
+
+export type PartyUsersArgs = {
+    orderBy?: Maybe<PartyUsersOrderByInput>
+    skip?: Maybe<Scalars['Int']>
+    after?: Maybe<UserWhereUniqueInput>
+    before?: Maybe<UserWhereUniqueInput>
+    first?: Maybe<Scalars['Int']>
+    last?: Maybe<Scalars['Int']>
+}
+
+export type PartyUsersOrderByInput = {
+    score?: Maybe<OrderByArg>
+}
+
+export enum OrderByArg {
+    Asc = 'asc',
+    Desc = 'desc',
 }
 
 export type RengaWhereUniqueInput = {
@@ -116,11 +141,6 @@ export type BooleanFilter = {
 
 export type RengaSubmissionsOrderByInput = {
     createdAt?: Maybe<OrderByArg>
-}
-
-export enum OrderByArg {
-    Asc = 'asc',
-    Desc = 'desc',
 }
 
 export type SubmissionWhereUniqueInput = {
@@ -238,18 +258,31 @@ export type UserWhereInput = {
     rengas?: Maybe<RengaFilter>
     hintCount?: Maybe<IntFilter>
     likes?: Maybe<RengaFilter>
+    accountId?: Maybe<NullableIntFilter>
     hint?: Maybe<HintFilter>
     submission?: Maybe<SubmissionFilter>
     AND?: Maybe<Array<UserWhereInput>>
     OR?: Maybe<Array<UserWhereInput>>
     NOT?: Maybe<Array<UserWhereInput>>
     party?: Maybe<PartyWhereInput>
+    account?: Maybe<AccountWhereInput>
 }
 
 export type RengaFilter = {
     every?: Maybe<RengaWhereInput>
     some?: Maybe<RengaWhereInput>
     none?: Maybe<RengaWhereInput>
+}
+
+export type NullableIntFilter = {
+    equals?: Maybe<Scalars['Int']>
+    not?: Maybe<Scalars['Int']>
+    in?: Maybe<Array<Scalars['Int']>>
+    notIn?: Maybe<Array<Scalars['Int']>>
+    lt?: Maybe<Scalars['Int']>
+    lte?: Maybe<Scalars['Int']>
+    gt?: Maybe<Scalars['Int']>
+    gte?: Maybe<Scalars['Int']>
 }
 
 export type HintFilter = {
@@ -295,6 +328,18 @@ export type UserFilter = {
     none?: Maybe<UserWhereInput>
 }
 
+export type AccountWhereInput = {
+    id?: Maybe<IntFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    auth0id?: Maybe<StringFilter>
+    players?: Maybe<UserFilter>
+    email?: Maybe<StringFilter>
+    AND?: Maybe<Array<AccountWhereInput>>
+    OR?: Maybe<Array<AccountWhereInput>>
+    NOT?: Maybe<Array<AccountWhereInput>>
+}
+
 export type FloatFilter = {
     equals?: Maybe<Scalars['Float']>
     not?: Maybe<Scalars['Float']>
@@ -331,25 +376,6 @@ export type PartyWhereUniqueInput = {
     id?: Maybe<Scalars['String']>
 }
 
-export type Party = {
-    __typename?: 'Party'
-    id: Scalars['String']
-    users: Array<User>
-}
-
-export type PartyUsersArgs = {
-    orderBy?: Maybe<PartyUsersOrderByInput>
-    skip?: Maybe<Scalars['Int']>
-    after?: Maybe<UserWhereUniqueInput>
-    before?: Maybe<UserWhereUniqueInput>
-    first?: Maybe<Scalars['Int']>
-    last?: Maybe<Scalars['Int']>
-}
-
-export type PartyUsersOrderByInput = {
-    score?: Maybe<OrderByArg>
-}
-
 export type Mutation = {
     __typename?: 'Mutation'
     createOneRenga: Renga
@@ -359,6 +385,8 @@ export type Mutation = {
     createParty: Scalars['String']
     useHint: Scalars['Boolean']
     joinParty: Scalars['String']
+    upsertAccount: Account
+    getPartyToken?: Maybe<Scalars['String']>
 }
 
 export type MutationCreateOneRengaArgs = {
@@ -392,6 +420,15 @@ export type MutationUseHintArgs = {
 export type MutationJoinPartyArgs = {
     partyId: Scalars['String']
     username: Scalars['String']
+}
+
+export type MutationUpsertAccountArgs = {
+    email?: Maybe<Scalars['String']>
+    userIds?: Maybe<Array<Scalars['Int']>>
+}
+
+export type MutationGetPartyTokenArgs = {
+    partyId: Scalars['String']
 }
 
 export type RengaCreateInput = {
@@ -443,6 +480,7 @@ export type UserCreateWithoutSubmissionInput = {
     party: PartyCreateOneWithoutUsersInput
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     likes?: Maybe<RengaCreateManyWithoutLikedByInput>
+    account?: Maybe<AccountCreateOneWithoutPlayersInput>
     hint?: Maybe<HintCreateManyWithoutUserInput>
 }
 
@@ -514,6 +552,7 @@ export type UserCreateWithoutRengasInput = {
     hintCount?: Maybe<Scalars['Int']>
     party: PartyCreateOneWithoutUsersInput
     likes?: Maybe<RengaCreateManyWithoutLikedByInput>
+    account?: Maybe<AccountCreateOneWithoutPlayersInput>
     hint?: Maybe<HintCreateManyWithoutUserInput>
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
@@ -564,6 +603,7 @@ export type UserCreateWithoutPartyInput = {
     hintCount?: Maybe<Scalars['Int']>
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     likes?: Maybe<RengaCreateManyWithoutLikedByInput>
+    account?: Maybe<AccountCreateOneWithoutPlayersInput>
     hint?: Maybe<HintCreateManyWithoutUserInput>
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
@@ -602,8 +642,26 @@ export type UserCreateWithoutLikesInput = {
     hintCount?: Maybe<Scalars['Int']>
     party: PartyCreateOneWithoutUsersInput
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
+    account?: Maybe<AccountCreateOneWithoutPlayersInput>
     hint?: Maybe<HintCreateManyWithoutUserInput>
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
+}
+
+export type AccountCreateOneWithoutPlayersInput = {
+    create?: Maybe<AccountCreateWithoutPlayersInput>
+    connect?: Maybe<AccountWhereUniqueInput>
+}
+
+export type AccountCreateWithoutPlayersInput = {
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    auth0id: Scalars['String']
+    email: Scalars['String']
+}
+
+export type AccountWhereUniqueInput = {
+    id?: Maybe<Scalars['Int']>
+    auth0id?: Maybe<Scalars['String']>
 }
 
 export type HintCreateManyWithoutUserInput = {
@@ -704,6 +762,7 @@ export type UserCreateWithoutHintInput = {
     party: PartyCreateOneWithoutUsersInput
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     likes?: Maybe<RengaCreateManyWithoutLikedByInput>
+    account?: Maybe<AccountCreateOneWithoutPlayersInput>
     submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
 
@@ -773,6 +832,7 @@ export type UserUpdateWithoutSubmissionDataInput = {
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     likes?: Maybe<RengaUpdateManyWithoutLikedByInput>
+    account?: Maybe<AccountUpdateOneWithoutPlayersInput>
     hint?: Maybe<HintUpdateManyWithoutUserInput>
 }
 
@@ -866,6 +926,7 @@ export type UserUpdateWithoutRengasDataInput = {
     hintCount?: Maybe<Scalars['Int']>
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     likes?: Maybe<RengaUpdateManyWithoutLikedByInput>
+    account?: Maybe<AccountUpdateOneWithoutPlayersInput>
     hint?: Maybe<HintUpdateManyWithoutUserInput>
     submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
 }
@@ -944,6 +1005,7 @@ export type UserUpdateWithoutPartyDataInput = {
     hintCount?: Maybe<Scalars['Int']>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     likes?: Maybe<RengaUpdateManyWithoutLikedByInput>
+    account?: Maybe<AccountUpdateOneWithoutPlayersInput>
     hint?: Maybe<HintUpdateManyWithoutUserInput>
     submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
 }
@@ -1008,8 +1070,31 @@ export type UserUpdateWithoutLikesDataInput = {
     hintCount?: Maybe<Scalars['Int']>
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
+    account?: Maybe<AccountUpdateOneWithoutPlayersInput>
     hint?: Maybe<HintUpdateManyWithoutUserInput>
     submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
+}
+
+export type AccountUpdateOneWithoutPlayersInput = {
+    create?: Maybe<AccountCreateWithoutPlayersInput>
+    connect?: Maybe<AccountWhereUniqueInput>
+    disconnect?: Maybe<Scalars['Boolean']>
+    delete?: Maybe<Scalars['Boolean']>
+    update?: Maybe<AccountUpdateWithoutPlayersDataInput>
+    upsert?: Maybe<AccountUpsertWithoutPlayersInput>
+}
+
+export type AccountUpdateWithoutPlayersDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    auth0id?: Maybe<Scalars['String']>
+    email?: Maybe<Scalars['String']>
+}
+
+export type AccountUpsertWithoutPlayersInput = {
+    update: AccountUpdateWithoutPlayersDataInput
+    create: AccountCreateWithoutPlayersInput
 }
 
 export type HintUpdateManyWithoutUserInput = {
@@ -1189,6 +1274,7 @@ export type UserUpdateWithoutHintDataInput = {
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     likes?: Maybe<RengaUpdateManyWithoutLikedByInput>
+    account?: Maybe<AccountUpdateOneWithoutPlayersInput>
     submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
 }
 
@@ -1257,6 +1343,7 @@ export type UserScalarWhereInput = {
     rengas?: Maybe<RengaFilter>
     hintCount?: Maybe<IntFilter>
     likes?: Maybe<RengaFilter>
+    accountId?: Maybe<NullableIntFilter>
     hint?: Maybe<HintFilter>
     submission?: Maybe<SubmissionFilter>
     AND?: Maybe<Array<UserScalarWhereInput>>
@@ -1365,6 +1452,40 @@ export type SubmissionUpsertWithWhereUniqueWithoutRengaInput = {
     update: SubmissionUpdateWithoutRengaDataInput
     create: SubmissionCreateWithoutRengaInput
 }
+
+export type Account = {
+    __typename?: 'Account'
+    id: Scalars['Int']
+    auth0id: Scalars['String']
+    createdAt: Scalars['DateTime']
+    players: Array<User>
+}
+
+export type AccountPlayersArgs = {
+    skip?: Maybe<Scalars['Int']>
+    after?: Maybe<UserWhereUniqueInput>
+    before?: Maybe<UserWhereUniqueInput>
+    first?: Maybe<Scalars['Int']>
+    last?: Maybe<Scalars['Int']>
+}
+
+export type UpsertAccountMutationVariables = {
+    email: Scalars['String']
+    playerIds?: Maybe<Array<Scalars['Int']>>
+}
+
+export type UpsertAccountMutation = { __typename?: 'Mutation' } & {
+    upsertAccount: { __typename?: 'Account' } & Pick<Account, 'id'>
+}
+
+export type GetPartyTokenMutationVariables = {
+    partyId: Scalars['String']
+}
+
+export type GetPartyTokenMutation = { __typename?: 'Mutation' } & Pick<
+    Mutation,
+    'getPartyToken'
+>
 
 export type CreatePartyMutationVariables = {
     username: Scalars['String']
@@ -1554,6 +1675,97 @@ export type CreateSubmissionMutation = { __typename?: 'Mutation' } & {
     >
 }
 
+export const UpsertAccountDocument = gql`
+    mutation upsertAccount($email: String!, $playerIds: [Int!]) {
+        upsertAccount(email: $email, userIds: $playerIds) {
+            id
+        }
+    }
+`
+
+/**
+ * __useUpsertAccountMutation__
+ *
+ * To run a mutation, you first call `useUpsertAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upsertAccountMutation, { data, loading, error }] = useUpsertAccountMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      playerIds: // value for 'playerIds'
+ *   },
+ * });
+ */
+export function useUpsertAccountMutation(
+    baseOptions?: ApolloReactHooks.MutationHookOptions<
+        UpsertAccountMutation,
+        UpsertAccountMutationVariables
+    >
+) {
+    return ApolloReactHooks.useMutation<
+        UpsertAccountMutation,
+        UpsertAccountMutationVariables
+    >(UpsertAccountDocument, baseOptions)
+}
+export type UpsertAccountMutationHookResult = ReturnType<
+    typeof useUpsertAccountMutation
+>
+export type UpsertAccountMutationResult = ApolloReactCommon.MutationResult<
+    UpsertAccountMutation
+>
+export type UpsertAccountMutationOptions = ApolloReactCommon.BaseMutationOptions<
+    UpsertAccountMutation,
+    UpsertAccountMutationVariables
+>
+export const GetPartyTokenDocument = gql`
+    mutation getPartyToken($partyId: String!) {
+        getPartyToken(partyId: $partyId)
+    }
+`
+
+/**
+ * __useGetPartyTokenMutation__
+ *
+ * To run a mutation, you first call `useGetPartyTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetPartyTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getPartyTokenMutation, { data, loading, error }] = useGetPartyTokenMutation({
+ *   variables: {
+ *      partyId: // value for 'partyId'
+ *   },
+ * });
+ */
+export function useGetPartyTokenMutation(
+    baseOptions?: ApolloReactHooks.MutationHookOptions<
+        GetPartyTokenMutation,
+        GetPartyTokenMutationVariables
+    >
+) {
+    return ApolloReactHooks.useMutation<
+        GetPartyTokenMutation,
+        GetPartyTokenMutationVariables
+    >(GetPartyTokenDocument, baseOptions)
+}
+export type GetPartyTokenMutationHookResult = ReturnType<
+    typeof useGetPartyTokenMutation
+>
+export type GetPartyTokenMutationResult = ApolloReactCommon.MutationResult<
+    GetPartyTokenMutation
+>
+export type GetPartyTokenMutationOptions = ApolloReactCommon.BaseMutationOptions<
+    GetPartyTokenMutation,
+    GetPartyTokenMutationVariables
+>
 export const CreatePartyDocument = gql`
     mutation CreateParty($username: String!) {
         createParty(username: $username)
