@@ -98,7 +98,7 @@ export const Auth0Provider = ({
             setLoading(false)
         }
         initAuth0()
-    }, [])
+    }, [initOptions, onRedirectCallback])
 
     const loginWithPopup: (
         options?: PopupLoginOptions,
