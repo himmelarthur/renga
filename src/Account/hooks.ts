@@ -35,7 +35,18 @@ export const getAllTokens: () => TokenBody[] = () => {
 export const useAccount = () => {
     const [createAccount] = useUpsertAccountMutation()
     const [getToken] = useGetPartyTokenMutation()
-    const { user, isAuthenticated, loading } = useAuth0()
+    const {
+        user,
+        isAuthenticated,
+        loading,
+        loginWithPopup,
+        logout,
+    } = useAuth0()
+
+    const login = async () => {
+        const newAuth = await loginWithPopup()
+        if (newAuth) refreshAccount(newAuth)
+    }
 
     const refreshAccount = useCallback(
         async (authUser: Auth0User) => {
@@ -72,5 +83,7 @@ export const useAccount = () => {
         user,
         isAuthenticated,
         loading,
+        login,
+        logout,
     }
 }

@@ -8,6 +8,7 @@ import Button from '../components/Button'
 import { track } from '../utils/tracking'
 import { useAuth0 } from '../utils/auth0'
 import { useParty } from '../PartyContext'
+import { useAccount } from '../Account/hooks'
 
 gql`
     mutation CreateParty($username: String!) {
@@ -26,7 +27,7 @@ const Landing = () => {
         track('View Landing')
     }, [])
 
-    const { isAuthenticated, loginWithPopup, logout } = useAuth0()
+    const { isAuthenticated, login, logout } = useAccount()
 
     const onCreate = useCallback(
         async (e: FormEvent) => {
@@ -60,7 +61,7 @@ const Landing = () => {
                 <h1 className="mb-4 text-primary font-logo text-6xl">Renga</h1>
                 <div className=" py-2 px-4 text-gray-600 text-sm font-medium">
                     {!isAuthenticated && (
-                        <button onClick={loginWithPopup}>Log in</button>
+                        <button onClick={login}>Log in</button>
                     )}
 
                     {isAuthenticated && (
