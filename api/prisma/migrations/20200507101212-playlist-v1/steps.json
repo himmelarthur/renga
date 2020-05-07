@@ -1,0 +1,336 @@
+{
+    "version": "0.3.14-fixed",
+    "steps": [
+        {
+            "tag": "CreateModel",
+            "model": "PlaylistRenga"
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "id",
+            "type": "Int",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "id"
+                },
+                "directive": "default"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "id"
+                },
+                "directive": "default"
+            },
+            "argument": "",
+            "value": "autoincrement()"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "id"
+                },
+                "directive": "id"
+            }
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "createdAt",
+            "type": "DateTime",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "createdAt"
+                },
+                "directive": "default"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "createdAt"
+                },
+                "directive": "default"
+            },
+            "argument": "",
+            "value": "now()"
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "updatedAt",
+            "type": "DateTime",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "updatedAt"
+                },
+                "directive": "updatedAt"
+            }
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "deletedAt",
+            "type": "DateTime",
+            "arity": "Optional"
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "emojis",
+            "type": "String",
+            "arity": "List"
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "movie",
+            "type": "Movie",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "movie"
+                },
+                "directive": "relation"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "movie"
+                },
+                "directive": "relation"
+            },
+            "argument": "fields",
+            "value": "[movieId]"
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "movie"
+                },
+                "directive": "relation"
+            },
+            "argument": "references",
+            "value": "[id]"
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "movieId",
+            "type": "Int",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "playlist",
+            "type": "Playlist",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "playlist"
+                },
+                "directive": "relation"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "playlist"
+                },
+                "directive": "relation"
+            },
+            "argument": "fields",
+            "value": "[playlistId]"
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "PlaylistRenga",
+                    "field": "playlist"
+                },
+                "directive": "relation"
+            },
+            "argument": "references",
+            "value": "[id]"
+        },
+        {
+            "tag": "CreateField",
+            "model": "PlaylistRenga",
+            "field": "playlistId",
+            "type": "String",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateModel",
+            "model": "Playlist"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Playlist",
+            "field": "id",
+            "type": "String",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Playlist",
+                    "field": "id"
+                },
+                "directive": "id"
+            }
+        },
+        {
+            "tag": "CreateField",
+            "model": "Playlist",
+            "field": "createdAt",
+            "type": "DateTime",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Playlist",
+                    "field": "createdAt"
+                },
+                "directive": "default"
+            }
+        },
+        {
+            "tag": "CreateArgument",
+            "location": {
+                "tag": "Directive",
+                "path": {
+                    "tag": "Field",
+                    "model": "Playlist",
+                    "field": "createdAt"
+                },
+                "directive": "default"
+            },
+            "argument": "",
+            "value": "now()"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Playlist",
+            "field": "updatedAt",
+            "type": "DateTime",
+            "arity": "Required"
+        },
+        {
+            "tag": "CreateDirective",
+            "location": {
+                "path": {
+                    "tag": "Field",
+                    "model": "Playlist",
+                    "field": "updatedAt"
+                },
+                "directive": "updatedAt"
+            }
+        },
+        {
+            "tag": "CreateField",
+            "model": "Playlist",
+            "field": "rengas",
+            "type": "PlaylistRenga",
+            "arity": "List"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Movie",
+            "field": "PlaylistRenga",
+            "type": "PlaylistRenga",
+            "arity": "List"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Renga",
+            "field": "Hint",
+            "type": "Hint",
+            "arity": "List"
+        },
+        {
+            "tag": "CreateField",
+            "model": "User",
+            "field": "Hint",
+            "type": "Hint",
+            "arity": "List"
+        },
+        {
+            "tag": "CreateField",
+            "model": "User",
+            "field": "Submission",
+            "type": "Submission",
+            "arity": "List"
+        },
+        {
+            "tag": "CreateField",
+            "model": "Submission",
+            "field": "playlistRengaId",
+            "type": "Int",
+            "arity": "Optional"
+        }
+    ]
+}

@@ -18,6 +18,7 @@ export type Query = {
     renga?: Maybe<Renga>
     rengas: Array<Renga>
     party?: Maybe<Party>
+    playlistRengas: Array<PlaylistRenga>
 }
 
 export type QueryUserArgs = {
@@ -40,6 +41,15 @@ export type QueryRengasArgs = {
 
 export type QueryPartyArgs = {
     where: PartyWhereUniqueInput
+}
+
+export type QueryPlaylistRengasArgs = {
+    where?: Maybe<QueryPlaylistRengasWhereInput>
+    skip?: Maybe<Scalars['Int']>
+    after?: Maybe<PlaylistRengaWhereUniqueInput>
+    before?: Maybe<PlaylistRengaWhereUniqueInput>
+    first?: Maybe<Scalars['Int']>
+    last?: Maybe<Scalars['Int']>
 }
 
 export type UserWhereUniqueInput = {
@@ -161,7 +171,7 @@ export type RengaWhereInput = {
     solverCount?: Maybe<IntFilter>
     attemptCount?: Maybe<IntFilter>
     successRatio?: Maybe<FloatFilter>
-    hint?: Maybe<HintFilter>
+    Hint?: Maybe<HintFilter>
     AND?: Maybe<Array<RengaWhereInput>>
     OR?: Maybe<Array<RengaWhereInput>>
     NOT?: Maybe<Array<RengaWhereInput>>
@@ -207,6 +217,7 @@ export type SubmissionWhereInput = {
     valid?: Maybe<BooleanFilter>
     movieTitle?: Maybe<StringFilter>
     movieDBId?: Maybe<IntFilter>
+    playlistRengaId?: Maybe<NullableIntFilter>
     AND?: Maybe<Array<SubmissionWhereInput>>
     OR?: Maybe<Array<SubmissionWhereInput>>
     NOT?: Maybe<Array<SubmissionWhereInput>>
@@ -228,6 +239,17 @@ export type StringFilter = {
     endsWith?: Maybe<Scalars['String']>
 }
 
+export type NullableIntFilter = {
+    equals?: Maybe<Scalars['Int']>
+    not?: Maybe<Scalars['Int']>
+    in?: Maybe<Array<Scalars['Int']>>
+    notIn?: Maybe<Array<Scalars['Int']>>
+    lt?: Maybe<Scalars['Int']>
+    lte?: Maybe<Scalars['Int']>
+    gt?: Maybe<Scalars['Int']>
+    gte?: Maybe<Scalars['Int']>
+}
+
 export type UserWhereInput = {
     id?: Maybe<IntFilter>
     createdAt?: Maybe<DateTimeFilter>
@@ -238,8 +260,8 @@ export type UserWhereInput = {
     rengas?: Maybe<RengaFilter>
     hintCount?: Maybe<IntFilter>
     likes?: Maybe<RengaFilter>
-    hint?: Maybe<HintFilter>
-    submission?: Maybe<SubmissionFilter>
+    Hint?: Maybe<HintFilter>
+    Submission?: Maybe<SubmissionFilter>
     AND?: Maybe<Array<UserWhereInput>>
     OR?: Maybe<Array<UserWhereInput>>
     NOT?: Maybe<Array<UserWhereInput>>
@@ -314,9 +336,40 @@ export type MovieWhereInput = {
     title?: Maybe<StringFilter>
     year?: Maybe<IntFilter>
     rengas?: Maybe<RengaFilter>
+    PlaylistRenga?: Maybe<PlaylistRengaFilter>
     AND?: Maybe<Array<MovieWhereInput>>
     OR?: Maybe<Array<MovieWhereInput>>
     NOT?: Maybe<Array<MovieWhereInput>>
+}
+
+export type PlaylistRengaFilter = {
+    every?: Maybe<PlaylistRengaWhereInput>
+    some?: Maybe<PlaylistRengaWhereInput>
+    none?: Maybe<PlaylistRengaWhereInput>
+}
+
+export type PlaylistRengaWhereInput = {
+    id?: Maybe<IntFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    deletedAt?: Maybe<NullableDateTimeFilter>
+    movieId?: Maybe<IntFilter>
+    playlistId?: Maybe<StringFilter>
+    AND?: Maybe<Array<PlaylistRengaWhereInput>>
+    OR?: Maybe<Array<PlaylistRengaWhereInput>>
+    NOT?: Maybe<Array<PlaylistRengaWhereInput>>
+    movie?: Maybe<MovieWhereInput>
+    playlist?: Maybe<PlaylistWhereInput>
+}
+
+export type PlaylistWhereInput = {
+    id?: Maybe<StringFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    rengas?: Maybe<PlaylistRengaFilter>
+    AND?: Maybe<Array<PlaylistWhereInput>>
+    OR?: Maybe<Array<PlaylistWhereInput>>
+    NOT?: Maybe<Array<PlaylistWhereInput>>
 }
 
 export type QueryRengasOrderByInput = {
@@ -350,6 +403,20 @@ export type PartyUsersOrderByInput = {
     score?: Maybe<OrderByArg>
 }
 
+export type QueryPlaylistRengasWhereInput = {
+    playlistId?: Maybe<StringFilter>
+}
+
+export type PlaylistRengaWhereUniqueInput = {
+    id?: Maybe<Scalars['Int']>
+}
+
+export type PlaylistRenga = {
+    __typename?: 'PlaylistRenga'
+    id: Scalars['Int']
+    emojis: Array<Scalars['String']>
+}
+
 export type Mutation = {
     __typename?: 'Mutation'
     createOneRenga: Renga
@@ -359,6 +426,7 @@ export type Mutation = {
     createParty: Scalars['String']
     useHint: Scalars['Boolean']
     joinParty: Scalars['String']
+    tryPlaylistRenga: Scalars['String']
 }
 
 export type MutationCreateOneRengaArgs = {
@@ -394,6 +462,11 @@ export type MutationJoinPartyArgs = {
     username: Scalars['String']
 }
 
+export type MutationTryPlaylistRengaArgs = {
+    rengaId: Scalars['Int']
+    movieDBId: Scalars['Int']
+}
+
 export type RengaCreateInput = {
     createdAt?: Maybe<Scalars['DateTime']>
     updatedAt?: Maybe<Scalars['DateTime']>
@@ -408,7 +481,7 @@ export type RengaCreateInput = {
     author: UserCreateOneWithoutRengasInput
     party: PartyCreateOneWithoutRengasInput
     likedBy?: Maybe<UserCreateManyWithoutLikesInput>
-    hint?: Maybe<HintCreateManyWithoutRengaInput>
+    Hint?: Maybe<HintCreateManyWithoutRengaInput>
 }
 
 export type RengaCreateemojisInput = {
@@ -426,6 +499,7 @@ export type SubmissionCreateWithoutRengaInput = {
     valid?: Maybe<Scalars['Boolean']>
     movieTitle: Scalars['String']
     movieDBId: Scalars['Int']
+    playlistRengaId?: Maybe<Scalars['Int']>
     author: UserCreateOneWithoutSubmissionInput
 }
 
@@ -443,7 +517,7 @@ export type UserCreateWithoutSubmissionInput = {
     party: PartyCreateOneWithoutUsersInput
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     likes?: Maybe<RengaCreateManyWithoutLikedByInput>
-    hint?: Maybe<HintCreateManyWithoutUserInput>
+    Hint?: Maybe<HintCreateManyWithoutUserInput>
 }
 
 export type PartyCreateOneWithoutUsersInput = {
@@ -476,7 +550,7 @@ export type RengaCreateWithoutPartyInput = {
     movie: MovieCreateOneWithoutRengasInput
     author: UserCreateOneWithoutRengasInput
     likedBy?: Maybe<UserCreateManyWithoutLikesInput>
-    hint?: Maybe<HintCreateManyWithoutRengaInput>
+    Hint?: Maybe<HintCreateManyWithoutRengaInput>
 }
 
 export type MovieCreateOneWithoutRengasInput = {
@@ -491,10 +565,43 @@ export type MovieCreateWithoutRengasInput = {
     title: Scalars['String']
     year: Scalars['Int']
     genres?: Maybe<MovieCreategenresInput>
+    PlaylistRenga?: Maybe<PlaylistRengaCreateManyWithoutMovieInput>
 }
 
 export type MovieCreategenresInput = {
     set?: Maybe<Array<Scalars['Int']>>
+}
+
+export type PlaylistRengaCreateManyWithoutMovieInput = {
+    create?: Maybe<Array<PlaylistRengaCreateWithoutMovieInput>>
+    connect?: Maybe<Array<PlaylistRengaWhereUniqueInput>>
+}
+
+export type PlaylistRengaCreateWithoutMovieInput = {
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    emojis?: Maybe<PlaylistRengaCreateemojisInput>
+    playlist: PlaylistCreateOneWithoutRengasInput
+}
+
+export type PlaylistRengaCreateemojisInput = {
+    set?: Maybe<Array<Scalars['String']>>
+}
+
+export type PlaylistCreateOneWithoutRengasInput = {
+    create?: Maybe<PlaylistCreateWithoutRengasInput>
+    connect?: Maybe<PlaylistWhereUniqueInput>
+}
+
+export type PlaylistCreateWithoutRengasInput = {
+    id: Scalars['String']
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+}
+
+export type PlaylistWhereUniqueInput = {
+    id?: Maybe<Scalars['String']>
 }
 
 export type MovieWhereUniqueInput = {
@@ -514,8 +621,8 @@ export type UserCreateWithoutRengasInput = {
     hintCount?: Maybe<Scalars['Int']>
     party: PartyCreateOneWithoutUsersInput
     likes?: Maybe<RengaCreateManyWithoutLikedByInput>
-    hint?: Maybe<HintCreateManyWithoutUserInput>
-    submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
+    Hint?: Maybe<HintCreateManyWithoutUserInput>
+    Submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
 
 export type RengaCreateManyWithoutLikedByInput = {
@@ -536,7 +643,7 @@ export type RengaCreateWithoutLikedByInput = {
     movie: MovieCreateOneWithoutRengasInput
     author: UserCreateOneWithoutRengasInput
     party: PartyCreateOneWithoutRengasInput
-    hint?: Maybe<HintCreateManyWithoutRengaInput>
+    Hint?: Maybe<HintCreateManyWithoutRengaInput>
 }
 
 export type PartyCreateOneWithoutRengasInput = {
@@ -564,8 +671,8 @@ export type UserCreateWithoutPartyInput = {
     hintCount?: Maybe<Scalars['Int']>
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     likes?: Maybe<RengaCreateManyWithoutLikedByInput>
-    hint?: Maybe<HintCreateManyWithoutUserInput>
-    submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
+    Hint?: Maybe<HintCreateManyWithoutUserInput>
+    Submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
 
 export type RengaCreateManyWithoutAuthorInput = {
@@ -586,7 +693,7 @@ export type RengaCreateWithoutAuthorInput = {
     movie: MovieCreateOneWithoutRengasInput
     party: PartyCreateOneWithoutRengasInput
     likedBy?: Maybe<UserCreateManyWithoutLikesInput>
-    hint?: Maybe<HintCreateManyWithoutRengaInput>
+    Hint?: Maybe<HintCreateManyWithoutRengaInput>
 }
 
 export type UserCreateManyWithoutLikesInput = {
@@ -602,8 +709,8 @@ export type UserCreateWithoutLikesInput = {
     hintCount?: Maybe<Scalars['Int']>
     party: PartyCreateOneWithoutUsersInput
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
-    hint?: Maybe<HintCreateManyWithoutUserInput>
-    submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
+    Hint?: Maybe<HintCreateManyWithoutUserInput>
+    Submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
 
 export type HintCreateManyWithoutUserInput = {
@@ -654,6 +761,7 @@ export type SubmissionCreateWithoutAuthorInput = {
     valid?: Maybe<Scalars['Boolean']>
     movieTitle: Scalars['String']
     movieDBId: Scalars['Int']
+    playlistRengaId?: Maybe<Scalars['Int']>
     renga: RengaCreateOneWithoutSubmissionsInput
 }
 
@@ -675,7 +783,7 @@ export type RengaCreateWithoutSubmissionsInput = {
     author: UserCreateOneWithoutRengasInput
     party: PartyCreateOneWithoutRengasInput
     likedBy?: Maybe<UserCreateManyWithoutLikesInput>
-    hint?: Maybe<HintCreateManyWithoutRengaInput>
+    Hint?: Maybe<HintCreateManyWithoutRengaInput>
 }
 
 export type HintCreateManyWithoutRengaInput = {
@@ -704,7 +812,7 @@ export type UserCreateWithoutHintInput = {
     party: PartyCreateOneWithoutUsersInput
     rengas?: Maybe<RengaCreateManyWithoutAuthorInput>
     likes?: Maybe<RengaCreateManyWithoutLikedByInput>
-    submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
+    Submission?: Maybe<SubmissionCreateManyWithoutAuthorInput>
 }
 
 export type RengaUpdateInput = {
@@ -722,7 +830,7 @@ export type RengaUpdateInput = {
     author?: Maybe<UserUpdateOneRequiredWithoutRengasInput>
     party?: Maybe<PartyUpdateOneRequiredWithoutRengasInput>
     likedBy?: Maybe<UserUpdateManyWithoutLikesInput>
-    hint?: Maybe<HintUpdateManyWithoutRengaInput>
+    Hint?: Maybe<HintUpdateManyWithoutRengaInput>
 }
 
 export type RengaUpdateemojisInput = {
@@ -753,6 +861,7 @@ export type SubmissionUpdateWithoutRengaDataInput = {
     valid?: Maybe<Scalars['Boolean']>
     movieTitle?: Maybe<Scalars['String']>
     movieDBId?: Maybe<Scalars['Int']>
+    playlistRengaId?: Maybe<Scalars['Int']>
     author?: Maybe<UserUpdateOneRequiredWithoutSubmissionInput>
 }
 
@@ -773,7 +882,7 @@ export type UserUpdateWithoutSubmissionDataInput = {
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     likes?: Maybe<RengaUpdateManyWithoutLikedByInput>
-    hint?: Maybe<HintUpdateManyWithoutUserInput>
+    Hint?: Maybe<HintUpdateManyWithoutUserInput>
 }
 
 export type PartyUpdateOneRequiredWithoutUsersInput = {
@@ -821,7 +930,7 @@ export type RengaUpdateWithoutPartyDataInput = {
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
     author?: Maybe<UserUpdateOneRequiredWithoutRengasInput>
     likedBy?: Maybe<UserUpdateManyWithoutLikesInput>
-    hint?: Maybe<HintUpdateManyWithoutRengaInput>
+    Hint?: Maybe<HintUpdateManyWithoutRengaInput>
 }
 
 export type MovieUpdateOneRequiredWithoutRengasInput = {
@@ -839,10 +948,90 @@ export type MovieUpdateWithoutRengasDataInput = {
     title?: Maybe<Scalars['String']>
     year?: Maybe<Scalars['Int']>
     genres?: Maybe<MovieUpdategenresInput>
+    PlaylistRenga?: Maybe<PlaylistRengaUpdateManyWithoutMovieInput>
 }
 
 export type MovieUpdategenresInput = {
     set?: Maybe<Array<Scalars['Int']>>
+}
+
+export type PlaylistRengaUpdateManyWithoutMovieInput = {
+    create?: Maybe<Array<PlaylistRengaCreateWithoutMovieInput>>
+    connect?: Maybe<Array<PlaylistRengaWhereUniqueInput>>
+    set?: Maybe<Array<PlaylistRengaWhereUniqueInput>>
+    disconnect?: Maybe<Array<PlaylistRengaWhereUniqueInput>>
+    delete?: Maybe<Array<PlaylistRengaWhereUniqueInput>>
+    update?: Maybe<Array<PlaylistRengaUpdateWithWhereUniqueWithoutMovieInput>>
+    updateMany?: Maybe<Array<PlaylistRengaUpdateManyWithWhereNestedInput>>
+    deleteMany?: Maybe<Array<PlaylistRengaScalarWhereInput>>
+    upsert?: Maybe<Array<PlaylistRengaUpsertWithWhereUniqueWithoutMovieInput>>
+}
+
+export type PlaylistRengaUpdateWithWhereUniqueWithoutMovieInput = {
+    where: PlaylistRengaWhereUniqueInput
+    data: PlaylistRengaUpdateWithoutMovieDataInput
+}
+
+export type PlaylistRengaUpdateWithoutMovieDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    emojis?: Maybe<PlaylistRengaUpdateemojisInput>
+    playlist?: Maybe<PlaylistUpdateOneRequiredWithoutRengasInput>
+}
+
+export type PlaylistRengaUpdateemojisInput = {
+    set?: Maybe<Array<Scalars['String']>>
+}
+
+export type PlaylistUpdateOneRequiredWithoutRengasInput = {
+    create?: Maybe<PlaylistCreateWithoutRengasInput>
+    connect?: Maybe<PlaylistWhereUniqueInput>
+    update?: Maybe<PlaylistUpdateWithoutRengasDataInput>
+    upsert?: Maybe<PlaylistUpsertWithoutRengasInput>
+}
+
+export type PlaylistUpdateWithoutRengasDataInput = {
+    id?: Maybe<Scalars['String']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+}
+
+export type PlaylistUpsertWithoutRengasInput = {
+    update: PlaylistUpdateWithoutRengasDataInput
+    create: PlaylistCreateWithoutRengasInput
+}
+
+export type PlaylistRengaUpdateManyWithWhereNestedInput = {
+    where: PlaylistRengaScalarWhereInput
+    data: PlaylistRengaUpdateManyDataInput
+}
+
+export type PlaylistRengaScalarWhereInput = {
+    id?: Maybe<IntFilter>
+    createdAt?: Maybe<DateTimeFilter>
+    updatedAt?: Maybe<DateTimeFilter>
+    deletedAt?: Maybe<NullableDateTimeFilter>
+    movieId?: Maybe<IntFilter>
+    playlistId?: Maybe<StringFilter>
+    AND?: Maybe<Array<PlaylistRengaScalarWhereInput>>
+    OR?: Maybe<Array<PlaylistRengaScalarWhereInput>>
+    NOT?: Maybe<Array<PlaylistRengaScalarWhereInput>>
+}
+
+export type PlaylistRengaUpdateManyDataInput = {
+    id?: Maybe<Scalars['Int']>
+    createdAt?: Maybe<Scalars['DateTime']>
+    updatedAt?: Maybe<Scalars['DateTime']>
+    deletedAt?: Maybe<Scalars['DateTime']>
+    emojis?: Maybe<PlaylistRengaUpdateemojisInput>
+}
+
+export type PlaylistRengaUpsertWithWhereUniqueWithoutMovieInput = {
+    where: PlaylistRengaWhereUniqueInput
+    update: PlaylistRengaUpdateWithoutMovieDataInput
+    create: PlaylistRengaCreateWithoutMovieInput
 }
 
 export type MovieUpsertWithoutRengasInput = {
@@ -866,8 +1055,8 @@ export type UserUpdateWithoutRengasDataInput = {
     hintCount?: Maybe<Scalars['Int']>
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     likes?: Maybe<RengaUpdateManyWithoutLikedByInput>
-    hint?: Maybe<HintUpdateManyWithoutUserInput>
-    submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
+    Hint?: Maybe<HintUpdateManyWithoutUserInput>
+    Submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
 }
 
 export type RengaUpdateManyWithoutLikedByInput = {
@@ -901,7 +1090,7 @@ export type RengaUpdateWithoutLikedByDataInput = {
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
     author?: Maybe<UserUpdateOneRequiredWithoutRengasInput>
     party?: Maybe<PartyUpdateOneRequiredWithoutRengasInput>
-    hint?: Maybe<HintUpdateManyWithoutRengaInput>
+    Hint?: Maybe<HintUpdateManyWithoutRengaInput>
 }
 
 export type PartyUpdateOneRequiredWithoutRengasInput = {
@@ -944,8 +1133,8 @@ export type UserUpdateWithoutPartyDataInput = {
     hintCount?: Maybe<Scalars['Int']>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     likes?: Maybe<RengaUpdateManyWithoutLikedByInput>
-    hint?: Maybe<HintUpdateManyWithoutUserInput>
-    submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
+    Hint?: Maybe<HintUpdateManyWithoutUserInput>
+    Submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
 }
 
 export type RengaUpdateManyWithoutAuthorInput = {
@@ -979,7 +1168,7 @@ export type RengaUpdateWithoutAuthorDataInput = {
     movie?: Maybe<MovieUpdateOneRequiredWithoutRengasInput>
     party?: Maybe<PartyUpdateOneRequiredWithoutRengasInput>
     likedBy?: Maybe<UserUpdateManyWithoutLikesInput>
-    hint?: Maybe<HintUpdateManyWithoutRengaInput>
+    Hint?: Maybe<HintUpdateManyWithoutRengaInput>
 }
 
 export type UserUpdateManyWithoutLikesInput = {
@@ -1008,8 +1197,8 @@ export type UserUpdateWithoutLikesDataInput = {
     hintCount?: Maybe<Scalars['Int']>
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
-    hint?: Maybe<HintUpdateManyWithoutUserInput>
-    submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
+    Hint?: Maybe<HintUpdateManyWithoutUserInput>
+    Submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
 }
 
 export type HintUpdateManyWithoutUserInput = {
@@ -1120,6 +1309,7 @@ export type SubmissionUpdateWithoutAuthorDataInput = {
     valid?: Maybe<Scalars['Boolean']>
     movieTitle?: Maybe<Scalars['String']>
     movieDBId?: Maybe<Scalars['Int']>
+    playlistRengaId?: Maybe<Scalars['Int']>
     renga?: Maybe<RengaUpdateOneRequiredWithoutSubmissionsInput>
 }
 
@@ -1144,7 +1334,7 @@ export type RengaUpdateWithoutSubmissionsDataInput = {
     author?: Maybe<UserUpdateOneRequiredWithoutRengasInput>
     party?: Maybe<PartyUpdateOneRequiredWithoutRengasInput>
     likedBy?: Maybe<UserUpdateManyWithoutLikesInput>
-    hint?: Maybe<HintUpdateManyWithoutRengaInput>
+    Hint?: Maybe<HintUpdateManyWithoutRengaInput>
 }
 
 export type HintUpdateManyWithoutRengaInput = {
@@ -1189,7 +1379,7 @@ export type UserUpdateWithoutHintDataInput = {
     party?: Maybe<PartyUpdateOneRequiredWithoutUsersInput>
     rengas?: Maybe<RengaUpdateManyWithoutAuthorInput>
     likes?: Maybe<RengaUpdateManyWithoutLikedByInput>
-    submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
+    Submission?: Maybe<SubmissionUpdateManyWithoutAuthorInput>
 }
 
 export type UserUpsertWithoutHintInput = {
@@ -1222,6 +1412,7 @@ export type SubmissionScalarWhereInput = {
     valid?: Maybe<BooleanFilter>
     movieTitle?: Maybe<StringFilter>
     movieDBId?: Maybe<IntFilter>
+    playlistRengaId?: Maybe<NullableIntFilter>
     AND?: Maybe<Array<SubmissionScalarWhereInput>>
     OR?: Maybe<Array<SubmissionScalarWhereInput>>
     NOT?: Maybe<Array<SubmissionScalarWhereInput>>
@@ -1234,6 +1425,7 @@ export type SubmissionUpdateManyDataInput = {
     valid?: Maybe<Scalars['Boolean']>
     movieTitle?: Maybe<Scalars['String']>
     movieDBId?: Maybe<Scalars['Int']>
+    playlistRengaId?: Maybe<Scalars['Int']>
 }
 
 export type SubmissionUpsertWithWhereUniqueWithoutAuthorInput = {
@@ -1257,8 +1449,8 @@ export type UserScalarWhereInput = {
     rengas?: Maybe<RengaFilter>
     hintCount?: Maybe<IntFilter>
     likes?: Maybe<RengaFilter>
-    hint?: Maybe<HintFilter>
-    submission?: Maybe<SubmissionFilter>
+    Hint?: Maybe<HintFilter>
+    Submission?: Maybe<SubmissionFilter>
     AND?: Maybe<Array<UserScalarWhereInput>>
     OR?: Maybe<Array<UserScalarWhereInput>>
     NOT?: Maybe<Array<UserScalarWhereInput>>
@@ -1298,7 +1490,7 @@ export type RengaScalarWhereInput = {
     solverCount?: Maybe<IntFilter>
     attemptCount?: Maybe<IntFilter>
     successRatio?: Maybe<FloatFilter>
-    hint?: Maybe<HintFilter>
+    Hint?: Maybe<HintFilter>
     AND?: Maybe<Array<RengaScalarWhereInput>>
     OR?: Maybe<Array<RengaScalarWhereInput>>
     NOT?: Maybe<Array<RengaScalarWhereInput>>
@@ -1406,6 +1598,26 @@ export type GetRengasQuery = { __typename?: 'Query' } & {
             }
     >
 }
+
+export type GetPlaylistRengasQueryVariables = {
+    playlistId: Scalars['String']
+}
+
+export type GetPlaylistRengasQuery = { __typename?: 'Query' } & {
+    playlistRengas: Array<
+        { __typename?: 'PlaylistRenga' } & Pick<PlaylistRenga, 'id' | 'emojis'>
+    >
+}
+
+export type TryPlaylistRengaMutationVariables = {
+    rengaId: Scalars['Int']
+    movieId: Scalars['Int']
+}
+
+export type TryPlaylistRengaMutation = { __typename?: 'Mutation' } & Pick<
+    Mutation,
+    'tryPlaylistRenga'
+>
 
 export type GetPlayersQueryVariables = {
     partyId: Scalars['String']
@@ -1720,6 +1932,108 @@ export type GetRengasLazyQueryHookResult = ReturnType<
 export type GetRengasQueryResult = ApolloReactCommon.QueryResult<
     GetRengasQuery,
     GetRengasQueryVariables
+>
+export const GetPlaylistRengasDocument = gql`
+    query GetPlaylistRengas($playlistId: String!) {
+        playlistRengas(where: { playlistId: { equals: $playlistId } }) {
+            id
+            emojis
+        }
+    }
+`
+
+/**
+ * __useGetPlaylistRengasQuery__
+ *
+ * To run a query within a React component, call `useGetPlaylistRengasQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPlaylistRengasQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPlaylistRengasQuery({
+ *   variables: {
+ *      playlistId: // value for 'playlistId'
+ *   },
+ * });
+ */
+export function useGetPlaylistRengasQuery(
+    baseOptions?: ApolloReactHooks.QueryHookOptions<
+        GetPlaylistRengasQuery,
+        GetPlaylistRengasQueryVariables
+    >
+) {
+    return ApolloReactHooks.useQuery<
+        GetPlaylistRengasQuery,
+        GetPlaylistRengasQueryVariables
+    >(GetPlaylistRengasDocument, baseOptions)
+}
+export function useGetPlaylistRengasLazyQuery(
+    baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+        GetPlaylistRengasQuery,
+        GetPlaylistRengasQueryVariables
+    >
+) {
+    return ApolloReactHooks.useLazyQuery<
+        GetPlaylistRengasQuery,
+        GetPlaylistRengasQueryVariables
+    >(GetPlaylistRengasDocument, baseOptions)
+}
+export type GetPlaylistRengasQueryHookResult = ReturnType<
+    typeof useGetPlaylistRengasQuery
+>
+export type GetPlaylistRengasLazyQueryHookResult = ReturnType<
+    typeof useGetPlaylistRengasLazyQuery
+>
+export type GetPlaylistRengasQueryResult = ApolloReactCommon.QueryResult<
+    GetPlaylistRengasQuery,
+    GetPlaylistRengasQueryVariables
+>
+export const TryPlaylistRengaDocument = gql`
+    mutation TryPlaylistRenga($rengaId: Int!, $movieId: Int!) {
+        tryPlaylistRenga(rengaId: $rengaId, movieDBId: $movieId)
+    }
+`
+
+/**
+ * __useTryPlaylistRengaMutation__
+ *
+ * To run a mutation, you first call `useTryPlaylistRengaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTryPlaylistRengaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tryPlaylistRengaMutation, { data, loading, error }] = useTryPlaylistRengaMutation({
+ *   variables: {
+ *      rengaId: // value for 'rengaId'
+ *      movieId: // value for 'movieId'
+ *   },
+ * });
+ */
+export function useTryPlaylistRengaMutation(
+    baseOptions?: ApolloReactHooks.MutationHookOptions<
+        TryPlaylistRengaMutation,
+        TryPlaylistRengaMutationVariables
+    >
+) {
+    return ApolloReactHooks.useMutation<
+        TryPlaylistRengaMutation,
+        TryPlaylistRengaMutationVariables
+    >(TryPlaylistRengaDocument, baseOptions)
+}
+export type TryPlaylistRengaMutationHookResult = ReturnType<
+    typeof useTryPlaylistRengaMutation
+>
+export type TryPlaylistRengaMutationResult = ApolloReactCommon.MutationResult<
+    TryPlaylistRengaMutation
+>
+export type TryPlaylistRengaMutationOptions = ApolloReactCommon.BaseMutationOptions<
+    TryPlaylistRengaMutation,
+    TryPlaylistRengaMutationVariables
 >
 export const GetPlayersDocument = gql`
     query getPlayers($partyId: String!) {

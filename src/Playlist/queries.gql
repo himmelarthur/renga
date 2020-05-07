@@ -1,0 +1,10 @@
+query GetPlaylistRengas($playlistId: String!) {
+    playlistRengas(where: { playlistId: { equals: $playlistId } }) {
+        id
+        emojis
+    }
+}
+
+mutation TryPlaylistRenga($rengaId: Int!, $movieId: Int!) {
+    tryPlaylistRenga(rengaId: $rengaId, movieDBId: $movieId)
+}

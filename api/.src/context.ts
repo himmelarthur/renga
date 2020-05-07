@@ -2,19 +2,22 @@ import { PrismaClient } from '@prisma/client'
 import { verifyIdentity, AuthenticatedUser } from './security/authentication'
 import express from 'express'
 import logger from './logging'
+import { IncomingHttpHeaders } from 'http'
 
 const prisma = new PrismaClient()
 
 interface Context {
     prisma: PrismaClient
     user: Promise<AuthenticatedUser | undefined>
+    headers: IncomingHttpHeaders
 }
 
 const createContext: (req: express.Request) => Context = (req) => {
     // The request is authenticated or not
     let user: Promise<AuthenticatedUser | undefined>
-    if (req.headers !== undefined && req.headers.authorization) {
-        const token = req.headers.authorization
+    const token =
+        req.headers !== undefined ? req.headers.authorization : undefined
+    if (token) {
         logger.debug(
             `Request with bearer token found for ${req.method} ${req.path}`
         )
@@ -32,6 +35,7 @@ const createContext: (req: express.Request) => Context = (req) => {
     return {
         user,
         prisma,
+        headers: req.headers,
     }
 }
 

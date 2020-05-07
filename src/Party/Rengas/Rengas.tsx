@@ -64,16 +64,16 @@ const Rengas = ({
             ) : undefined}
             <div className="flex flex-row flex-wrap justify-center sm:justify-start mt-4 max-w-full">
                 <AnimateSharedLayout type="switch">
+                    {displayNewButton ? (
+                        <div
+                            className="flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 px-2 py-10 cursor-pointer text-primary font-medium uppercase bg-gray-100"
+                            onClick={onClickNew}
+                        >
+                            + New renga
+                        </div>
+                    ) : undefined}
                     {data.rengas.length ? (
                         <>
-                            {displayNewButton ? (
-                                <div
-                                    className="flex flex-col justify-center items-center sm:w-40 w-32 mr-4 mb-4 rounded hover:bg-gray-200 px-2 py-10 cursor-pointer text-primary font-medium uppercase bg-gray-100"
-                                    onClick={onClickNew}
-                                >
-                                    + New renga
-                                </div>
-                            ) : undefined}
                             {data.rengas
                                 .filter((x) => {
                                     if (highlightedRenga === x.id) return true

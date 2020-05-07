@@ -1,10 +1,17 @@
 import { HintType } from '@prisma/client'
 import { incrementHintCount, incrementScore } from '../services/User'
-import { intArg, mutationType, stringArg, booleanArg } from '@nexus/schema'
-import { sign } from 'jsonwebtoken'
+import {
+    intArg,
+    mutationType,
+    stringArg,
+    booleanArg,
+    idArg,
+} from '@nexus/schema'
+import { sign, verify } from 'jsonwebtoken'
 import { Context } from '../context'
 import { appSecret } from '../security/authentication'
 import { populateRengas, incrementRenga } from '../services/Renga'
+import { ApolloError } from 'apollo-server'
 
 export const Mutation = mutationType({
     definition(t) {
@@ -193,6 +200,41 @@ export const Mutation = mutationType({
                         userId: user.id,
                         username: user.username,
                         partyId: user.partyId,
+                    },
+                    appSecret()
+                )
+            },
+        })
+        t.field('tryPlaylistRenga', {
+            type: 'String',
+            args: {
+                rengaId: intArg({ required: true }),
+                movieDBId: intArg({ required: true }),
+            },
+            resolve: async (_, { rengaId, movieDBId }, ctx: Context) => {
+                const renga = await ctx.prisma.playlistRenga.findOne({
+                    where: {
+                        id: rengaId,
+                    },
+                    include: {
+                        movie: true,
+                    },
+                })
+                const playlistToken = ctx.headers['x-playlist-token'] as string
+
+                let rengaIds: number[] = []
+                try {
+                    const decodedToken = verify(playlistToken, appSecret()) as {
+                        rengaIds: number[]
+                    }
+                    rengaIds = decodedToken.rengaIds
+                } catch (err) {}
+                if (!renga) throw new Error('Renga not found')
+                if (renga.movie.movieDBId !== movieDBId)
+                    throw new ApolloError('Wrong movie', 'wrong-movie')
+                return sign(
+                    {
+                        rengaIds: Array.from(new Set([...rengaIds, rengaId])),
                     },
                     appSecret()
                 )

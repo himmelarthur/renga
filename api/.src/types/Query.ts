@@ -16,5 +16,10 @@ export const Query = queryType({
             pagination: true,
         })
         t.crud.party()
+        t.crud.playlistRengas({
+            filtering: {
+                playlistId: true,
+            },
+        })
     },
 })
