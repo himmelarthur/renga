@@ -39,26 +39,26 @@ const CreatorLevel = ({
         emoji = 'baby'
         level = 1
         next = 5
-    } else if (movieCount < 15) {
+    } else if (movieCount < 10) {
         emoji = 'child'
         level = 2
-        next = 15
-    } else if (movieCount < 40) {
+        next = 10
+    } else if (movieCount < 30) {
         emoji = 'mortar_board'
         level = 3
-        next = 40
-    } else if (movieCount < 100) {
+        next = 30
+    } else if (movieCount < 60) {
         emoji = 'nerd_face'
         level = 4
-        next = 100
-    } else if (movieCount < 180) {
+        next = 60
+    } else if (movieCount < 120) {
         emoji = 'popcorn'
         level = 5
-        next = 180
-    } else if (movieCount < 300) {
+        next = 120
+    } else if (movieCount < 180) {
         emoji = 'male_zombie'
         level = 6
-        next = 300
+        next = 180
     } else {
         emoji = 'man_in_business_suit_levitating'
         level = 7
