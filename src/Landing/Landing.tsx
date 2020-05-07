@@ -63,7 +63,13 @@ const Landing = () => {
                     )}
 
                     {isAuthenticated && (
-                        <button onClick={() => logout?.({})}>Log out</button>
+                        <button
+                            onClick={() =>
+                                logout?.({ returnTo: window.location.origin })
+                            }
+                        >
+                            Log out
+                        </button>
                     )}
                 </div>
             </div>

@@ -142,7 +142,7 @@ export const Auth0Provider = ({
                     auth0Client?.getTokenSilently(args),
                 getTokenWithPopup: (...args) =>
                     auth0Client?.getTokenWithPopup(args),
-                logout: (...args: any) => auth0Client?.logout(args),
+                logout: (args: any) => auth0Client?.logout(args),
             }}
         >
             {children}
