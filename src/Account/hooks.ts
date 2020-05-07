@@ -79,7 +79,6 @@ export const useAccount = () => {
 
     return {
         getTokenFromAccount,
-        refreshAccount,
         user,
         isAuthenticated,
         loading,

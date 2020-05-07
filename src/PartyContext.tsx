@@ -57,7 +57,8 @@ export const PartyProvider = ({ children }: { children: React.ReactNode }) => {
             // Ready when loading is over
             setReady(!loading)
         }
-    }, [partyId, setPlayer, loading, isAuthenticated, getTokenFromAccount])
+        // DONT ADD getTokenFromAccount to dep array infinite loop ?
+    }, [partyId, setPlayer, loading, isAuthenticated])
 
     // Set partyId depending on the current page
     useEffect(() => {
