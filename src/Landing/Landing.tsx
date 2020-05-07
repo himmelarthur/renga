@@ -3,7 +3,7 @@ import React, { useCallback, useState, FormEvent, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useCreatePartyMutation } from '../generated/graphql'
 import { useParty } from '../Party/hooks'
-import { useAccount } from '../Account/hooks'
+import { useGlobalTracking } from '../utils/tracking'
 import EmojiRoulette from './EmojiRoulette'
 import Button from '../components/Button'
 import { track } from '../utils/tracking'
@@ -19,6 +19,7 @@ const Landing = () => {
     const [create, { loading }] = useCreatePartyMutation()
     const [username, setUsername] = useState('')
     const { addParty } = useParty()
+    useGlobalTracking()
     const history = useHistory()
 
     useEffect(() => {

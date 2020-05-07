@@ -3,10 +3,11 @@ import { Redirect } from 'react-router-dom'
 import { useParty } from './hooks'
 import JoinParty from './JoinParty'
 import Party from './Party'
+import { useGlobalTracking } from '../utils/tracking'
 
 const PartyPage = () => {
     const { player, partyId, ready } = useParty()
-
+    useGlobalTracking()
     if (!ready) return <div></div>
 
     if (!partyId) {

@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAccount } from '../Account/hooks'
 import { PlayerContext } from '../AuthContext'
-import { useStaticUID } from '../utils/tracking'
 
 // TODO: Remove ? when ubiquitous
 export type TokenBody = { userId: number; partyId: string; username?: string }
@@ -13,8 +12,6 @@ export const useParty = () => {
     const { player, setPlayer } = useContext(PlayerContext)
     const { partyId } = useParams()
     const { getTokenFromAccount, isAuthenticated, loading } = useAccount()
-
-    const staticUID = useStaticUID()
 
     // Set player depending on token
     useEffect(() => {
@@ -51,28 +48,6 @@ export const useParty = () => {
             sessionStorage.setItem('currentPartyId', partyId)
         }
     }, [partyId])
-
-    // Init trackers
-    useEffect(() => {
-        if (partyId && window.$crisp && player) {
-            window.$crisp.push([
-                'set',
-                'user:nickname',
-                [`user:${player.username || player.userId.toString()}`],
-            ])
-            window.$crisp.push([
-                'set',
-                'session:data',
-                [[['partyId', partyId]]],
-            ])
-            window.heap?.identify(staticUID)
-            window.heap?.addUserProperties({
-                partyId,
-                partyUserId: player.userId,
-                ...(player.username ? { username: player.username } : {}),
-            })
-        }
-    }, [partyId, player])
 
     const addParty = (token?: string) => {
         if (!token) {
