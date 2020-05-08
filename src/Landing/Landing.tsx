@@ -1,7 +1,6 @@
 import gql from 'graphql-tag'
 import React, { FormEvent, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useAccount } from '../Account/hooks'
 import Button from '../components/Button'
 import { Navigation } from '../components/TopBar'
 import { useCreatePartyMutation } from '../generated/graphql'
@@ -25,8 +24,6 @@ const Landing = () => {
     useEffect(() => {
         track('View Landing')
     }, [])
-
-    const { isAuthenticated, login, logout } = useAccount()
 
     const onCreate = useCallback(
         async (e: FormEvent) => {
