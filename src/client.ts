@@ -9,7 +9,9 @@ export const DEFAULT_RENGAS_PAGE_COUNT =
 
 const getAuth0Token = async () => {
     try {
-        return await Auth0.getTokenSilently()
+        if (Auth0 && (await Auth0.isAuthenticated())) {
+            return await Auth0.getTokenSilently()
+        }
     } catch (err) {
         return undefined
     }

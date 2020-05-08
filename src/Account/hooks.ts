@@ -8,6 +8,7 @@ import {
 } from '../generated/graphql'
 import { Auth0User, useAuth0 } from '../utils/auth0'
 import { useHistory } from 'react-router-dom'
+import { track } from '../utils/tracking'
 
 gql`
     mutation upsertAccount($email: String!, $playerIds: [Int!]) {
@@ -46,7 +47,9 @@ export const useAccount = () => {
     } = useAuth0()
 
     const login = async (redirectTo?: string) => {
+        track('Click Login', { redirectTo })
         const newAuth = await loginWithPopup()
+        if (newAuth) track('User LoggedIn')
         if (newAuth) refreshAccount(newAuth)
         if (redirectTo && newAuth) history.push(redirectTo)
     }
