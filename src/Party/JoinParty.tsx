@@ -3,6 +3,7 @@ import React from 'react'
 import Leaderboard from '../components/Leaderboard/Leaderboard'
 import JoinForm from './JoinForm'
 import Rengas from './Rengas/Rengas'
+import TopBar from '../components/TopBar'
 
 type Props = {
     partyId: string
@@ -11,16 +12,7 @@ type Props = {
 const JoinParty = ({ partyId }: Props) => {
     return (
         <div className="sm:p-10 p-4">
-            <div className="flex items-center  mb-4 justify-between">
-                <h1 className="text-primary font-logo text-3xl">Renga</h1>
-                <a
-                    href="/"
-                    target="_blank"
-                    className="border border-primary py-2 px-4 text-primary rounded"
-                >
-                    Start new party
-                </a>
-            </div>
+            <TopBar className="mb-4" partyId={partyId} />
             <div className="flex sm:flex-row flex-col sm:px-20 sm:mt-20">
                 <div className="sm:w-2/3">
                     <div className="sm:mx-4">
