@@ -56,15 +56,15 @@ export const PartyProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
             const token = localStorage.getItem(`token:${partyId}`)
 
-            // Try to get token remotely
-            if (isAuthenticated) {
-                setTokenFromAccount(partyId)
-            }
             // Try to get token locally
-            else if (token) {
+            if (token) {
                 const player: TokenBody = JwtDecode(token)
                 setPlayer(player)
                 setReady(true)
+            }
+            // Try to get token remotely
+            else if (isAuthenticated) {
+                setTokenFromAccount(partyId)
             }
             // Ready when loading is over
             setReady(!loading)
