@@ -8,6 +8,41 @@ export const Account = objectType({
         t.model.auth0id()
         t.model.createdAt()
         t.model.players()
+        t.field('stats', {
+            type: 'AccountStats',
+            nullable: true,
+            async resolve(parent, {}, ctx: Context) {
+                const account = await ctx.account
+                if (!account) return null
+                const res = await ctx.prisma.raw<
+                    {
+                        rengacount: number
+                        distinctmoviecount: number
+                    }[]
+                >`
+                    SELECT 
+                        COUNT(r."id") as rengacount, 
+                        COUNT(DISTINCT(m."movieDBId")) as distinctmoviecount
+                    FROM "Renga" r
+                    JOIN "User" u ON r."authorId" = u."id" 
+                    JOIN "Movie" m ON m."id" = r."movieId" 
+                    JOIN "Account" a ON a."id" = u."accountId" 
+                    WHERE a."auth0id" = ${account.auth0Id} AND r."solverCount" > 0;`
+                if (res.length != 1) return null
+                return {
+                    distinctMovieCount: res[0].distinctmoviecount,
+                    rengaCount: res[0].rengacount,
+                }
+            },
+        })
+    },
+})
+
+export const AccountStats = objectType({
+    name: 'AccountStats',
+    definition(t) {
+        t.int('distinctMovieCount')
+        t.int('rengaCount')
     },
 })
 
@@ -33,12 +68,9 @@ export const User = objectType({
         })
         t.int('solvedCount', {
             async resolve(parent, args, ctx: Context) {
-                const auth = await ctx.user
-                if (!auth) return 0
                 return ctx.prisma.submission.count({
                     where: {
                         authorId: parent.id,
-                        renga: { partyId: { equals: auth.partyId } },
                         valid: true,
                     },
                 })
@@ -46,12 +78,9 @@ export const User = objectType({
         })
         t.int('postedCount', {
             async resolve(parent, args, ctx: Context) {
-                const auth = await ctx.user
-                if (!auth) return 0
                 return ctx.prisma.renga.count({
                     where: {
                         authorId: parent.id,
-                        partyId: auth.partyId,
                     },
                 })
             },

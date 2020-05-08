@@ -1,4 +1,4 @@
-import { allow, and, rule, shield } from 'graphql-shield'
+import { allow, and, rule, shield, or } from 'graphql-shield'
 import util from 'util'
 import { Context } from '../context'
 import logger from '../logging'
@@ -8,6 +8,14 @@ const isAuthenticated = rule({ cache: 'contextual' })(
         const userAuth = await ctx.user
         logger.debug(`Authenticated user:${util.inspect(userAuth)}`)
         return userAuth !== null && userAuth !== undefined
+    }
+)
+
+const hasAccount = rule({ cache: 'contextual' })(
+    async (_, args, ctx: Context, info) => {
+        const account = await ctx.account
+        logger.debug(`Authenticated user:${util.inspect(account)}`)
+        return account !== null && account !== undefined
     }
 )
 
@@ -51,11 +59,30 @@ const isParticipant = rule({ cache: 'contextual' })(
 const shouldBePartyOnly = rule({ cache: 'contextual' })(
     async (
         _,
-        args: { where: { partyId: { equals: string } } },
+        args: {
+            where?: {
+                partyId: { equals: string }
+            }
+        },
         ctx: Context,
         info
     ) => {
-        return args.where.partyId.equals !== undefined
+        return args.where?.partyId.equals !== undefined || false
+    }
+)
+
+const shouldBeAccountOnly = rule({ cache: 'contextual' })(
+    async (
+        _,
+        args: {
+            where: {
+                author: { account: { auth0id: { equals: string } } }
+            }
+        },
+        ctx: Context,
+        info
+    ) => {
+        return args.where?.author.account.auth0id !== undefined || false
     }
 )
 
@@ -68,7 +95,7 @@ export const permissions = shield(
             updateOneRenga: and(isAuthenticated, ownRenga),
         },
         Query: {
-            rengas: shouldBePartyOnly,
+            rengas: or(and(shouldBeAccountOnly, hasAccount), shouldBePartyOnly),
             user: isAuthenticated,
         },
     },

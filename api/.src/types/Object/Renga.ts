@@ -1,6 +1,8 @@
 import { objectType } from '@nexus/schema'
 import { Context } from '../../context'
 import { getMovieGenre } from '../../services/Movie'
+import logger from '../../logging'
+import { isAccountOwner } from '../../services/User'
 
 export const Renga = objectType({
     name: 'Renga',
@@ -10,6 +12,7 @@ export const Renga = objectType({
         t.model.deletedAt()
         t.model.author()
         t.model.movie()
+        t.model.party()
         t.model.likeCount()
         t.model.solverCount()
         t.model.attemptCount()
@@ -21,9 +24,10 @@ export const Renga = objectType({
         t.model.emojis()
         t.field('status', {
             type: 'Status',
-            resolve: async (parent, {}, ctx: Context) => {
+            resolve: async (parent, args, ctx: Context) => {
                 const user = await ctx.user
-                if (!user) {
+                const account = await ctx.account
+                if (!user && !account) {
                     return {
                         isMine: false,
                         isResolved: false,
@@ -32,14 +36,17 @@ export const Renga = objectType({
                     }
                 }
 
-                // @ts-ignore
-                const isMine = parent.authorId === user.userId
+                const isMine =
+                    // @ts-ignore
+                    parent.authorId === user?.userId ||
+                    // @ts-ignore
+                    isAccountOwner(ctx.prisma, parent.authorId, ctx.account)
                 const isResolved =
                     (await ctx.prisma.submission.count({
                         where: {
                             // @ts-ignore
                             rengaId: parent.id,
-                            authorId: user.userId,
+                            authorId: user?.userId,
                             valid: true,
                         },
                     })) > 0 || false
@@ -71,7 +78,7 @@ export const Renga = objectType({
                         })
                     )?.likedBy
                         .map((x) => x.id)
-                        .includes(user.userId) ?? false
+                        .includes(user?.userId || 0) ?? false
 
                 if (!movie) throw Error('No movie associated to this renga')
 
