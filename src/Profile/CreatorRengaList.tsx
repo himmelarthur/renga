@@ -72,7 +72,7 @@ export default ({ className, auth0Id }: MyRengaListProps) => {
                         key={renga.id}
                         className={classNames(
                             'flex flex-col sm:flex-row sm:justify-between sm:items-baseline items-center w-full space-y-3',
-                            { 'opacity-75': renga.solverCount === 0 }
+                            { 'opacity-50': renga.solverCount === 0 }
                         )}
                     >
                         <div className="flex flex-row items-baseline space-x-4 w-full sm:w-3/5">
