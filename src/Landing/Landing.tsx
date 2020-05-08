@@ -3,11 +3,11 @@ import React, { FormEvent, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAccount } from '../Account/hooks'
 import Button from '../components/Button'
+import { Navigation } from '../components/TopBar'
 import { useCreatePartyMutation } from '../generated/graphql'
 import { useParty } from '../PartyContext'
 import { track, useGlobalTracking } from '../utils/tracking'
 import EmojiRoulette from './EmojiRoulette'
-import { LoginButton, Navigation } from '../components/TopBar'
 
 gql`
     mutation CreateParty($username: String!) {

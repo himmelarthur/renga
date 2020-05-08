@@ -1,13 +1,10 @@
 import gql from 'graphql-tag'
 import JwtDecode from 'jwt-decode'
 import { useCallback } from 'react'
-import { TokenBody } from '../PartyContext'
-import {
-    useGetPartyTokenMutation,
-    useUpsertAccountMutation,
-} from '../generated/graphql'
-import { Auth0User, useAuth0 } from '../utils/auth0'
 import { useHistory } from 'react-router-dom'
+import { useGetPartyTokenMutation, useUpsertAccountMutation } from '../generated/graphql'
+import { TokenBody } from '../PartyContext'
+import { Auth0User, useAuth0 } from '../utils/auth0'
 import { track } from '../utils/tracking'
 
 gql`
@@ -35,23 +32,20 @@ export const getAllTokens: () => TokenBody[] = () => {
 }
 
 export const useAccount = () => {
-    const history = useHistory()
     const [createAccount] = useUpsertAccountMutation()
     const [getToken] = useGetPartyTokenMutation()
     const {
         user,
         isAuthenticated,
         loading,
-        loginWithPopup,
+        loginWithRedirect,
         logout,
     } = useAuth0()
 
     const login = async (redirectTo?: string) => {
         track('Click Login', { redirectTo })
-        const newAuth = await loginWithPopup()
-        if (newAuth) track('User LoggedIn')
-        if (newAuth) refreshAccount(newAuth)
-        if (redirectTo && newAuth) history.push(redirectTo)
+        console.log(redirectTo);
+        await loginWithRedirect?.({appState: {targetUrl: redirectTo}})
     }
 
     const refreshAccount = useCallback(
@@ -87,6 +81,7 @@ export const useAccount = () => {
         getTokenFromAccount,
         user,
         isAuthenticated,
+        refreshAccount,
         loading,
         login,
         logout,
