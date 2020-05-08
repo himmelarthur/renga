@@ -5,7 +5,6 @@ import { DEFAULT_RENGAS_PAGE_COUNT } from '../../client'
 import Button from '../../components/Button'
 import Renga from '../../components/Renga/Renga'
 import { track } from '../../utils/tracking'
-import WelcomeMessage from '../WelcomeMessage'
 import { useFetchRengas } from './hooks'
 import Ordering from './Ordering'
 
@@ -111,7 +110,6 @@ const Rengas = ({
                     </div>
                 </div>
             )}
-            <WelcomeMessage />
         </div>
     )
 }

@@ -35,10 +35,13 @@ const WelcomeMessage = ({ className }: { className?: string }) => {
             )}
         >
             <div className="">
+                <h3 className="font-semibold">Welcome!</h3>
                 <span className="text-primary">Rengas</span> are groups of{' '}
                 <span className="text-primary">three emojis</span> that depict a
-                movie. Create Rengas and solve your friends’ Rengas to gain
-                points!
+                movie. <br />
+                Create Rengas and solve your friends’ Rengas to gain points!
+                It's a multiplayer game:{' '}
+                <span className="text-primary"> invite your friends </span> 🥳
             </div>
             <TextButton
                 className="sm:absolute right-0 bottom-0 sm:p-3 text-sm"

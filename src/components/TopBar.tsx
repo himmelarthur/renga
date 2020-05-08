@@ -45,8 +45,10 @@ export const LoginButton = ({ redirectTo }: { redirectTo?: string }) => {
 
 export const Navigation = ({
     displayNewParty,
+    partyId,
 }: {
     displayNewParty: boolean
+    partyId?: string
 }) => {
     const history = useHistory()
     const { isAuthenticated, login } = useAccount()
@@ -61,7 +63,7 @@ export const Navigation = ({
             >
                 My profile
             </button>
-            <LoginButton />
+            <LoginButton redirectTo={partyId ? `/p/${partyId}` : '/'} />
             {displayNewParty && (
                 <a
                     href="/"
@@ -82,7 +84,7 @@ export default ({ className, partyId }: TopBarProps) => {
                 <a href="/" className="h-10 w-10">
                     <img src="/logo192.png" />
                 </a>
-                <Navigation displayNewParty={true} />
+                <Navigation displayNewParty={true} partyId={partyId} />
             </div>
         </div>
     )

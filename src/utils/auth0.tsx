@@ -38,7 +38,6 @@ interface AuthContextProps {
 }
 
 const DEFAULT_REDIRECT_CALLBACK = () => {
-    console.log('foo')
     window.history.replaceState({}, document.title, window.location.pathname)
 }
 
@@ -76,7 +75,9 @@ export const Auth0Provider = ({
                 window.location.search.includes('code=') &&
                 window.location.search.includes('state=')
             ) {
-                const { appState } = await auth0FromHook.handleRedirectCallback()
+                const {
+                    appState,
+                } = await auth0FromHook.handleRedirectCallback()
                 onRedirectCallback(appState)
             }
 

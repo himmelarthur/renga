@@ -1,14 +1,14 @@
 import ConfettiGenerator from 'confetti-js'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Player } from '../PartyContext'
-import InviteLink from '../components/InviteLink'
 import Leaderboard from '../components/Leaderboard/Leaderboard'
 import PlayerStats from '../components/PlayerStats'
 import RengaForm from '../components/RengaForm'
+import TopBar from '../components/TopBar'
+import { Player } from '../PartyContext'
 import { track } from '../utils/tracking'
 import Rengas from './Rengas/Rengas'
-import TopBar from '../components/TopBar'
+import WelcomeMessage from './WelcomeMessage'
 
 type Props = {
     partyId: string
@@ -82,12 +82,13 @@ const Party = ({ partyId, user }: Props) => {
                 style={{ position: 'fixed', top: 0, zIndex: -1 }}
             ></canvas>
             <div className="sm:p-10 p-4">
-                <TopBar className="mb-4" />
+                <TopBar className="mb-4" partyId={partyId} />
                 <div className="flex justify-center my-4 sm:my-0">
                     <PlayerStats userId={user.userId} />
                 </div>
                 <div className="flex sm:flex-row sm:justify-center flex-col sm:px-20 sm:mt-20 sm:items-start">
                     <div className="sm:mx-4 sm:max-w-screen-md sm:w-full">
+                        <WelcomeMessage className="mb-2" />
                         {createRengaOn ? (
                             <RengaForm
                                 partyId={partyId}

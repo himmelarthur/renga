@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
 import * as React from 'react'
 import ReactModal from 'react-modal'
-import Button from './Button'
 import TextButton from './TextButton'
 
 export interface InviteLinkProps {
@@ -25,9 +24,10 @@ export default ({ className, partyId }: InviteLinkProps) => {
     }, [setIsCopied, partyId])
     return (
         <div
-            className={`${classNames(
+            className={classNames(
+                'text-xs sm:text-sm text-gray-600 flex items-center flex-row',
                 className
-            )} text-xs sm:text-sm text-gray-600 flex items-center flex-row`}
+            )}
         >
             <TextButton
                 color="gray"
