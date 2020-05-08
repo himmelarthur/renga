@@ -28,7 +28,19 @@ export const PartyProvider = ({ children }: { children: React.ReactNode }) => {
     const [ready, setReady] = useState(false)
     const [player, setPlayer] = useState<Player>()
     const { partyId } = useParams()
-    const { getTokenFromAccount, isAuthenticated, loading } = useAccount()
+    const {
+        getTokenFromAccount,
+        isAuthenticated,
+        loading,
+        refreshAccount,
+        user,
+    } = useAccount()
+
+    useEffect(() => {
+        if (isAuthenticated && user) {
+            refreshAccount(user)
+        }
+    }, [isAuthenticated, user])
 
     // Set player depending on token
     useEffect(() => {
