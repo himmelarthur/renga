@@ -60,7 +60,7 @@ const Landing = () => {
                 <Navigation displayNewParty={false} />
             </div>
             <h2 className="text-primary text-center text-2xl font-medium my-8 sm:mt-32">
-                Make your friends guess movies with only three emojis
+                Make your friends guess movies with only three emoji
             </h2>
             <EmojiRoulette />
             <form
